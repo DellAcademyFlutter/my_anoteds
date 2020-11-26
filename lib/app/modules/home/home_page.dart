@@ -18,18 +18,14 @@ class _HomePageState extends State<HomePage> {
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: <Widget>[
-            Consumer(
+            Consumer<HomeController>(
               builder: (context, value) {
-                return Text("${controller.count}");
+                return Text("${value.count}");
               }
             ),
             RaisedButton(
               child: Text("Add"),
-              onPressed: (){
-                setState(() {
-                  controller.increment();
-                });
-              },
+              onPressed: ()=> controller.increment(),
             )
           ],
         ),
