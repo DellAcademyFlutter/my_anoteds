@@ -26,18 +26,22 @@ class _GridViewSampleState extends State<GridViewSample> {
         itemCount: 10,
         itemBuilder: (BuildContext context, int index) =>
         new Container(
-          height: index.isEven ? 300 : 100,
             color: Colors.green,
             child: Center(
-              child: CircleAvatar(
-                backgroundColor: Colors.white,
-                child: Text('${index+1}'),
+              child: Column(
+                children: [
+                  CircleAvatar(
+                    backgroundColor: Colors.white,
+                    child: Text('${index+1}'),
+                  ),
+                  Text('aaaaabbbbbccccc'*index),
+                ],
               ),
             )),
         staggeredTileBuilder: (int index) =>
         //StaggeredTile.count(2, index.isEven ? 2 : 1),
         //StaggeredTile.extent(4, 100), // linhas aqui sao menores
-        StaggeredTile.fit(1), // Cada item ocupa exatamente 2 colunas
+        StaggeredTile.fit(2), // Cada item ocupa exatamente 2 colunas
         mainAxisSpacing: 4.0,
         crossAxisSpacing: 4.0,
       ),
