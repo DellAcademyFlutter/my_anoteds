@@ -1,2 +1,2 @@
 # my_anoteds
- Projeto de cards de anotações rápidas semlhante ao Google Keep
+ Projeto de cards de anotações rápidas semelhante ao Google Keep
