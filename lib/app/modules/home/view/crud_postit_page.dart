@@ -1,11 +1,18 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_modular/flutter_modular.dart';
 import 'package:my_anoteds/app/modules/home/model/postit.dart';
 import 'package:my_anoteds/app/modules/home/model/postit_color.dart';
-import 'package:my_anoteds/app/modules/home/model/user.dart';
+import '../home_controller.dart';
+
+class CrudPostitPageArguments {
+  CrudPostitPageArguments({this.postit});
+  Postit postit;
+}
 
 class CrudPostitPage extends StatefulWidget {
+  CrudPostitPage({this.postit});
+
   static const routeName = "/crudPostitPage";
+  final Postit postit;
 
   @override
   State<StatefulWidget> createState() => _State();
@@ -14,9 +21,21 @@ class CrudPostitPage extends StatefulWidget {
 class _State extends State<CrudPostitPage> {
   TextEditingController titleController = TextEditingController();
   TextEditingController descriptionController = TextEditingController();
-  String color = "branco";
+  String color;
   String title;
   String description;
+
+  @override
+  void initState() {
+    titleController.text = widget.postit != null ? widget.postit.title : "";
+    descriptionController.text =
+    widget.postit != null ? widget.postit.description : "";
+    color = widget.postit != null ? widget.postit.color : "branco";
+    title = titleController.text;
+    description = descriptionController.text;
+
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -31,8 +50,12 @@ class _State extends State<CrudPostitPage> {
               icon: Icon(Icons.check, color: Colors.black),
               tooltip: 'Salvar',
               onPressed: () {
-                  savePostit(
-                      title: title, description: description, color: color);
+                HomeController.savePostit(
+                    title: title,
+                    description: description,
+                    color: color,
+                    postit: widget.postit);
+                Navigator.of(context).pop();
               },
             ),
           ],
@@ -71,9 +94,7 @@ class _State extends State<CrudPostitPage> {
               ),
             ],
           )),
-
       bottomNavigationBar: BottomAppBar(
-
         child: Container(
           color: Colors.black54,
           child: Row(
@@ -132,16 +153,4 @@ class _State extends State<CrudPostitPage> {
       ),
     );
   }
-}
-
-savePostit({String title, String description, String color}) {
-  final user = Modular.get<User>();
-  final postit = Postit(
-      id: 0,
-      title: title,
-      description: description,
-      color: color,
-      user_id: 0,
-      is_pinned: false);
-  user.addPostit(postit: postit);
 }
