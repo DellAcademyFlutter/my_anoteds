@@ -5,7 +5,9 @@ class DbHelper {
   static const DATABASE_NAME = "anoteds.db";
   static const TABLE_POSTITS_NAME = "postits";
   static const SCRIPT_CREATE_TABLE_POSTITS_SQL =
-      "CREATE TABLE IF NOT EXISTS postits (id INTEGER NOT NULL, title TEXT NOT NULL, description TEXT, color TEXT, user_id INTEGER NOT NULL, is_pinned	BLOB NOT NULL, PRIMARY KEY(id AUTOINCREMENT))";
+      "CREATE TABLE IF NOT EXISTS postits (id INTEGER NOT NULL, title TEXT NOT NULL, "
+      "description TEXT, color TEXT, user_id INTEGER NOT NULL, is_pinned	BLOB NOT NULL, "
+      "PRIMARY KEY(id AUTOINCREMENT))";
 
 
   static Future<Database> getDatabase() async {
