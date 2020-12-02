@@ -1,5 +1,6 @@
 import 'package:flutter_modular/flutter_modular.dart';
-import 'package:my_anoteds/app/modules/home/home_controller.dart';
+import 'data/postit_dao.dart';
+import 'file:///C:/Users/Jack/Documents/GitHub/my_anoteds/lib/app/modules/home/controller/home_controller.dart';
 import 'package:my_anoteds/app/modules/home/view/crud_postit_page.dart';
 import 'home_page.dart';
 import 'model/postit.dart';
@@ -10,7 +11,8 @@ class HomeModule extends ChildModule {
   // TODO: implement binds
   List<Bind> get binds => [
     Bind((i) => HomeController()),
-    Bind((i) => User(postits: new List<Postit>())),
+    Bind((i) => User(postits: List<Postit>())),
+    Bind((i) => PostitDao()),
   ];
 
   @override
@@ -23,10 +25,10 @@ class HomeModule extends ChildModule {
     ),
     ModularRouter(
       CrudPostitPage.routeName,
-      child: (_, args) => CrudPostitPage(),
+      child: (_, args) => CrudPostitPage(postit: args.data.postit,),
       transition: TransitionType.fadeIn,
     ),
   ];
 
-  static Inject get to => Inject<HomeModule>.of();
+  //static Inject get to => Inject<HomeModule>.of();
 }

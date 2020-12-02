@@ -1,22 +1,41 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_modular/flutter_modular.dart';
+import 'file:///C:/Users/Jack/Documents/GitHub/my_anoteds/lib/app/modules/home/controller/home_controller.dart';
 import 'package:my_anoteds/app/modules/home/model/postit.dart';
 import 'package:my_anoteds/app/modules/home/model/postit_color.dart';
-import 'package:my_anoteds/app/modules/home/model/user.dart';
+
+class CrudPostitPageArguments {
+  CrudPostitPageArguments({this.postit});
+  Postit postit;
+}
 
 class CrudPostitPage extends StatefulWidget {
+  CrudPostitPage({this.postit});
+
   static const routeName = "/crudPostitPage";
+  final Postit postit;
 
   @override
-  State<StatefulWidget> createState() => new _State();
+  State<StatefulWidget> createState() => _State();
 }
 
 class _State extends State<CrudPostitPage> {
   TextEditingController titleController = TextEditingController();
   TextEditingController descriptionController = TextEditingController();
-  String color = "branco";
+  String color;
   String title;
   String description;
+
+  @override
+  void initState() {
+    titleController.text = widget.postit != null ? widget.postit.title : "";
+    descriptionController.text =
+        widget.postit != null ? widget.postit.description : "";
+    color = widget.postit != null ? widget.postit.color : "branco";
+    title = titleController.text;
+    description = descriptionController.text;
+
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -29,7 +48,14 @@ class _State extends State<CrudPostitPage> {
             IconButton(
               icon: Icon(Icons.save),
               tooltip: 'Salvar postit',
-              onPressed: (){savePostit(title: title, description: description, color: color);},
+              onPressed: () {
+                HomeController.savePostit(
+                    title: title,
+                    description: description,
+                    color: color,
+                    postit: widget.postit);
+                Navigator.of(context).pop();
+              },
             ),
           ],
         ),
@@ -46,6 +72,7 @@ class _State extends State<CrudPostitPage> {
                   maxLines: null, // Necessario para entrada multilinha
                   keyboardType: TextInputType.multiline,
                   onChanged: (valor) => setState(() => title = valor),
+                  style: TextStyle(fontWeight: FontWeight.bold),
                   decoration: InputDecoration(
                     border: OutlineInputBorder(),
                     labelText: 'Título',
@@ -62,6 +89,7 @@ class _State extends State<CrudPostitPage> {
                   decoration: InputDecoration(
                     border: OutlineInputBorder(),
                     labelText: 'Descrição',
+                    floatingLabelBehavior: FloatingLabelBehavior.always,
                   ),
                 ),
               ),
@@ -125,8 +153,4 @@ class _State extends State<CrudPostitPage> {
   }
 }
 
-savePostit({String title, String description, String color}){
-  final User user = Modular.get<User>();
-  final Postit postit = Postit(id: 0, title: title, description: description, color: color, user_id: 0, is_pinned: false);
-  user.addPostit(postit: postit);
-}
+
