@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'file:///C:/Users/Jack/Documents/GitHub/my_anoteds/lib/app/modules/home/controller/home_controller.dart';
+import 'package:my_anoteds/app/modules/home/controller/home_controller.dart';
 import 'package:my_anoteds/app/modules/home/model/postit.dart';
 import 'package:my_anoteds/app/modules/home/model/postit_color.dart';
 
@@ -29,7 +29,7 @@ class _State extends State<CrudPostitPage> {
   void initState() {
     titleController.text = widget.postit != null ? widget.postit.title : "";
     descriptionController.text =
-        widget.postit != null ? widget.postit.description : "";
+    widget.postit != null ? widget.postit.description : "";
     color = widget.postit != null ? widget.postit.color : "branco";
     title = titleController.text;
     description = descriptionController.text;

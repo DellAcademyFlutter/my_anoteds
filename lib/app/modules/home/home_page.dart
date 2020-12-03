@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_modular/flutter_modular.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
-import 'data/postit_dao.dart';
-import 'file:///C:/Users/Jack/Documents/GitHub/my_anoteds/lib/app/modules/home/controller/home_controller.dart';
+import 'package:my_anoteds/app/modules/home/data/postit_dao.dart';
+import 'package:my_anoteds/app//modules/home/controller/home_controller.dart';
 import 'package:my_anoteds/app/modules/home/model/postit_color.dart';
 import 'package:my_anoteds/app/modules/home/view/crud_postit_page.dart';
 
@@ -34,19 +34,19 @@ class _HomePageState extends State<HomePage> {
               (BuildContext context, AsyncSnapshot<List<Postit>> snapshot) {
             return snapshot.hasData
                 ? Consumer<User>(builder: (context, value) {
-                  user.postits = snapshot.data;
-                    return StaggeredGridView.countBuilder(
-                      crossAxisCount: 4,
-                      itemCount: user.postits.length,
-                      itemBuilder: (BuildContext context, int index) =>
-                          PostitWidget(
-                        index: index,
-                      ),
-                      staggeredTileBuilder: (int index) => StaggeredTile.fit(2),
-                      mainAxisSpacing: 4.0,
-                      crossAxisSpacing: 4.0,
-                    );
-                  })
+              user.postits = snapshot.data;
+              return StaggeredGridView.countBuilder(
+                crossAxisCount: 4,
+                itemCount: user.postits.length,
+                itemBuilder: (BuildContext context, int index) =>
+                    PostitWidget(
+                      index: index,
+                    ),
+                staggeredTileBuilder: (int index) => StaggeredTile.fit(2),
+                mainAxisSpacing: 4.0,
+                crossAxisSpacing: 4.0,
+              );
+            })
                 : CircularProgressIndicator();
           },
         ),

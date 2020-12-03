@@ -5,25 +5,25 @@ class Postit {
       this.title,
       this.description,
       this.color,
-      this.user_id,
-      this.is_pinned});
+      this.userId,
+      this.isPinned});
 
   // Atributos
   int id;
   String title;
   String description;
   String color;
-  int user_id;
-  bool is_pinned;
+  int userId;
+  bool isPinned;
 
   /// Atribui os valores dos parametros deste [Postit] dado um [Map] Jason.
-  Postit.fromMap({Map<String, dynamic> json}) {
-    id = json['id'];
-    title = json['title'];
-    description = json['description'];
-    color = json['color'];
-    user_id = json['user_id'];
-    is_pinned = json['is_pinned'] == "true";
+  Postit.fromMap({Map<String, dynamic> map}) {
+    id = map['id'];
+    title = map['title'];
+    description = map['description'];
+    color = map['color'];
+    userId = map['userId'];
+    isPinned = map['isPinned'] == "true";
   }
 
   /// Este metodo codifica este [Postit] em um [Map] Json.
@@ -33,8 +33,8 @@ class Postit {
     data['title'] = this.title;
     data['description'] = this.description;
     data['color'] = this.color;
-    data['user_id'] = this.user_id;
-    data['is_pinned'] = this.is_pinned.toString();
+    data['userId'] = this.userId;
+    data['isPinned'] = this.isPinned.toString();
     return data;
   }
 }

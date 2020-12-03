@@ -65,7 +65,7 @@ class PostitDao {
       return List.generate(
         maps.length,
             (i) {
-          return Postit.fromMap(json: maps[i]);
+          return Postit.fromMap(map: maps[i]);
         },
       );
     } catch (ex) {
