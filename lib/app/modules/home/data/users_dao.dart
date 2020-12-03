@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:my_anoteds/app/modules/home/model/postit.dart';
+import 'package:my_anoteds/app/modules/home/model/user.dart';
 import 'package:my_anoteds/app/repositories/local/database/db_helper.dart';
 import 'package:path/path.dart';
 import 'package:sqflite/sqflite.dart';
 import 'package:flutter/widgets.dart';
 
-class PostitDao {
+class UserDao {
 
   /// Referencia ao Banco de Dados
   static Future<Database> _getDatabase() async {
@@ -19,14 +19,14 @@ class PostitDao {
     );
   }
 
-  /// Insere um [Postit] em sua tabela.
-  Future insertPostit(Postit postit) async {
+  /// Insere um [user] em sua tabela.
+  Future insertUser(User user) async {
     try {
       final db = await _getDatabase();
 
       await db.insert(
-        DbHelper.TABLE_POSTITS_NAME,
-        postit.toMap(),
+        DbHelper.TABLE_USERS_NAME,
+        user.toMap(),
         conflictAlgorithm: ConflictAlgorithm.replace,
       );
     } catch (ex) {
@@ -34,43 +34,43 @@ class PostitDao {
     }
   }
 
-  /// Atualiza um [Postit]
-  Future<void> updatePostit(Postit postit) async {
+  /// Atualiza um [user]
+  Future<void> updateUser(User user) async {
     final db = await _getDatabase();
 
     await db.update(
       DbHelper.TABLE_POSTITS_NAME,
-      postit.toMap(),
+      user.toMap(),
       where: "id = ?",
-      whereArgs: [postit.id],
+      whereArgs: [user.id],
     );
   }
 
-  /// Deleta um [Postit]
-  Future<void> deletePostit(int id) async {
+  /// Deleta um [user]
+  Future<void> deleteUser(int id) async {
     final db = await _getDatabase();
 
     await db.delete(
-      DbHelper.TABLE_POSTITS_NAME,
+      DbHelper.TABLE_USERS_NAME,
       where: "id = ?",
       whereArgs: [id],
     );
   }
 
-  /// Retorna uma [List] de objetos [Postit].
-  Future<List<Postit>> getPostits() async {
+  /// Retorna uma [List] de objetos [user].
+  Future<List<User>> getUsers() async {
     try {
       final db = await _getDatabase();
-      final maps = await db.query(DbHelper.TABLE_POSTITS_NAME);
+      final maps = await db.query(DbHelper.TABLE_USERS_NAME);
 
       return List.generate(
         maps.length,
             (i) {
-          return Postit.fromMap(map: maps[i]);
+          return User.fromMap(map: maps[i]);
         },
       );
     } catch (ex) {
-      return <Postit>[];
+      return <User>[];
     }
   }
 }

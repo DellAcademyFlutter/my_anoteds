@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
+import 'file:///E:/GitHub/my_anoteds/lib/app/modules/home/home_controller.dart';
 import 'package:my_anoteds/app/modules/home/model/postit.dart';
 import 'package:my_anoteds/app/modules/home/model/postit_color.dart';
-import '../home_controller.dart';
 
 class CrudPostitPageArguments {
   CrudPostitPageArguments({this.postit});

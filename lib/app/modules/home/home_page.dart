@@ -9,7 +9,7 @@ import 'model/postit.dart';
 import 'model/user.dart';
 
 class HomePage extends StatefulWidget {
-  static const routeName = "/";
+  static const routeName = "/home";
   @override
   _HomePageState createState() => _HomePageState();
 }
@@ -17,7 +17,7 @@ class HomePage extends StatefulWidget {
 class _HomePageState extends State<HomePage> {
   final controller = Modular.get<HomeController>();
   final postitDao = Modular.get<PostitDao>();
-  final User user = Modular.get<User>();
+  final User user = Modular.get();
 
   @override
   Widget build(BuildContext context) {

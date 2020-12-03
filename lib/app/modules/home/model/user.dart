@@ -3,7 +3,35 @@ import 'package:flutter/cupertino.dart';
 
 class User extends ChangeNotifier {
   // Construtor da classe
-  User({this.postits});
+  User({this.id, this.name, this.pass, this.email, this.birth, this.postits});
+
+  int id;
+  String name;
+  String pass;
+  String email;
+  String birth;
+
+  /// Serialização - Atribui os valores dos parametros de [User] dado um [Map] Jason.
+  User.fromMap({Map<String, dynamic> map}) {
+    id = map['id'];
+    name = map['name'];
+    email = map['email'];
+    pass = map['pass'];
+    birth = map['birth'];
+  }
+
+  /// Este metodo codifica este [Postit] em um [Map] Json.
+  Map<String, dynamic> toMap() {
+    final Map<String, dynamic> data = Map<String, dynamic>();
+    data['id'] = this.id;
+    data['name'] = this.name;
+    data['email'] = this.email;
+    data['pass'] = this.pass;
+    data['birth'] = this.birth;
+    return data;
+  }
+
+
 
   // Atributos da classe
   List<Postit> postits;

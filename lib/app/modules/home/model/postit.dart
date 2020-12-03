@@ -17,13 +17,13 @@ class Postit {
   bool is_pinned;
 
   /// Atribui os valores dos parametros deste [Postit] dado um [Map] Jason.
-  Postit.fromMap({Map<String, dynamic> json}) {
-    id = json['id'];
-    title = json['title'];
-    description = json['description'];
-    color = json['color'];
-    user_id = json['user_id'];
-    is_pinned = json['is_pinned'] == "true";
+  Postit.fromMap({Map<String, dynamic> map}) {
+    id = map['id'];
+    title = map['title'];
+    description = map['description'];
+    color = map['color'];
+    user_id = map['user_id'];
+    is_pinned = map['is_pinned'] == "true";
   }
 
   /// Este metodo codifica este [Postit] em um [Map] Json.
