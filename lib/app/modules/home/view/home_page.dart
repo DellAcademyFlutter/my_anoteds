@@ -1,23 +1,23 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_modular/flutter_modular.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
-import 'package:my_anoteds/app/modules/home/controller/home_controller.dart';
-import 'package:my_anoteds/app/modules/home/data/postit_dao.dart';
-import 'package:my_anoteds/app/modules/home/model/postit_color.dart';
-import 'package:my_anoteds/app/modules/home/view/crud_postit_page.dart';
+import 'package:my_anoteds/app/controller/postit_controller.dart';
+import 'package:my_anoteds/app/data/postit_dao.dart';
+import 'package:my_anoteds/app/model/postit.dart';
+import 'package:my_anoteds/app/model/postit_color.dart';
+import 'package:my_anoteds/app/model/user.dart';
 
-import 'model/postit.dart';
-import 'model/user.dart';
+import 'crud_postit_page.dart';
 
 class HomePage extends StatefulWidget {
-  static const routeName = "/";
+  static const routeName = "/home";
   @override
   _HomePageState createState() => _HomePageState();
 }
 
 class _HomePageState extends State<HomePage> {
-  final controller = Modular.get<HomeController>();
-  final user = Modular.get<User>();
+  final controller = Modular.get<PostitController>();
+  final loggedUser = Modular.get<User>();
   final postitDao = Modular.get<PostitDao>();
 
   @override
@@ -25,35 +25,35 @@ class _HomePageState extends State<HomePage> {
     return SafeArea(
       child: Scaffold(
         appBar: AppBar(
-          title: Text("My anoteds"),
+          title: Text("Anotadas de ${loggedUser.name ?? ""}"),
           centerTitle: true,
         ),
         body: FutureBuilder(
-          future: postitDao.getPostits(),
+          future: postitDao.getPostits(userId: loggedUser.id),
           builder:
               (BuildContext context, AsyncSnapshot<List<Postit>> snapshot) {
             return snapshot.hasData
                 ? Consumer<User>(builder: (context, value) {
-              user.postits = snapshot.data;
-              return StaggeredGridView.countBuilder(
-                crossAxisCount: 4,
-                itemCount: user.postits.length,
-                itemBuilder: (BuildContext context, int index) =>
-                    PostitWidget(
-                      index: index,
-                    ),
-                staggeredTileBuilder: (int index) => StaggeredTile.fit(2),
-                mainAxisSpacing: 4.0,
-                crossAxisSpacing: 4.0,
-              );
-            })
+                    loggedUser.postits = snapshot.data;
+                    return StaggeredGridView.countBuilder(
+                      crossAxisCount: 4,
+                      itemCount: loggedUser.postits.length,
+                      itemBuilder: (BuildContext context, int index) =>
+                          PostitWidget(
+                        index: index,
+                      ),
+                      staggeredTileBuilder: (int index) => StaggeredTile.fit(2),
+                      mainAxisSpacing: 4.0,
+                      crossAxisSpacing: 4.0,
+                    );
+                  })
                 : CircularProgressIndicator();
           },
         ),
         floatingActionButton: FloatingActionButton(
           child: Icon(Icons.add),
           onPressed: () {
-            Modular.to.pushNamed(CrudPostitPage.routeName,
+            Modular.link.pushNamed(CrudPostitPage.routeName,
                 arguments: CrudPostitPageArguments(postit: null));
           },
         ),
@@ -67,13 +67,13 @@ class PostitWidget extends StatelessWidget {
 
   final int index;
   final user = Modular.get<User>();
-  final controller = Modular.get<HomeController>();
+  final controller = Modular.get<PostitController>();
 
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: () {
-        Modular.to.pushNamed(CrudPostitPage.routeName,
+        Modular.link.pushNamed(CrudPostitPage.routeName,
             arguments: CrudPostitPageArguments(postit: user.postits[index]));
       },
       child: Dismissible(

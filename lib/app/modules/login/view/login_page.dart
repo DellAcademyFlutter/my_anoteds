@@ -1,7 +1,11 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_modular/flutter_modular.dart';
-import 'package:my_anoteds/app/modules/login/signin_page.dart';
+import 'package:my_anoteds/app/Utils/utils.dart';
+import 'package:my_anoteds/app/data/users_dao.dart';
+import 'package:my_anoteds/app/model/user.dart';
+import 'package:my_anoteds/app/modules/home/view/home_page.dart';
+import 'package:my_anoteds/app/modules/login/view/signup_page.dart';
 
 class LoginPage extends StatefulWidget {
   static const routeName = "/";
@@ -13,8 +17,8 @@ class LoginPage extends StatefulWidget {
 class _State extends State<LoginPage> {
   TextEditingController nameController = TextEditingController();
   TextEditingController passControleer = TextEditingController();
-  String userName;
-  String password;
+  String userName = '';
+  String password = '';
 
   @override
   Widget build(BuildContext context) {
@@ -72,14 +76,14 @@ class _State extends State<LoginPage> {
                 textColor: Colors.black,
                 child: Text('Entrar'),
                 onPressed: () {
-                  login();
+                  signin(userName: userName, password: password, context: context);
                 },
               ),
             ),
             SizedBox(height: 7),
             FlatButton(
               onPressed: () {
-                Modular.to.pushNamed(SignInPage.routeName);
+                Modular.link.pushNamed(SignInPage.routeName);
               },
               child: Text('Não é cadastrado? Cadastre-se aqui!',
                   style: TextStyle(fontSize: 20)),
@@ -91,9 +95,17 @@ class _State extends State<LoginPage> {
   }
 }
 
-login() {
-  print('ola');
-  Modular.to.pushReplacementNamed('/home');
+signin({String userName, String password, BuildContext context}) async {
+  final userDao = Modular.get<UserDao>();
+  User loggedUser;
+  await userDao.getUser(username: userName, password: password).then((value) {
+    loggedUser = value;
+    if (loggedUser != null){
+      Modular.to.pushReplacementNamed(HomePage.routeName);
+    } else{
+      Utils.showAlertDialog(context, 'Atenção!', "Usuário não encontrado ou senha incorreta", "Ok");
+    }
+  });
 }
 
 /// Este metodo remove o focus de um widget.

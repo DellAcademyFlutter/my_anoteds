@@ -1,7 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_modular/flutter_modular.dart';
-import 'package:my_anoteds/app/modules/home/controller/home_controller.dart';
+import 'package:my_anoteds/app/controller/user_controller.dart';
 
 import 'login_page.dart';
 
@@ -17,7 +17,7 @@ class _State extends State<SignInPage> {
   TextEditingController passController = TextEditingController();
   TextEditingController birthController = TextEditingController();
   TextEditingController emailController = TextEditingController();
-  final controller = Modular.get<HomeController>();
+  final controller = Modular.get<UserController>();
   String name;
   String pass;
   String email;
