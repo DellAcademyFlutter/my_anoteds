@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'file:///E:/GitHub/my_anoteds/lib/app/modules/home/home_controller.dart';
-import 'package:my_anoteds/app/modules/home/model/postit.dart';
-import 'package:my_anoteds/app/modules/home/model/postit_color.dart';
+import 'package:my_anoteds/app/controller/postit_controller.dart';
+import 'package:my_anoteds/app/model/postit.dart';
+import 'package:my_anoteds/app/model/postit_color.dart';
 
 class CrudPostitPageArguments {
   CrudPostitPageArguments({this.postit});
@@ -50,7 +50,7 @@ class _State extends State<CrudPostitPage> {
               icon: Icon(Icons.check, color: Colors.black),
               tooltip: 'Salvar',
               onPressed: () {
-                HomeController.savePostit(
+                PostitController.savePostit(
                     title: title,
                     description: description,
                     color: color,

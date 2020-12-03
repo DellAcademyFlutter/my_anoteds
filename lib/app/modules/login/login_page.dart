@@ -1,8 +1,11 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_modular/flutter_modular.dart';
+import 'package:my_anoteds/app/Utils/Utils.dart';
+import 'package:my_anoteds/app/data/users_dao.dart';
+import 'package:my_anoteds/app/model/user.dart';
 import 'package:my_anoteds/app/modules/home/home_page.dart';
-import 'package:my_anoteds/app/modules/home/view/signin_page.dart';
+import 'package:my_anoteds/app/modules/login/view/signup_page.dart';
 
 class LoginPage extends StatefulWidget {
   static const routeName = "/";
@@ -14,8 +17,8 @@ class LoginPage extends StatefulWidget {
 class _State extends State<LoginPage> {
   TextEditingController nameController = TextEditingController();
   TextEditingController passControleer = TextEditingController();
-  String userName;
-  String password;
+  String userName = '';
+  String password = '';
 
   @override
   Widget build(BuildContext context) {
@@ -77,14 +80,14 @@ class _State extends State<LoginPage> {
                 color: Colors.amber,
                 child: Text('Entrar'),
                 onPressed: () {
-                  login();
+                  signin(context, userName, password);
                 },
               ),
             ),
             SizedBox(height: 7),
             FlatButton(
                 onPressed: () {
-                  Modular.to.pushNamed(SignInPage.routeName);
+                  Modular.link.pushNamed(SignUpPage.routeName);
                 },
                 child: Text('Não é cadastrado? Cadastre-se aqui!', style: TextStyle(fontSize: 20)),
             ),
@@ -95,11 +98,18 @@ class _State extends State<LoginPage> {
   }
 }
 
-login(){
-  /// To Do
-  Modular.to.pushReplacementNamed(HomePage.routeName);
+signin(BuildContext context, String userName, String password) async {
+  final userDao = Modular.get<UserDao>();
+  User loggedUser;
+  await userDao.getUser(username: userName, password: password).then((value){
+    loggedUser = value;
+    if (loggedUser != null){
+      Modular.to.pushReplacementNamed(HomePage.routeName);
+    }else{
+      Utils.showAlertDialog(context, 'Atenção', 'Usuário não cadastrado ou senha incorreta!', "Continuar");
+    }
+    });
 }
-
 
 /// Este metodo remove o focus de um widget.
 removeFocus({BuildContext context}) {

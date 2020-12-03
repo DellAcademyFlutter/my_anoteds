@@ -1,22 +1,20 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_modular/flutter_modular.dart';
-import 'file:///E:/GitHub/my_anoteds/lib/app/modules/login/login_page.dart';
+import 'package:my_anoteds/app/controller/user_controller.dart';
+import '../login_page.dart';
 
-import '../home_controller.dart';
-
-class SignInPage extends StatefulWidget {
+class SignUpPage extends StatefulWidget {
   static const routeName = "/signin";
   @override
   State<StatefulWidget> createState() => new _State();
 }
 
-class _State extends State<SignInPage> {
+class _State extends State<SignUpPage> {
   TextEditingController nameController = TextEditingController();
   TextEditingController passController = TextEditingController();
   TextEditingController birthController = TextEditingController();
   TextEditingController emailController = TextEditingController();
-  final controller = Modular.get<HomeController>();
   String name;
   String pass;
   String email;
@@ -110,9 +108,9 @@ class _State extends State<SignInPage> {
                       passController.text == '' ||
                       birthController.text == '' ||
                       emailController.text == '') {
-                    showAlertDialog(context);
+                    showAlertDialog(context, "Os campos não podem ser vazios","Alerta","OK");
                   } else {
-                    controller.saveUser(
+                    UserController.saveUser(
                         name: name, pass: pass, email: email, birth: birth);
                     Modular.to.pushReplacementNamed(LoginPage.routeName);
                   }
@@ -126,10 +124,10 @@ class _State extends State<SignInPage> {
   }
 }
 
-showAlertDialog(BuildContext context) {
+showAlertDialog(BuildContext context, String title, String message, String buttonConfirmationLabel) {
   // configura o button
   final Widget okButton = FlatButton(
-    child: Text("OK"),
+    child: Text(buttonConfirmationLabel),
     onPressed: () {
       Navigator.of(context).pop();
     },
@@ -137,8 +135,8 @@ showAlertDialog(BuildContext context) {
 
   // configura o  AlertDialog
   final AlertDialog alert = AlertDialog(
-    title: Text("Alerta"),
-    content: Text("Os campos não podem ser vazios"),
+    title: Text(title),
+    content: Text(message),
     actions: [
       okButton,
     ],
@@ -162,3 +160,4 @@ removeFocus({BuildContext context}) {
     currentFocus.unfocus();
   }
 }
+

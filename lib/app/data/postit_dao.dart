@@ -1,28 +1,15 @@
 import 'package:flutter/material.dart';
-import 'package:my_anoteds/app/modules/home/model/postit.dart';
+import 'package:my_anoteds/app/model/postit.dart';
 import 'package:my_anoteds/app/repositories/local/database/db_helper.dart';
-import 'package:path/path.dart';
 import 'package:sqflite/sqflite.dart';
 import 'package:flutter/widgets.dart';
 
 class PostitDao {
 
-  /// Referencia ao Banco de Dados
-  static Future<Database> _getDatabase() async {
-    return openDatabase(
-      join(await getDatabasesPath(), DbHelper.DATABASE_NAME),
-      onCreate: (db, version) async {
-        await db.execute(DbHelper.SCRIPT_CREATE_TABLE_POSTITS_SQL);
-        await db.execute(DbHelper.SCRIPT_CREATE_TABLE_USERS_SQL);
-      },
-      version: 1,
-    );
-  }
-
   /// Insere um [Postit] em sua tabela.
   Future insertPostit(Postit postit) async {
     try {
-      final db = await _getDatabase();
+      final db = await DbHelper.getDatabase();
 
       await db.insert(
         DbHelper.TABLE_POSTITS_NAME,
@@ -36,7 +23,7 @@ class PostitDao {
 
   /// Atualiza um [Postit]
   Future<void> updatePostit(Postit postit) async {
-    final db = await _getDatabase();
+    final db = await DbHelper.getDatabase();
 
     await db.update(
       DbHelper.TABLE_POSTITS_NAME,
@@ -48,7 +35,7 @@ class PostitDao {
 
   /// Deleta um [Postit]
   Future<void> deletePostit(int id) async {
-    final db = await _getDatabase();
+    final db = await DbHelper.getDatabase();
 
     await db.delete(
       DbHelper.TABLE_POSTITS_NAME,
@@ -58,17 +45,21 @@ class PostitDao {
   }
 
   /// Retorna uma [List] de objetos [Postit].
-  Future<List<Postit>> getPostits() async {
+  Future<List<Postit>> getPostits(int userId) async {
     try {
-      final db = await _getDatabase();
+      final db = await DbHelper.getDatabase();
       final maps = await db.query(DbHelper.TABLE_POSTITS_NAME);
 
-      return List.generate(
-        maps.length,
-            (i) {
-          return Postit.fromMap(map: maps[i]);
-        },
-      );
+      final List<Postit> userPostits = List();
+
+    for(int i=0; i<maps.length; i++){
+      if(maps[i]['userId'] == userId){
+        userPostits.add(Postit.fromMap(map: maps[i]));
+      }
+    }
+    
+    return userPostits;
+
     } catch (ex) {
       return <Postit>[];
     }

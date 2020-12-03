@@ -1,16 +1,12 @@
 import 'package:flutter_modular/flutter_modular.dart';
-import 'package:my_anoteds/app/modules/home/data/users_dao.dart';
-import 'package:my_anoteds/app/modules/home/view/signin_page.dart';
+import 'package:my_anoteds/app/modules/login/view/signup_page.dart';
+
 import 'login_page.dart';
 
 class LoginModule extends ChildModule {
   @override
   // TODO: implement binds
-  List<Bind> get binds => [
-    Bind((i) => SignInPage()),
-    Bind((i) => LoginPage()),
-    Bind((i) => UserDao()),
-  ];
+  List<Bind> get binds => [];
 
   @override
   // TODO: implement routers
@@ -21,11 +17,11 @@ class LoginModule extends ChildModule {
       transition: TransitionType.leftToRightWithFade,
     ),
     ModularRouter(
-      LoginPage.routeName,
-      child: (_, args) => SignInPage(),
+      SignUpPage.routeName,
+      child: (_, args) => SignUpPage(),
       transition: TransitionType.leftToRightWithFade,
     ),
   ];
 
-//static Inject get to => Inject<HomeModule>.of();
+ static Inject get to => Inject<LoginModule>.of();
 }

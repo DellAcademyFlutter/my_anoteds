@@ -1,13 +1,13 @@
-import 'package:my_anoteds/app/modules/home/model/postit.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:my_anoteds/app/model/postit.dart';
 
 class User extends ChangeNotifier {
   // Construtor da classe
-  User({this.id, this.name, this.pass, this.email, this.birth, this.postits});
+  User({this.id, this.name, this.password, this.email, this.birth, this.postits});
 
   int id;
   String name;
-  String pass;
+  String password;
   String email;
   String birth;
 
@@ -16,7 +16,7 @@ class User extends ChangeNotifier {
     id = map['id'];
     name = map['name'];
     email = map['email'];
-    pass = map['pass'];
+    password = map['password'];
     birth = map['birth'];
   }
 
@@ -26,12 +26,10 @@ class User extends ChangeNotifier {
     data['id'] = this.id;
     data['name'] = this.name;
     data['email'] = this.email;
-    data['pass'] = this.pass;
+    data['password'] = this.password;
     data['birth'] = this.birth;
     return data;
   }
-
-
 
   // Atributos da classe
   List<Postit> postits;
@@ -48,7 +46,7 @@ class User extends ChangeNotifier {
     postits[index].title = newPostit.title;
     postits[index].description = newPostit.description;
     postits[index].color = newPostit.color;
-    postits[index].is_pinned = newPostit.is_pinned;
+    postits[index].isPinned = newPostit.isPinned;
 
     notifyListeners();
   }

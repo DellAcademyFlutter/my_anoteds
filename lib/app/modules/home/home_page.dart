@@ -1,12 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_modular/flutter_modular.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
-import 'package:my_anoteds/app/modules/home/model/postit_color.dart';
+import 'package:my_anoteds/app/controller/postit_controller.dart';
+import 'package:my_anoteds/app/data/postit_dao.dart';
+import 'package:my_anoteds/app/model/postit.dart';
+import 'package:my_anoteds/app/model/postit_color.dart';
+import 'package:my_anoteds/app/model/user.dart';
 import 'package:my_anoteds/app/modules/home/view/crud_postit_page.dart';
-import 'data/postit_dao.dart';
-import 'home_controller.dart';
-import 'model/postit.dart';
-import 'model/user.dart';
+
 
 class HomePage extends StatefulWidget {
   static const routeName = "/home";
@@ -15,9 +16,8 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
-  final controller = Modular.get<HomeController>();
   final postitDao = Modular.get<PostitDao>();
-  final User user = Modular.get();
+  final User loggedUser = Modular.get();
 
   @override
   Widget build(BuildContext context) {
@@ -25,25 +25,25 @@ class _HomePageState extends State<HomePage> {
       child: Scaffold(
         appBar: AppBar(
           backgroundColor: Colors.amber,
-          title: Text("My anoteds", style: TextStyle(color: Colors.black)),
+          title: Text("My annoteds", style: TextStyle(color: Colors.black)),
           centerTitle: true,
         ),
         body: FutureBuilder(
-          future: postitDao.getPostits(),
+          future: postitDao.getPostits(loggedUser.id),
           builder:
               (BuildContext context, AsyncSnapshot<List<Postit>> snapshot) {
             return snapshot.hasData
                 ? Consumer<User>(builder: (context, value) {
-                user.postits = snapshot.data;
+                loggedUser.postits = snapshot.data;
               return StaggeredGridView.countBuilder(
                 crossAxisCount: 4,
-                itemCount: user.postits.length,
+                itemCount: loggedUser.postits.length,
                 itemBuilder: (BuildContext context, int index) =>
                     PostitWidget(
                       index: index,
                     ),
                 staggeredTileBuilder: (int index) =>
-                (user.postits[index].description.length > 120) || user.postits[index].description.contains('\n')?
+                (loggedUser.postits[index].description.length > 120) || loggedUser.postits[index].description.contains('\n')?
                 StaggeredTile.fit(2) : StaggeredTile.count(2,2),
                 mainAxisSpacing: 4.0,
                 crossAxisSpacing: 4.0,
@@ -56,7 +56,7 @@ class _HomePageState extends State<HomePage> {
           child: Icon(Icons.add, color: Colors.black),
           backgroundColor: Colors.amber,
           onPressed: () {
-            Modular.to.pushNamed(CrudPostitPage.routeName,
+            Modular.link.pushNamed(CrudPostitPage.routeName,
                 arguments: CrudPostitPageArguments(postit: null));
           },
         ),
@@ -75,7 +75,7 @@ class PostitWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: () {
-        Modular.to.pushNamed(CrudPostitPage.routeName,
+        Modular.link.pushNamed(CrudPostitPage.routeName,
             arguments: CrudPostitPageArguments(postit: user.postits[index]));
       },
       child: Dismissible(
@@ -113,7 +113,7 @@ class PostitWidget extends StatelessWidget {
 }
 
 showAlertDialog(BuildContext context, int index) {
-  final controller = Modular.get<HomeController>();
+  final controller = Modular.get<PostitController>();
   final User user = Modular.get<User>();
 
   final Widget cancelButton = FlatButton(
