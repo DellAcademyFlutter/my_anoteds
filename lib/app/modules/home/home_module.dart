@@ -1,5 +1,5 @@
 import 'package:flutter_modular/flutter_modular.dart';
-import 'controller/home_controller.dart';
+import 'package:my_anoteds/app/modules/home/controller/home_controller.dart';
 import 'package:my_anoteds/app/modules/home/data/postit_dao.dart';
 import 'package:my_anoteds/app/modules/home/view/crud_postit_page.dart';
 import 'package:my_anoteds/app/modules/home/home_page.dart';

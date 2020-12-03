@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_modular/flutter_modular.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
+import 'package:my_anoteds/app/modules/home/controller/home_controller.dart';
 import 'package:my_anoteds/app/modules/home/data/postit_dao.dart';
-import 'package:my_anoteds/app//modules/home/controller/home_controller.dart';
 import 'package:my_anoteds/app/modules/home/model/postit_color.dart';
 import 'package:my_anoteds/app/modules/home/view/crud_postit_page.dart';
 
