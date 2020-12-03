@@ -1,7 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_modular/flutter_modular.dart';
-import 'package:my_anoteds/app/modules/home/view/login_page.dart';
+import 'file:///E:/GitHub/my_anoteds/lib/app/modules/login/login_page.dart';
 
 import '../home_controller.dart';
 

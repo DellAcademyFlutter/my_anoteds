@@ -15,7 +15,8 @@ class AppModule extends MainModule {
 
   @override
   List<ModularRouter> get routers => [
-    ModularRouter('/', module: HomeModule())
+    ModularRouter('/', module: HomeModule()),
+    ModularRouter('/home', module: HomeModule())
   ];
 
 }
