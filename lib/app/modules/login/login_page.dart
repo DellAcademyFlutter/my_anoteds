@@ -100,10 +100,12 @@ class _State extends State<LoginPage> {
 
 signin(BuildContext context, String userName, String password) async {
   final userDao = Modular.get<UserDao>();
-  User loggedUser;
-  await userDao.getUser(username: userName, password: password).then((value){
-    loggedUser = value;
-    if (loggedUser != null){
+  final User user = Modular.get<User>();
+
+    await userDao.getUser(username: userName, password: password).then((value){
+      Modular.get<User>().name = value.name;
+      Modular.get<User>().id = value.id;
+    if (user != null){
       Modular.to.pushReplacementNamed(HomePage.routeName);
     }else{
       Utils.showAlertDialog(context, 'Atenção', 'Usuário não cadastrado ou senha incorreta!', "Continuar");

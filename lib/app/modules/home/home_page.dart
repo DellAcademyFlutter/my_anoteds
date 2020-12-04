@@ -25,7 +25,7 @@ class _HomePageState extends State<HomePage> {
       child: Scaffold(
         appBar: AppBar(
           backgroundColor: Colors.amber,
-          title: Text("My annoteds", style: TextStyle(color: Colors.black)),
+          title: Text("My annoteds of: ${loggedUser.name}", style: TextStyle(color: Colors.black)),
           centerTitle: true,
         ),
         body: FutureBuilder(

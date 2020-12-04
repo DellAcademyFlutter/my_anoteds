@@ -31,6 +31,13 @@ class User extends ChangeNotifier {
     return data;
   }
 
+  setValues({@required User otherUser}){
+    id = otherUser.id;
+    name = otherUser.name;
+    password = otherUser.password;
+    email = otherUser.email;
+    birth = otherUser.birth;
+  }
   // Atributos da classe
   List<Postit> postits;
 
