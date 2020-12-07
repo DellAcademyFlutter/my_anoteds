@@ -11,11 +11,11 @@ class UserController {
   }
 
   /// Salva um [User] em sua tabela no Banco de Dados.
-  saveUser({String name, String birth, String pass, String email}) {
+  saveUser({String name, String birth, String password, String email}) {
     final User newUser =
     User(id: null,
         name: name,
-        password: pass,
+        password: password,
         birth: birth,
         email: email);
 

@@ -6,6 +6,8 @@ import 'package:my_anoteds/app/data/postit_dao.dart';
 import 'package:my_anoteds/app/model/postit.dart';
 import 'package:my_anoteds/app/model/postit_color.dart';
 import 'package:my_anoteds/app/model/user.dart';
+import 'package:my_anoteds/app/modules/home/view/user_settings_page.dart';
+import 'package:my_anoteds/app/modules/login/view/login_page.dart';
 
 import 'crud_postit_page.dart';
 
@@ -24,6 +26,7 @@ class _HomePageState extends State<HomePage> {
   Widget build(BuildContext context) {
     return SafeArea(
       child: Scaffold(
+        drawer: SideMenu(),
         appBar: AppBar(
           title: Text("Anotadas de ${loggedUser.name ?? ""}"),
           centerTitle: true,
@@ -107,4 +110,48 @@ class PostitWidget extends StatelessWidget {
       ),
     );
   }
+}
+
+class SideMenu extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return Drawer(
+      child: ListView(
+        padding: EdgeInsets.zero,
+        children: <Widget>[
+          DrawerHeader(
+            child: Center(child: Text('Anote App!')),
+          ),
+          ListTile(
+              leading: Icon(Icons.settings),
+              title: Text('configurações'),
+              onTap: () {
+                Modular.to.pop();
+                Modular.link.pushNamed(UserSettingsPage.routeName);
+              }),
+          ListTile(
+            leading: Icon(Icons.exit_to_app),
+            title: Text('Sair'),
+            onTap: () {
+              Modular.to.pop();
+              Logout();
+            },
+          )
+        ],
+      ),
+    );
+  }
+}
+
+Logout() {
+  final loggedUser = Modular.get<User>();
+  final User nullUser = User(
+      id: null,
+      name: null,
+      password: null,
+      email: null,
+      birth: null,
+      postits: null);
+  loggedUser.setValues(otherUser: nullUser);
+  Modular.to.pushReplacementNamed(LoginPage.routeName);
 }

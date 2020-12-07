@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_modular/flutter_modular.dart';
+import 'package:my_anoteds/app/modules/login/login_controller.dart';
 import 'package:my_anoteds/app/modules/login/view/login_page.dart';
 import 'package:my_anoteds/app/modules/login/view/signup_page.dart';
 
@@ -9,6 +10,7 @@ class LoginModule extends ChildModule {
   @override
   // TODO: implement binds
   List<Bind> get binds => [
+    Bind((i) => LoginController()),
   ];
 
   @override
@@ -20,8 +22,8 @@ class LoginModule extends ChildModule {
       transition: TransitionType.leftToRightWithFade,
     ),
     ModularRouter(
-      SignInPage.routeName,
-      child: (_, args) => SignInPage(),
+      SignUpPage.routeName,
+      child: (_, args) => SignUpPage(),
       transition: TransitionType.fadeIn,
     ),
   ];

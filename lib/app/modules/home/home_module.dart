@@ -1,4 +1,5 @@
 import 'package:flutter_modular/flutter_modular.dart';
+import 'package:my_anoteds/app/modules/home/view/user_settings_page.dart';
 import 'home_controller.dart';
 import 'view/crud_postit_page.dart';
 import 'view/home_page.dart';
@@ -25,6 +26,10 @@ class HomeModule extends ChildModule {
           ),
           transition: TransitionType.fadeIn,
         ),
+        ModularRouter(
+          UserSettingsPage.routeName,
+          child: (_, args) => UserSettingsPage(),
+        )
       ];
 
   static Inject get to => Inject<HomeModule>.of();
