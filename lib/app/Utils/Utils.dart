@@ -1,13 +1,15 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_modular/flutter_modular.dart';
 
 class Utils {
-  static showAlertDialog(BuildContext context, String title, String message, String buttonConfirmationLabel) {
+  static showAlertDialog(BuildContext context, String title, String message,
+      String buttonConfirmationLabel) {
     // configura o button
     final Widget okButton = FlatButton(
       child: Text(buttonConfirmationLabel),
       onPressed: () {
-        Navigator.of(context).pop();
+        Modular.to.pop();
       },
     );
 
@@ -27,5 +29,15 @@ class Utils {
         return alert;
       },
     );
+  }
+}
+
+/// Este metodo remove o focus de um widget.
+removeFocus({BuildContext context}) {
+  final FocusScopeNode currentFocus = FocusScope.of(context);
+
+  // Remove o focus do widget atual
+  if (!currentFocus.hasPrimaryFocus) {
+    currentFocus.unfocus();
   }
 }

@@ -3,6 +3,7 @@ import 'package:flutter_modular/flutter_modular.dart';
 import 'package:my_anoteds/app/app_controller.dart';
 import 'package:my_anoteds/app/app_widget.dart';
 import 'package:my_anoteds/app/modules/home/home_module.dart';
+import 'package:my_anoteds/app/repositories/shared/user_settings.dart';
 
 import 'controller/postit_controller.dart';
 import 'controller/user_controller.dart';
@@ -21,6 +22,7 @@ class AppModule extends MainModule {
     Bind((i) => PostitDao()),
     Bind((i) => UserDao()),
     Bind((i) => User(postits: List<Postit>())),
+    Bind((i) => UserSettings()),
   ];
 
   @override

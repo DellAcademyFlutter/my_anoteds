@@ -1,12 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_modular/flutter_modular.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
-import 'package:my_anoteds/app/controller/postit_controller.dart';
 import 'package:my_anoteds/app/data/postit_dao.dart';
 import 'package:my_anoteds/app/model/postit.dart';
 import 'package:my_anoteds/app/model/postit_color.dart';
 import 'package:my_anoteds/app/model/user.dart';
 import 'package:my_anoteds/app/modules/home/view/crud_postit_page.dart';
+import 'package:my_anoteds/app/modules/home/view/user_settings_page.dart';
+import 'package:my_anoteds/app/modules/login/login_page.dart';
 
 
 class HomePage extends StatefulWidget {
@@ -23,6 +24,7 @@ class _HomePageState extends State<HomePage> {
   Widget build(BuildContext context) {
     return SafeArea(
       child: Scaffold(
+        drawer: SideMenu(),
         appBar: AppBar(
           backgroundColor: Colors.amber,
           title: Text("My annoteds of: ${loggedUser.name}", style: TextStyle(color: Colors.black)),
@@ -102,44 +104,51 @@ class PostitWidget extends StatelessWidget {
               )),
         ),
 
-        // ignore: missing_return
-        confirmDismiss: (direction) async {
-          final bool resp = await showAlertDialog(context, index);
-          return resp;
-        }
       ),
     );
   }
 }
 
-showAlertDialog(BuildContext context, int index) {
-  final controller = Modular.get<PostitController>();
-  final User user = Modular.get<User>();
+class SideMenu extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return Drawer(
+      child: ListView(
+        padding: EdgeInsets.zero,
+        children: <Widget>[
+          DrawerHeader(
+            child: Center(child: Text('Anote App!')),
+          ),
+          ListTile(
+              leading: Icon(Icons.settings),
+              title: Text('configurações'),
+              onTap: () {
+                Modular.to.pop();
+                Modular.link.pushNamed(UserSettingsPage.routeName);
+              }),
+          ListTile(
+            leading: Icon(Icons.exit_to_app),
+            title: Text('Sair'),
+            onTap: () {
+              Modular.to.pop();
+              Logout();
+            },
+          )
+        ],
+      ),
+    );
+  }
+}
 
-  final Widget cancelButton = FlatButton(
-    child: Text("Nao"),
-    onPressed: () => Navigator.of(context).pop(),
-  );
-  final Widget continueButton = FlatButton(
-      child: Text("Sim"),
-      onPressed: () {
-        controller.removePostit(index: index);
-        Navigator.of(context).pop();
-      });
-
-  final AlertDialog alert = AlertDialog(
-    title: Text("Atencão!"),
-    content: Text("Deseja remover o Post-it: ${user.postits[index].title}?"),
-    actions: [
-      cancelButton,
-      continueButton,
-    ],
-  );
-
-  showDialog(
-    context: context,
-    builder: (BuildContext context) {
-      return alert;
-    },
-  );
+Logout() {
+  final loggedUser = Modular.get<User>();
+  final User nullUser = User(
+      id: null,
+      name: null,
+      password: null,
+      email: null,
+      birth: null,
+      postits: null);
+  loggedUser.setValues(otherUser: nullUser);
+  Modular.to.pushReplacementNamed(LoginPage.routeName);
 }
