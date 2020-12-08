@@ -95,7 +95,12 @@ class PostitWidget extends StatelessWidget {
                 Container(
                   child: Text(
                     user.postits[index].title,
-                    style: TextStyle(fontWeight: FontWeight.bold),
+                    style: TextStyle(
+                        fontWeight: FontWeight.bold,
+                        color: (user.postits[index].color == "verde" ||
+                                user.postits[index].color == "azul")
+                            ? Colors.white
+                            : Colors.black),
                   ),
                 ),
                 Divider(
@@ -103,7 +108,14 @@ class PostitWidget extends StatelessWidget {
                   color: Colors.black,
                 ),
                 Container(
-                  child: Text(user.postits[index].description),
+                  child: Text(
+                    user.postits[index].description,
+                    style: TextStyle(
+                        color: (user.postits[index].color == "verde" ||
+                                user.postits[index].color == "azul")
+                            ? Colors.white
+                            : Colors.black),
+                  ),
                 ),
               ],
             )),
@@ -120,7 +132,12 @@ class SideMenu extends StatelessWidget {
         padding: EdgeInsets.zero,
         children: <Widget>[
           DrawerHeader(
-            child: Center(child: Text('Anote App!')),
+            child: null,
+            decoration: BoxDecoration(
+                image: DecorationImage(
+                    fit: BoxFit.fill,
+                    image: NetworkImage(
+                        "https://vdmedia.elpais.com/elpaistop/20202/29/2019121992148149_1582990136_asset_still.png"))),
           ),
           ListTile(
               leading: Icon(Icons.settings),

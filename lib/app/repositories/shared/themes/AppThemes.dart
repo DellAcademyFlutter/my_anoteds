@@ -38,6 +38,9 @@ class ThemeCollection {
       ),
       brightness: Brightness.light,
       cardColor: Colors.grey[300],
+      floatingActionButtonTheme: FloatingActionButtonThemeData(
+        backgroundColor: Colors.blue,
+      ),
       buttonTheme: ButtonThemeData(
         buttonColor: Colors.blueAccent,
         shape: RoundedRectangleBorder(),
@@ -79,36 +82,38 @@ class ThemeCollection {
               color: Colors.white,
               fontWeight: FontWeight.bold),
         ),
-        color: Colors.blue,
+        color: Colors.blueAccent,
       ),
       brightness: Brightness.dark,
       cardColor: Colors.white60,
+      floatingActionButtonTheme: FloatingActionButtonThemeData(
+        backgroundColor: Colors.blueAccent,
+      ),
       buttonTheme: ButtonThemeData(
         buttonColor: Colors.blue[900],
         shape: RoundedRectangleBorder(),
         textTheme: ButtonTextTheme.primary,
       ),
       textTheme: TextTheme(
-          headline5: TextStyle(color: Colors.green),
-          headline6: TextStyle(
-              fontSize: (settings.fontSize),
-              color: Colors.white70,
-              fontWeight: FontWeight.bold),
+        bodyText1: TextStyle(
+            fontSize: (settings.fontSize),
+            color: Colors.white,
+            fontWeight: FontWeight.bold),
           bodyText2: TextStyle(
               fontSize: (settings.fontSize),
-              color: Colors.grey,
+              color: Colors.white,
               fontWeight: FontWeight.bold),
           subtitle1: TextStyle(
               fontSize: (settings.fontSize),
-              color: Colors.white70,
+              color: Colors.white,
               fontWeight: FontWeight.bold),
           subtitle2: TextStyle(
             fontSize: (settings.fontSize - 5),
-            color: Colors.white70,
+            color: Colors.white,
           ),
           caption: TextStyle(
             fontSize: (settings.fontSize - 5),
-            color: Colors.white60,
+            color: Colors.white,
           )),
     );
   }
@@ -128,6 +133,9 @@ class ThemeCollection {
         ),
         brightness: Brightness.dark,
         cardColor: Colors.black54,
+        floatingActionButtonTheme: FloatingActionButtonThemeData(
+          backgroundColor: Colors.amber,
+        ),
         buttonTheme: ButtonThemeData(
           buttonColor: Colors.yellow,
           shape: RoundedRectangleBorder(),
