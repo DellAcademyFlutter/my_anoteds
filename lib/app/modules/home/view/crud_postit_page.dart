@@ -29,7 +29,7 @@ class _State extends State<CrudPostitPage> {
   void initState() {
     titleController.text = widget.postit != null ? widget.postit.title : "";
     descriptionController.text =
-    widget.postit != null ? widget.postit.description : "";
+        widget.postit != null ? widget.postit.description : "";
     color = widget.postit != null ? widget.postit.color : "branco";
     title = titleController.text;
     description = descriptionController.text;
@@ -72,10 +72,18 @@ class _State extends State<CrudPostitPage> {
                   controller: titleController,
                   maxLines: null, // Necessario para entrada multilinha
                   keyboardType: TextInputType.multiline,
+                  style: (color == "verde" || color == "azul")
+                      ? TextStyle(color: Colors.white)
+                      : TextStyle(color: Colors.black),
                   onChanged: (valor) => setState(() => title = valor),
                   decoration: InputDecoration(
                     border: OutlineInputBorder(),
                     labelText: 'Insira o Título do seu Postit',
+                    labelStyle: TextStyle(
+                        fontWeight: FontWeight.bold,
+                        color: (color == "verde" || color == "azul")
+                            ? Colors.white
+                            : Colors.black),
                   ),
                 ),
               ),
@@ -85,10 +93,26 @@ class _State extends State<CrudPostitPage> {
                 child: TextFormField(
                   controller: descriptionController,
                   maxLines: 20,
+                  cursorColor: Colors.black,
+                  style: (color == "verde" || color == "azul")
+                      ? TextStyle(color: Colors.white)
+                      : TextStyle(color: Colors.black),
                   onChanged: (valor) => setState(() => description = valor),
                   decoration: InputDecoration(
                     border: OutlineInputBorder(),
+                    focusedBorder: OutlineInputBorder(
+                      borderSide: BorderSide(
+                        color: (color == "verde" || color == "azul")
+                            ? Colors.white
+                            : Colors.black,
+                      ),
+                    ),
                     labelText: 'Insira seu texto',
+                    labelStyle: TextStyle(
+                        fontWeight: FontWeight.bold,
+                        color: (color == "verde" || color == "azul")
+                            ? Colors.white
+                            : Colors.black),
                   ),
                 ),
               ),

@@ -154,16 +154,27 @@ class TextSizeSlider extends StatelessWidget {
             child: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
-            Slider(
-              value: settings.fontSize,
-              min: 14,
-              max: 25,
-              divisions: 6,
-              label:
-                  "${MathUtils.round(number: settings.fontSize, decimalPlaces: 2)}",
-              onChanged: (newSliderValue) {
-                settings.fontSize = newSliderValue;
-              },
+            SliderTheme(
+              data: SliderTheme.of(context).copyWith(
+                activeTrackColor: Theme.of(context).cardColor.withOpacity(0),
+                inactiveTrackColor: Theme.of(context).cardColor.withOpacity(0),
+                trackHeight: 14,
+                trackShape: RoundedRectSliderTrackShape(),
+                tickMarkShape: RoundSliderTickMarkShape(),
+                activeTickMarkColor: Theme.of(context).accentColor,
+                inactiveTickMarkColor: Theme.of(context).accentColor,
+              ),
+              child: Slider(
+                value: settings.fontSize,
+                min: 14,
+                max: 25,
+                divisions: 6,
+                label:
+                    "${MathUtils.round(number: settings.fontSize, decimalPlaces: 0)}",
+                onChanged: (newSliderValue) {
+                  settings.fontSize = newSliderValue;
+                },
+              ),
             ),
             RaisedButton(
               child: Text('Tamanho padrão'),

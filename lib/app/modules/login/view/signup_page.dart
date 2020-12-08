@@ -137,8 +137,8 @@ class _State extends State<SignUpPage> {
                   color: Colors.amber,
                   child: Text('Cadastrar'),
                   onPressed: () {
-                    isValidating = AutovalidateMode.always;
                     if (_formKey.currentState.validate()) {
+                      isValidating = AutovalidateMode.always;
                       UserController.saveUser(
                           name: name, pass: pass, email: email, birth: birth);
                       Modular.to.pop();
