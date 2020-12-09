@@ -12,7 +12,7 @@ class UserController {
 
   /// Salva um [User] em sua tabela no Banco de Dados.
   saveUser({String name, String birth, String password, String email}) {
-    final User newUser =
+    final newUser =
     User(id: null,
         name: name,
         password: password,

@@ -1,6 +1,8 @@
 import 'package:my_anoteds/app/model/postit.dart';
 import 'package:flutter/cupertino.dart';
 
+import 'marker.dart';
+
 class User extends ChangeNotifier {
   // Construtor da classe
   User({this.id, this.name, this.password, this.email, this.birth, this.postits});
@@ -22,12 +24,12 @@ class User extends ChangeNotifier {
 
   /// Este metodo codifica este [Postit] em um [Map] Json.
   Map<String, dynamic> toMap() {
-    final Map<String, dynamic> data = Map<String, dynamic>();
-    data['id'] = this.id;
-    data['name'] = this.name;
-    data['email'] = this.email;
-    data['password'] = this.password;
-    data['birth'] = this.birth;
+    final data = <String, dynamic>{};
+    data['id'] = id;
+    data['name'] = name;
+    data['email'] = email;
+    data['password'] = password;
+    data['birth'] = birth;
     return data;
   }
 
@@ -42,6 +44,7 @@ class User extends ChangeNotifier {
 
   // Atributos da classe
   List<Postit> postits;
+  List<Marker> markers;
 
   // Adiciona um Postit
   addPostit({Postit postit}) {
@@ -62,6 +65,25 @@ class User extends ChangeNotifier {
 
   removePostit({int index}){
     postits.removeAt(index);
+
+    notifyListeners();
+  }
+
+  // Adiciona um marker
+  addMarker({Marker marker}) {
+    markers.add(marker);
+
+    notifyListeners();
+  }
+
+  updateMarker({int index, Marker newMarker}) {
+    markers[index].id = newMarker.id;
+    markers[index].title = newMarker.title;
+    notifyListeners();
+  }
+
+  removeMarker({int index}){
+    markers.removeAt(index);
 
     notifyListeners();
   }

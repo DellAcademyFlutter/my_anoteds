@@ -32,7 +32,7 @@ class _State extends State<CrudPostitPage> {
   void initState() {
     titleController.text = widget.postit != null ? widget.postit.title : "";
     descriptionController.text =
-    widget.postit != null ? widget.postit.description : "";
+        widget.postit != null ? widget.postit.description : "";
     color = widget.postit != null ? widget.postit.color : "branco";
     title = titleController.text;
     description = descriptionController.text;
@@ -68,15 +68,16 @@ class _State extends State<CrudPostitPage> {
           child: ListView(
             children: <Widget>[
               Container(
-                color: Color(PostitColor.colors[color]),
+                color: Color(PostitColor.colors[color]['hex']),
                 padding: EdgeInsets.all(10),
                 child: TextFormField(
                   controller: titleController,
                   maxLines: null, // Necessario para entrada multilinha
                   keyboardType: TextInputType.multiline,
-                  style: (color == "verde" || color == "azul")
-                      ? TextStyle(color: Colors.white)
-                      : TextStyle(color: Colors.black),
+                  style: TextStyle(
+                      color: PostitColor.colors[color]['darkColor']
+                          ? Colors.white
+                          : Colors.black),
                   onChanged: (valor) => setState(() => title = valor),
                   decoration: InputDecoration(
                     border: OutlineInputBorder(),
@@ -90,7 +91,7 @@ class _State extends State<CrudPostitPage> {
                 ),
               ),
               Container(
-                color: Color(PostitColor.colors[color]),
+                color: Color(PostitColor.colors[color]['hex']),
                 padding: EdgeInsets.fromLTRB(10, 10, 10, 0),
                 child: TextFormField(
                   controller: descriptionController,
@@ -104,7 +105,7 @@ class _State extends State<CrudPostitPage> {
                     border: OutlineInputBorder(),
                     focusedBorder: OutlineInputBorder(
                       borderSide: BorderSide(
-                        color: (color == "verde" || color == "azul")
+                        color: PostitColor.colors[color]['darkColor']
                             ? Colors.white
                             : Colors.black,
                       ),
@@ -112,7 +113,7 @@ class _State extends State<CrudPostitPage> {
                     labelText: 'Insira seu texto',
                     labelStyle: TextStyle(
                         fontWeight: FontWeight.bold,
-                        color: (color == "verde" || color == "azul")
+                        color: PostitColor.colors[color]['darkColor']
                             ? Colors.white
                             : Colors.black),
                   ),
@@ -125,7 +126,7 @@ class _State extends State<CrudPostitPage> {
           children: [
             IconButton(
                 icon: Icon(Icons.check_circle),
-                color: Color(PostitColor.colors["branco"]),
+                color: Color(PostitColor.colors["branco"]['hex']),
                 onPressed: () {
                   setState(() {
                     color = "branco";
@@ -133,7 +134,7 @@ class _State extends State<CrudPostitPage> {
                 }),
             IconButton(
                 icon: Icon(Icons.check_circle),
-                color: Color(PostitColor.colors["amarelo"]),
+                color: Color(PostitColor.colors["amarelo"]['hex']),
                 onPressed: () {
                   setState(() {
                     color = "amarelo";
@@ -141,7 +142,7 @@ class _State extends State<CrudPostitPage> {
                 }),
             IconButton(
                 icon: Icon(Icons.check_circle),
-                color: Color(PostitColor.colors["roso"]),
+                color: Color(PostitColor.colors["roso"]['hex']),
                 onPressed: () {
                   setState(() {
                     color = "roso";
@@ -149,7 +150,7 @@ class _State extends State<CrudPostitPage> {
                 }),
             IconButton(
                 icon: Icon(Icons.check_circle),
-                color: Color(PostitColor.colors["verde"]),
+                color: Color(PostitColor.colors["verde"]['hex']),
                 onPressed: () {
                   setState(() {
                     color = "verde";
@@ -157,7 +158,7 @@ class _State extends State<CrudPostitPage> {
                 }),
             IconButton(
                 icon: Icon(Icons.check_circle),
-                color: Color(PostitColor.colors["lavanda"]),
+                color: Color(PostitColor.colors["lavanda"]['hex']),
                 onPressed: () {
                   setState(() {
                     color = "lavanda";
@@ -165,7 +166,7 @@ class _State extends State<CrudPostitPage> {
                 }),
             IconButton(
                 icon: Icon(Icons.check_circle),
-                color: Color(PostitColor.colors["azul"]),
+                color: Color(PostitColor.colors["azul"]['hex']),
                 onPressed: () {
                   setState(() {
                     color = "azul";
@@ -177,5 +178,3 @@ class _State extends State<CrudPostitPage> {
     );
   }
 }
-
-

@@ -6,10 +6,11 @@ import 'package:my_anoteds/app/data/postit_dao.dart';
 import 'package:my_anoteds/app/model/postit.dart';
 import 'package:my_anoteds/app/model/postit_color.dart';
 import 'package:my_anoteds/app/model/user.dart';
+import 'package:my_anoteds/app/modules/home/home_controller.dart';
 import 'package:my_anoteds/app/modules/home/view/user_settings_page.dart';
-import 'package:my_anoteds/app/modules/login/view/login_page.dart';
 
 import 'crud_postit_page.dart';
+import 'markers_page.dart';
 
 class HomePage extends StatefulWidget {
   static const routeName = "/home";
@@ -89,7 +90,8 @@ class PostitWidget extends StatelessWidget {
             padding: const EdgeInsets.all(3.0),
             decoration: BoxDecoration(
                 border: Border.all(color: Colors.black),
-                color: Color(PostitColor.colors[user.postits[index].color])),
+                color: Color(
+                    PostitColor.colors[user.postits[index].color]['hex'])),
             child: Column(
               children: [
                 Container(
@@ -125,6 +127,8 @@ class PostitWidget extends StatelessWidget {
 }
 
 class SideMenu extends StatelessWidget {
+  final homeController = Modular.get<HomeController>();
+
   @override
   Widget build(BuildContext context) {
     return Drawer(
@@ -147,28 +151,23 @@ class SideMenu extends StatelessWidget {
                 Modular.link.pushNamed(UserSettingsPage.routeName);
               }),
           ListTile(
+            leading: Icon(Icons.bookmarks_sharp),
+            title: Text('Tags'),
+            onTap: () {
+              Modular.to.pop();
+              Modular.link.pushNamed(MarkerPage.routeName);
+            },
+          ),
+          ListTile(
             leading: Icon(Icons.exit_to_app),
             title: Text('Sair'),
             onTap: () {
               Modular.to.pop();
-              Logout();
+              homeController.Logout();
             },
           )
         ],
       ),
     );
   }
-}
-
-Logout() {
-  final loggedUser = Modular.get<User>();
-  final User nullUser = User(
-      id: null,
-      name: null,
-      password: null,
-      email: null,
-      birth: null,
-      postits: null);
-  loggedUser.setValues(otherUser: nullUser);
-  Modular.to.pushReplacementNamed(LoginPage.routeName);
 }

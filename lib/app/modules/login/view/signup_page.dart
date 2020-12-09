@@ -8,14 +8,14 @@ import 'package:my_anoteds/app/controller/user_controller.dart';
 class SignUpPage extends StatefulWidget {
   static const routeName = "/signin";
   @override
-  State<StatefulWidget> createState() => new _State();
+  State<StatefulWidget> createState() => _State();
 }
 
 class _State extends State<SignUpPage> {
   final userController = Modular.get<UserController>();
   final _formKey = GlobalKey<FormState>();
   String name, pass, email, birth;
-  var maskFormatter = new MaskTextInputFormatter(
+  var maskFormatter = MaskTextInputFormatter(
       mask: '##/##/####', filter: {"#": RegExp(r'[0-9]')});
   TextEditingController nameController = TextEditingController();
   TextEditingController passController = TextEditingController();
@@ -98,7 +98,7 @@ class _State extends State<SignUpPage> {
                     labelText: 'Data de nascimento',
                   ),
                   validator: (String submittedValue) {
-                    final bool dateValidator =
+                    final dateValidator =
                     Validator.validateDate(submittedValue);
                     if (!dateValidator) {
                       return 'Data inválida!';
@@ -118,7 +118,7 @@ class _State extends State<SignUpPage> {
                     labelText: 'Email',
                   ),
                   validator: (String submittedValue) {
-                    final bool emailValidator =
+                    final emailValidator =
                     Validator.validateEmail(submittedValue);
                     if (!emailValidator) {
                       return 'Email inválido!';

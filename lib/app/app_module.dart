@@ -3,8 +3,10 @@ import 'package:flutter_modular/flutter_modular.dart';
 import 'package:my_anoteds/app/app_controller.dart';
 import 'package:my_anoteds/app/app_widget.dart';
 import 'package:my_anoteds/app/repositories/shared/user_settings.dart';
+import 'controller/marker_controller.dart';
 import 'controller/postit_controller.dart';
 import 'controller/user_controller.dart';
+import 'data/marker.dao.dart';
 import 'data/postit_dao.dart';
 import 'data/users_dao.dart';
 import 'model/user.dart';
@@ -18,8 +20,10 @@ class AppModule extends MainModule {
     Bind((i) => AppController()),
     Bind((i) => PostitController()),
     Bind((i) => UserController()),
+    Bind((i) => MarkerController()),
     Bind((i) => PostitDao()),
     Bind((i) => UserDao()),
+    Bind((i) => MarkerDao()),
     Bind((i) => User()),
     Bind((i) => UserSettings()),
   ];

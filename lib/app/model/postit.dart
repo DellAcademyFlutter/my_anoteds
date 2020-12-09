@@ -28,13 +28,13 @@ class Postit {
 
   /// Este metodo codifica este [Postit] em um [Map] Json.
   Map<String, dynamic> toMap() {
-    final Map<String, dynamic> data = Map<String, dynamic>();
-    data['id'] = this.id;
-    data['title'] = this.title;
-    data['description'] = this.description;
-    data['color'] = this.color;
-    data['userId'] = this.userId;
-    data['isPinned'] = this.isPinned.toString();
+    final data = <String, dynamic>{};
+    data['id'] = id;
+    data['title'] = title;
+    data['description'] = description;
+    data['color'] = color;
+    data['userId'] = userId;
+    data['isPinned'] = isPinned.toString();
     return data;
   }
 }

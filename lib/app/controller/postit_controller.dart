@@ -21,7 +21,7 @@ class PostitController {
 
   /// Deleta um [Postit], deletando o mesmo em sua tabela no Banco de Dados.
   removePostit({int index}) {
-    final int postitId = user.postits[index].id;
+    final postitId = user.postits[index].id;
     user.removePostit(index: index);
     postitDao.deletePostit(postitId);
   }

@@ -2,6 +2,7 @@ import 'package:flutter_modular/flutter_modular.dart';
 import 'package:my_anoteds/app/controller/postit_controller.dart';
 import 'package:my_anoteds/app/model/postit.dart';
 import 'package:my_anoteds/app/model/user.dart';
+import 'package:my_anoteds/app/modules/login/view/login_page.dart';
 
 class HomeController{
   savePostit(
@@ -9,8 +10,8 @@ class HomeController{
     final loggedUser = Modular.get<User>();
     final controller = Modular.get<PostitController>();
 
-    final Postit newPostit = Postit(
-        id: postit?.id ?? null,
+    final newPostit = Postit(
+        id: postit?.id,
         title: title ?? "",
         description: description ?? "",
         color: color,
@@ -26,5 +27,18 @@ class HomeController{
     else {
       controller.addPostit(postit: newPostit);
     }
+  }
+
+  Logout() {
+    final loggedUser = Modular.get<User>();
+    final nullUser = User(
+        id: null,
+        name: null,
+        password: null,
+        email: null,
+        birth: null,
+        postits: null);
+    loggedUser.setValues(otherUser: nullUser);
+    Modular.to.pushReplacementNamed(LoginPage.routeName);
   }
 }
