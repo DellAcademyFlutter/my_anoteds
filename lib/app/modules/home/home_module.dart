@@ -1,5 +1,6 @@
 import 'package:flutter_modular/flutter_modular.dart';
 import 'package:my_anoteds/app/modules/home/view/crud_postit_page.dart';
+import 'package:my_anoteds/app/modules/home/view/markers_page.dart';
 import 'package:my_anoteds/app/modules/home/view/user_settings_page.dart';
 import 'home_controller.dart';
 import 'home_page.dart';
@@ -22,12 +23,17 @@ class HomeModule extends ChildModule {
     ModularRouter(
       CrudPostitPage.routeName,
       child: (_, args) => CrudPostitPage(postit: args.data.postit),
-      transition: TransitionType.fadeIn,
+      transition: TransitionType.scale,
     ),
     ModularRouter(
       UserSettingsPage.routeName,
       child: (_, args) => UserSettingsPage(),
-    )
+    ),
+    ModularRouter(
+      MarkersPage.routeName,
+      child: (_, args) => MarkersPage(),
+      transition: TransitionType.leftToRightWithFade,
+    ),
   ];
 
    static Inject get to => Inject<HomeModule>.of();

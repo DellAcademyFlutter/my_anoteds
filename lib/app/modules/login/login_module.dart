@@ -24,6 +24,7 @@ class LoginModule extends ChildModule {
       child: (_, args) => SignUpPage(),
       transition: TransitionType.leftToRightWithFade,
     ),
+
   ];
 
  static Inject get to => Inject<LoginModule>.of();

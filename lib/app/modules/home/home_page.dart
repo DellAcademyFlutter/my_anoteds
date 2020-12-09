@@ -6,8 +6,10 @@ import 'package:my_anoteds/app/model/postit.dart';
 import 'package:my_anoteds/app/model/postit_color.dart';
 import 'package:my_anoteds/app/model/user.dart';
 import 'package:my_anoteds/app/modules/home/view/crud_postit_page.dart';
+import 'package:my_anoteds/app/modules/home/view/markers_page.dart';
 import 'package:my_anoteds/app/modules/home/view/user_settings_page.dart';
 import 'package:my_anoteds/app/modules/login/login_page.dart';
+
 
 class HomePage extends StatefulWidget {
   static const routeName = "/home";
@@ -147,6 +149,14 @@ class SideMenu extends StatelessWidget {
                 Modular.link.pushNamed(UserSettingsPage.routeName);
               }),
           ListTile(
+            leading: Icon(Icons.bookmarks_sharp),
+            title: Text('Tags'),
+            onTap: () {
+              Modular.to.pop();
+              Modular.link.pushNamed(MarkersPage.routeName);
+            },
+          ),
+          ListTile(
             leading: Icon(Icons.exit_to_app),
             title: Text('Sair'),
             onTap: () {
@@ -172,3 +182,4 @@ Logout() {
   loggedUser.setValues(otherUser: nullUser);
   Modular.to.pushReplacementNamed(LoginPage.routeName);
 }
+

@@ -1,6 +1,8 @@
 import 'package:flutter/cupertino.dart';
 import 'package:my_anoteds/app/model/postit.dart';
 
+import 'marker.dart';
+
 class User extends ChangeNotifier {
   // Construtor da classe
   User({this.id, this.name, this.password, this.email, this.birth, this.postits});
@@ -40,6 +42,7 @@ class User extends ChangeNotifier {
   }
   // Atributos da classe
   List<Postit> postits;
+  List<Marker> markers;
 
   // Adiciona um Postit
   addPostit({Postit postit}) {
@@ -60,6 +63,25 @@ class User extends ChangeNotifier {
 
   removePostit({int index}){
     postits.removeAt(index);
+
+    notifyListeners();
+  }
+
+  // Adiciona um marker
+  addMarker({Marker marker}) {
+    markers.add(marker);
+
+    notifyListeners();
+  }
+
+  updateMarker({int index, Marker newMarker}) {
+    markers[index].id = newMarker.id;
+    markers[index].title = newMarker.title;
+    notifyListeners();
+  }
+
+  removeMarker({int index}){
+    markers.removeAt(index);
 
     notifyListeners();
   }
