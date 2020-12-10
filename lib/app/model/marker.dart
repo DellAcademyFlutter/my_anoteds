@@ -15,10 +15,10 @@ class Marker {
 
   /// Este metodo codifica este [Marker] em um [Map] Json.
   Map<String, dynamic> toMap() {
-    final Map<String, dynamic> data = Map<String, dynamic>();
-    data['id'] = this.id;
-    data['title'] = this.title;
-    data['userId'] = this.userId;
+    final data = <String, dynamic>{};
+    data['id'] = id;
+    data['title'] = title;
+    data['userId'] = userId;
     return data;
   }
 }

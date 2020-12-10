@@ -13,7 +13,7 @@ class UserController {
   static saveUser({String name, String birth, String pass, String email}) {
     final controller = Modular.get<UserController>();
 
-    final User newUser =
+    final newUser =
         User(id: null, name: name, password: pass, birth: birth, email: email);
 
     controller.addUser(user: newUser);

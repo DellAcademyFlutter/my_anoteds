@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_modular/flutter_modular.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
+import 'package:my_anoteds/app/Utils/image_picker_utils.dart';
+import 'package:my_anoteds/app/controller/postit_controller.dart';
 import 'package:my_anoteds/app/data/postit_dao.dart';
 import 'package:my_anoteds/app/model/postit.dart';
 import 'package:my_anoteds/app/model/postit_color.dart';
@@ -20,6 +22,7 @@ class HomePage extends StatefulWidget {
 class _HomePageState extends State<HomePage> {
   final postitDao = Modular.get<PostitDao>();
   final User loggedUser = Modular.get();
+
 
   @override
   Widget build(BuildContext context) {
@@ -78,6 +81,7 @@ class PostitWidget extends StatelessWidget {
 
   final int index;
   final User user = Modular.get<User>();
+  final controllerPostit = Modular.get<PostitController>();
 
   @override
   Widget build(BuildContext context) {
@@ -88,10 +92,13 @@ class PostitWidget extends StatelessWidget {
       },
       child: Dismissible(
         key: UniqueKey(),
+        onDismissed: (direction) {
+          controllerPostit.removePostit(index: index);
+        },
         child: Card(
           color: Colors.grey,
           child: Container(
-              color: Color(PostitColor.colors[user.postits[index].color]),
+              color: Color(PostitColor.colors[user.postits[index].color]['hex']),
               child: Column(
                 children: [
                   SizedBox(height: 8),
@@ -106,7 +113,21 @@ class PostitWidget extends StatelessWidget {
                               : Colors.black),
                     ),
                   ),
-                  Divider(),
+                  Divider(
+                    thickness: 2,
+                    color: Colors.black,
+                  ),
+                  Container(
+                    child: user.postits[index].image != null
+                        ? Image.memory(
+                      ImagePickerUtils.getBytesImage(
+                          base64Image: user.postits[index].image),
+                      width: 20,
+                      height: 20,
+                    )
+                        : null,
+                  ),
+                  //Divider(),
                   Container(
                     alignment: Alignment.centerLeft,
                     child: Text(
@@ -172,7 +193,7 @@ class SideMenu extends StatelessWidget {
 
 Logout() {
   final loggedUser = Modular.get<User>();
-  final User nullUser = User(
+  final nullUser = User(
       id: null,
       name: null,
       password: null,

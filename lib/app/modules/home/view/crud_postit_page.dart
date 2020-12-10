@@ -1,7 +1,13 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
-import 'package:my_anoteds/app/controller/postit_controller.dart';
+import 'package:flutter_modular/flutter_modular.dart';
+import 'package:image_picker/image_picker.dart';
+import 'package:my_anoteds/app/Utils/image_picker_utils.dart';
+
 import 'package:my_anoteds/app/model/postit.dart';
 import 'package:my_anoteds/app/model/postit_color.dart';
+import 'package:my_anoteds/app/modules/home/home_controller.dart';
 
 class CrudPostitPageArguments {
   CrudPostitPageArguments({this.postit});
@@ -19,11 +25,14 @@ class CrudPostitPage extends StatefulWidget {
 }
 
 class _State extends State<CrudPostitPage> {
+  final homeController = Modular.get<HomeController>();
   TextEditingController titleController = TextEditingController();
   TextEditingController descriptionController = TextEditingController();
   String color;
   String title;
   String description;
+  File image;
+  String base64Image;
 
   @override
   void initState() {
@@ -44,18 +53,20 @@ class _State extends State<CrudPostitPage> {
         backgroundColor: Colors.amber,
         title: Row(
           children: [
-            Text('Postit', style: TextStyle(color: Colors.black)),
+            Text('CRUD postit'),
             Spacer(),
             IconButton(
-              icon: Icon(Icons.check, color: Colors.black),
-              tooltip: 'Salvar',
+              icon: Icon(Icons.save),
+              tooltip: 'Salvar postit',
               onPressed: () {
-                PostitController.savePostit(
-                    title: title,
-                    description: description,
-                    color: color,
-                    postit: widget.postit);
-                Navigator.of(context).pop();
+                homeController.savePostit(
+                  title: title,
+                  description: description,
+                  color: color,
+                  postit: widget.postit,
+                  base64Image: base64Image,
+                );
+                Modular.to.pop();
               },
             ),
           ],
@@ -66,43 +77,93 @@ class _State extends State<CrudPostitPage> {
           child: ListView(
             children: <Widget>[
               Container(
-                color: Color(PostitColor.colors[color]),
+                color: Color(PostitColor.colors[color]['hex']),
                 padding: EdgeInsets.all(10),
                 child: TextFormField(
                   controller: titleController,
                   maxLines: null, // Necessario para entrada multilinha
                   keyboardType: TextInputType.multiline,
-                  style: (color == "verde" || color == "azul")
-                      ? TextStyle(color: Colors.white)
-                      : TextStyle(color: Colors.black),
+                  style: TextStyle(
+                      color: PostitColor.colors[color]['darkColor']
+                          ? Colors.white
+                          : Colors.black),
                   onChanged: (valor) => setState(() => title = valor),
                   decoration: InputDecoration(
                     border: OutlineInputBorder(),
                     labelText: 'Insira o Título do seu Postit',
                     labelStyle: TextStyle(
                         fontWeight: FontWeight.bold,
-                        color: (color == "verde" || color == "azul")
+                        color: PostitColor.colors[color]['darkColor']
                             ? Colors.white
                             : Colors.black),
                   ),
                 ),
               ),
               Container(
-                color: Color(PostitColor.colors[color]),
+                color: Color(PostitColor.colors[color]['hex']),
+                padding: EdgeInsets.all(10),
+                alignment: Alignment.center,
+                child: Column(
+                  children: [
+                    image == null
+                        ? Text('Nenhuma imagem selecionada.')
+                        : Image.file(
+                            image,
+                          ),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        RaisedButton(
+                          child: Icon(Icons.camera_alt_outlined),
+                          onPressed: () => ImagePickerUtils.getImageFile(
+                                  imageSource: ImageSource.camera)
+                              .then((value) {
+                            setState(() {
+                              image = value;
+                              base64Image =
+                                  ImagePickerUtils.getBase64ImageFromFileImage(
+                                      pickedFile: value);
+                              print(base64Image);
+                            });
+                          }),
+                        ),
+                        SizedBox(width: 20),
+                        RaisedButton(
+                          child: Icon(Icons.filter_outlined),
+                          onPressed: () => ImagePickerUtils.getImageFile(
+                                  imageSource: ImageSource.gallery)
+                              .then((value) {
+                            setState(() {
+                              image = value;
+                              base64Image =
+                                  ImagePickerUtils.getBase64ImageFromFileImage(
+                                      pickedFile: value);
+                              print(base64Image);
+                            });
+                          }),
+                        ),
+                      ],
+                    ),
+                  ],
+                ),
+              ),
+              Container(
+                color: Color(PostitColor.colors[color]['hex']),
                 padding: EdgeInsets.fromLTRB(10, 10, 10, 0),
                 child: TextFormField(
                   controller: descriptionController,
                   maxLines: 20,
                   cursorColor: Colors.black,
-                  style: (color == "verde" || color == "azul")
-                      ? TextStyle(color: Colors.white)
-                      : TextStyle(color: Colors.black),
+                  style: TextStyle(
+                      color: PostitColor.colors[color]['darkColor']
+                          ? Colors.white
+                          : Colors.black),
                   onChanged: (valor) => setState(() => description = valor),
                   decoration: InputDecoration(
                     border: OutlineInputBorder(),
                     focusedBorder: OutlineInputBorder(
                       borderSide: BorderSide(
-                        color: (color == "verde" || color == "azul")
+                        color: PostitColor.colors[color]['darkColor']
                             ? Colors.white
                             : Colors.black,
                       ),
@@ -110,7 +171,7 @@ class _State extends State<CrudPostitPage> {
                     labelText: 'Insira seu texto',
                     labelStyle: TextStyle(
                         fontWeight: FontWeight.bold,
-                        color: (color == "verde" || color == "azul")
+                        color: PostitColor.colors[color]['darkColor']
                             ? Colors.white
                             : Colors.black),
                   ),
@@ -119,60 +180,57 @@ class _State extends State<CrudPostitPage> {
             ],
           )),
       bottomNavigationBar: BottomAppBar(
-        child: Container(
-          color: Colors.black54,
-          child: Row(
-            children: [
-              IconButton(
-                  icon: Icon(Icons.adjust),
-                  color: Color(PostitColor.colors["branco"]),
-                  onPressed: () {
-                    setState(() {
-                      color = "branco";
-                    });
-                  }),
-              IconButton(
-                  icon: Icon(Icons.adjust),
-                  color: Color(PostitColor.colors["amarelo"]),
-                  onPressed: () {
-                    setState(() {
-                      color = "amarelo";
-                    });
-                  }),
-              IconButton(
-                  icon: Icon(Icons.adjust),
-                  color: Color(PostitColor.colors["roso"]),
-                  onPressed: () {
-                    setState(() {
-                      color = "roso";
-                    });
-                  }),
-              IconButton(
-                  icon: Icon(Icons.adjust),
-                  color: Color(PostitColor.colors["verde"]),
-                  onPressed: () {
-                    setState(() {
-                      color = "verde";
-                    });
-                  }),
-              IconButton(
-                  icon: Icon(Icons.adjust),
-                  color: Color(PostitColor.colors["lavanda"]),
-                  onPressed: () {
-                    setState(() {
-                      color = "lavanda";
-                    });
-                  }),
-              IconButton(
-                  icon: Icon(Icons.adjust),
-                  color: Color(PostitColor.colors["azul"]),
-                  onPressed: () {
-                    setState(() {
-                      color = "azul";
-                    });
-                  }),
-            ],
-          ),
+        child: Row(
+          children: [
+            IconButton(
+                icon: Icon(Icons.check_circle),
+                color: Color(PostitColor.colors["branco"]['hex']),
+                onPressed: () {
+                  setState(() {
+                    color = "branco";
+                  });
+                }),
+            IconButton(
+                icon: Icon(Icons.check_circle),
+                color: Color(PostitColor.colors["amarelo"]['hex']),
+                onPressed: () {
+                  setState(() {
+                    color = "amarelo";
+                  });
+                }),
+            IconButton(
+                icon: Icon(Icons.check_circle),
+                color: Color(PostitColor.colors["roso"]['hex']),
+                onPressed: () {
+                  setState(() {
+                    color = "roso";
+                  });
+                }),
+            IconButton(
+                icon: Icon(Icons.check_circle),
+                color: Color(PostitColor.colors["verde"]['hex']),
+                onPressed: () {
+                  setState(() {
+                    color = "verde";
+                  });
+                }),
+            IconButton(
+                icon: Icon(Icons.check_circle),
+                color: Color(PostitColor.colors["lavanda"]['hex']),
+                onPressed: () {
+                  setState(() {
+                    color = "lavanda";
+                  });
+                }),
+            IconButton(
+                icon: Icon(Icons.check_circle),
+                color: Color(PostitColor.colors["azul"]['hex']),
+                onPressed: () {
+                  setState(() {
+                    color = "azul";
+                  });
+                }),
+          ],
         ),
       ),
     );

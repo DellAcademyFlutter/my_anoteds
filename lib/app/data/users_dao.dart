@@ -68,7 +68,7 @@ class UserDao {
     final result = await db.rawQuery(
         "SELECT * FROM '$tableName' WHERE name = '$username' and password = '$password'");
 
-    if (result.length > 0) {
+    if (result.isNotEmpty) {
       return User.fromMap(map: result.first);
     }
 

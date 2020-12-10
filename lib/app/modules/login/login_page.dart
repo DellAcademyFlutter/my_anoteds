@@ -9,7 +9,7 @@ class LoginPage extends StatefulWidget {
   static const routeName = "/";
 
   @override
-  State<StatefulWidget> createState() => new _State();
+  State<StatefulWidget> createState() => _State();
 }
 
 class _State extends State<LoginPage> {

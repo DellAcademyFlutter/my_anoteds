@@ -25,7 +25,7 @@ class AppModule extends MainModule {
     Bind((i) => PostitDao()),
     Bind((i) => UserDao()),
     Bind((i) => MarkerDao()),
-    Bind((i) => User(postits: List<Postit>())),
+    Bind((i) => User(postits: <Postit>[])),
     Bind((i) => UserSettings()),
   ];
 

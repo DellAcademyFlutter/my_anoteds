@@ -28,7 +28,8 @@ dependencies:
   path: ^1.7.0
   flutter_stetho: ^0.5.2
   mask_text_input_formatter: ^1.1.0
-  #image_picker: ^0.6.7+14
+  image_picker: ^0.6.7+14
+  path_provider: ^1.6.24
 
   flutter:
     sdk: flutter

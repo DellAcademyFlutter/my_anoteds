@@ -50,9 +50,9 @@ class PostitDao {
       final db = await DbHelper.getDatabase();
       final maps = await db.query(DbHelper.TABLE_POSTITS_NAME);
 
-      final List<Postit> userPostits = List();
+      final userPostits = <Postit>[];
 
-    for(int i=0; i<maps.length; i++){
+    for(var i=0; i<maps.length; i++){
       if(maps[i]['userId'] == userId){
         userPostits.add(Postit.fromMap(map: maps[i]));
       }

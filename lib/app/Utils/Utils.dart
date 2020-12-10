@@ -14,7 +14,7 @@ class Utils {
     );
 
     // configura o  AlertDialog
-    final AlertDialog alert = AlertDialog(
+    final alert = AlertDialog(
       title: Text(title),
       content: Text(message),
       actions: [
@@ -34,7 +34,7 @@ class Utils {
 
 /// Este metodo remove o focus de um widget.
 removeFocus({BuildContext context}) {
-  final FocusScopeNode currentFocus = FocusScope.of(context);
+  final currentFocus = FocusScope.of(context);
 
   // Remove o focus do widget atual
   if (!currentFocus.hasPrimaryFocus) {

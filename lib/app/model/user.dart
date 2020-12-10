@@ -24,12 +24,12 @@ class User extends ChangeNotifier {
 
   /// Este metodo codifica este [Postit] em um [Map] Json.
   Map<String, dynamic> toMap() {
-    final Map<String, dynamic> data = Map<String, dynamic>();
-    data['id'] = this.id;
-    data['name'] = this.name;
-    data['email'] = this.email;
-    data['password'] = this.password;
-    data['birth'] = this.birth;
+    final data = <String, dynamic>{};
+    data['id'] = id;
+    data['name'] = name;
+    data['email'] = email;
+    data['password'] = password;
+    data['birth'] = birth;
     return data;
   }
 

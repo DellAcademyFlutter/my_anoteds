@@ -48,9 +48,9 @@ class MarkerDao {
       final db = await DbHelper.getDatabase();
       final maps = await db.query(DbHelper.TABLE_USERS_MARKER);
 
-      final List<Marker> userMarker = List();
+      final userMarker = <Marker>[];
 
-      for (int i = 0; i < maps.length; i++) {
+      for (var i = 0; i < maps.length; i++) {
         if (maps[i]['userId'] == userId) {
           userMarker.add(Marker.fromMap(map: maps[i]));
         }

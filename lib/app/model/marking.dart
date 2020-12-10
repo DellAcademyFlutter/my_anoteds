@@ -14,10 +14,10 @@ class Marking {
 
   /// Este metodo codifica este [Marker] em um [Map] Json.
   Map<String, dynamic> toMap() {
-    final Map<String, dynamic> data = Map<String, dynamic>();
-    data['userId'] = this.userId;
-    data['postitId'] = this.postitId;
-    data['markerId'] = this.markerId;
+    final data = <String, dynamic>{};
+    data['userId'] = userId;
+    data['postitId'] = postitId;
+    data['markerId'] = markerId;
     return data;
   }
 }
