@@ -8,6 +8,7 @@ import 'package:my_anoteds/app/model/postit_color.dart';
 import 'package:my_anoteds/app/model/user.dart';
 import 'package:my_anoteds/app/modules/home/home_controller.dart';
 import 'package:my_anoteds/app/modules/home/view/user_settings_page.dart';
+import 'package:my_anoteds/app/repositories/shared/Utils/image_picker_utils.dart';
 
 import 'crud_postit_page.dart';
 import 'markers_page.dart';
@@ -108,6 +109,16 @@ class PostitWidget extends StatelessWidget {
                 Divider(
                   thickness: 2,
                   color: Colors.black,
+                ),
+                Container(
+                  child: user.postits[index].image != null
+                      ? Image.memory(
+                          ImagePickerUtils.getBytesImage(
+                              base64Image: user.postits[index].image),
+                          width: 200,
+                          height: 200,
+                        )
+                      : null,
                 ),
                 Container(
                   child: Text(

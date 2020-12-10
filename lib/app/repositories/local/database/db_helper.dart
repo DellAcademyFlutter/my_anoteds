@@ -10,7 +10,7 @@ class DbHelper {
 
   static const SCRIPT_CREATE_TABLE_POSTITS_SQL =
       "CREATE TABLE IF NOT EXISTS postits (id INTEGER NOT NULL, title TEXT NOT NULL, "
-      "description TEXT, color TEXT, userId INTEGER NOT NULL, isPinned	BLOB NOT NULL, "
+      "description TEXT, color TEXT, userId INTEGER NOT NULL, isPinned	BLOB NOT NULL, image TEXT,"
       "PRIMARY KEY(id AUTOINCREMENT))";
   static const SCRIPT_CREATE_TABLE_USERS_SQL =
       "CREATE TABLE IF NOT EXISTS users (id INTEGER NOT NULL, name TEXT NOT NULL, password TEXT NOT NULL, "

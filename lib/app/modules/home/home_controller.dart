@@ -4,9 +4,13 @@ import 'package:my_anoteds/app/model/postit.dart';
 import 'package:my_anoteds/app/model/user.dart';
 import 'package:my_anoteds/app/modules/login/view/login_page.dart';
 
-class HomeController{
+class HomeController {
   savePostit(
-      {String title, String description, String color, Postit postit}) {
+      {String title,
+      String description,
+      String color,
+      Postit postit,
+      String base64Image}) {
     final loggedUser = Modular.get<User>();
     final controller = Modular.get<PostitController>();
 
@@ -16,7 +20,8 @@ class HomeController{
         description: description ?? "",
         color: color,
         userId: loggedUser.id,
-        isPinned: postit?.isPinned ?? false);
+        isPinned: postit?.isPinned ?? false,
+        image: base64Image);
 
     // Editar o postit
     if (postit != null) {
@@ -28,6 +33,8 @@ class HomeController{
       controller.addPostit(postit: newPostit);
     }
   }
+
+
 
   Logout() {
     final loggedUser = Modular.get<User>();

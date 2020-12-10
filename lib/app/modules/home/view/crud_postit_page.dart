@@ -1,9 +1,13 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_modular/flutter_modular.dart';
+import 'package:image_picker/image_picker.dart';
 
 import 'package:my_anoteds/app/model/postit.dart';
 import 'package:my_anoteds/app/model/postit_color.dart';
 import 'package:my_anoteds/app/modules/home/home_controller.dart';
+import 'package:my_anoteds/app/repositories/shared/Utils/image_picker_utils.dart';
 
 class CrudPostitPageArguments {
   CrudPostitPageArguments({this.postit});
@@ -27,6 +31,8 @@ class _State extends State<CrudPostitPage> {
   String color;
   String title;
   String description;
+  File image;
+  String base64Image;
 
   @override
   void initState() {
@@ -36,6 +42,10 @@ class _State extends State<CrudPostitPage> {
     color = widget.postit != null ? widget.postit.color : "branco";
     title = titleController.text;
     description = descriptionController.text;
+
+    if (widget.postit?.image != null) {
+      base64Image = widget.postit.image;
+    }
 
     super.initState();
   }
@@ -53,10 +63,12 @@ class _State extends State<CrudPostitPage> {
               tooltip: 'Salvar postit',
               onPressed: () {
                 homeController.savePostit(
-                    title: title,
-                    description: description,
-                    color: color,
-                    postit: widget.postit);
+                  title: title,
+                  description: description,
+                  color: color,
+                  postit: widget.postit,
+                  base64Image: base64Image,
+                );
                 Modular.to.pop();
               },
             ),
@@ -84,7 +96,7 @@ class _State extends State<CrudPostitPage> {
                     labelText: 'Insira o Título do seu Postit',
                     labelStyle: TextStyle(
                         fontWeight: FontWeight.bold,
-                        color: (color == "verde" || color == "azul")
+                        color: PostitColor.colors[color]['darkColor']
                             ? Colors.white
                             : Colors.black),
                   ),
@@ -97,9 +109,10 @@ class _State extends State<CrudPostitPage> {
                   controller: descriptionController,
                   maxLines: 20,
                   cursorColor: Colors.black,
-                  style: (color == "verde" || color == "azul")
-                      ? TextStyle(color: Colors.white)
-                      : TextStyle(color: Colors.black),
+                  style: TextStyle(
+                      color: PostitColor.colors[color]['darkColor']
+                          ? Colors.white
+                          : Colors.black),
                   onChanged: (valor) => setState(() => description = valor),
                   decoration: InputDecoration(
                     border: OutlineInputBorder(),
@@ -117,6 +130,59 @@ class _State extends State<CrudPostitPage> {
                             ? Colors.white
                             : Colors.black),
                   ),
+                ),
+              ),
+              Container(
+                color: Color(PostitColor.colors[color]['hex']),
+                padding: EdgeInsets.all(10),
+                alignment: Alignment.center,
+                child: Column(
+                  children: [
+                    widget.postit != null
+                        ? Image.memory(
+                            ImagePickerUtils.getBytesImage(
+                                base64Image: base64Image),
+                          )
+                        : image == null
+                            ? Text('Nenhuma imagem selecionada.')
+                            : Image.file(
+                                image,
+                              ),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        RaisedButton(
+                          child: Icon(Icons.camera_alt_outlined),
+                          onPressed: () => ImagePickerUtils.getImageFile(
+                                  imageSource: ImageSource.camera)
+                              .then((value) {
+                            setState(() {
+                              image = value;
+                              base64Image =
+                                  ImagePickerUtils.getBase64ImageFromFileImage(
+                                      pickedFile: value);
+                              print(base64Image);
+                            });
+                          }),
+                        ),
+                        SizedBox(width: 20),
+                        RaisedButton(
+                          child: Icon(Icons.filter_outlined),
+                          onPressed: () => ImagePickerUtils.getImageFile(
+                                  imageSource: ImageSource.gallery)
+                              .then((value) {
+                            setState(() {
+                              image = value;
+                              base64Image =
+                                  ImagePickerUtils.getBase64ImageFromFileImage(
+                                      pickedFile: value);
+                              print(base64Image);
+                            });
+                          }),
+                        ),
+                      ],
+                    ),
+                  ],
                 ),
               ),
             ],
