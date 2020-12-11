@@ -4,14 +4,12 @@ import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 import 'package:my_anoteds/app/controller/postit_controller.dart';
 import 'package:my_anoteds/app/data/postit_dao.dart';
 import 'package:my_anoteds/app/model/postit.dart';
-import 'package:my_anoteds/app/model/postit_color.dart';
 import 'package:my_anoteds/app/model/user.dart';
-import 'package:my_anoteds/app/modules/home/home_controller.dart';
-import 'package:my_anoteds/app/modules/home/view/user_settings_page.dart';
-import 'package:my_anoteds/app/repositories/shared/Utils/image_picker_utils.dart';
+import 'package:my_anoteds/app/modules/home/components/marker_filter_row_widget.dart';
+import 'package:my_anoteds/app/modules/home/components/postit_widget.dart';
+import 'package:my_anoteds/app/modules/home/components/side_menu_widget.dart';
 
 import 'crud_postit_page.dart';
-import 'markers_page.dart';
 
 class HomePage extends StatefulWidget {
   static const routeName = "/home";
@@ -28,7 +26,7 @@ class _HomePageState extends State<HomePage> {
   Widget build(BuildContext context) {
     return SafeArea(
       child: Scaffold(
-        drawer: SideMenu(),
+        drawer: SideMenuWidget(),
         appBar: AppBar(
           title: Text("Anotadas de ${loggedUser.name ?? ""}"),
           centerTitle: true,
@@ -55,6 +53,7 @@ class _HomePageState extends State<HomePage> {
                 : CircularProgressIndicator();
           },
         ),
+
         floatingActionButton: FloatingActionButton(
           child: Icon(Icons.add),
           onPressed: () {
@@ -62,122 +61,8 @@ class _HomePageState extends State<HomePage> {
                 arguments: CrudPostitPageArguments(postit: null));
           },
         ),
-      ),
-    );
-  }
-}
 
-class PostitWidget extends StatelessWidget {
-  PostitWidget({this.index});
-
-  final int index;
-  final user = Modular.get<User>();
-  final controller = Modular.get<PostitController>();
-
-  @override
-  Widget build(BuildContext context) {
-    return GestureDetector(
-      onTap: () {
-        Modular.link.pushNamed(CrudPostitPage.routeName,
-            arguments: CrudPostitPageArguments(postit: user.postits[index]));
-      },
-      child: Dismissible(
-        key: UniqueKey(),
-        onDismissed: (direction) {
-          controller.removePostit(index: index);
-        },
-        child: Container(
-            margin: const EdgeInsets.all(15.0),
-            padding: const EdgeInsets.all(3.0),
-            decoration: BoxDecoration(
-                border: Border.all(color: Colors.black),
-                color: Color(
-                    PostitColor.colors[user.postits[index].color]['hex'])),
-            child: Column(
-              children: [
-                Container(
-                  child: Text(
-                    user.postits[index].title,
-                    style: TextStyle(
-                        fontWeight: FontWeight.bold,
-                        color: (user.postits[index].color == "verde" ||
-                                user.postits[index].color == "azul")
-                            ? Colors.white
-                            : Colors.black),
-                  ),
-                ),
-                Divider(
-                  thickness: 2,
-                  color: Colors.black,
-                ),
-                Container(
-                  child: user.postits[index].image != null
-                      ? Image.memory(
-                          ImagePickerUtils.getBytesImage(
-                              base64Image: user.postits[index].image),
-                          width: 200,
-                          height: 200,
-                        )
-                      : null,
-                ),
-                Container(
-                  child: Text(
-                    user.postits[index].description,
-                    style: TextStyle(
-                        color: (user.postits[index].color == "verde" ||
-                                user.postits[index].color == "azul")
-                            ? Colors.white
-                            : Colors.black),
-                  ),
-                ),
-              ],
-            )),
-      ),
-    );
-  }
-}
-
-class SideMenu extends StatelessWidget {
-  final homeController = Modular.get<HomeController>();
-
-  @override
-  Widget build(BuildContext context) {
-    return Drawer(
-      child: ListView(
-        padding: EdgeInsets.zero,
-        children: <Widget>[
-          DrawerHeader(
-            child: null,
-            decoration: BoxDecoration(
-                image: DecorationImage(
-                    fit: BoxFit.fill,
-                    image: NetworkImage(
-                        "https://vdmedia.elpais.com/elpaistop/20202/29/2019121992148149_1582990136_asset_still.png"))),
-          ),
-          ListTile(
-              leading: Icon(Icons.settings),
-              title: Text('configurações'),
-              onTap: () {
-                Modular.to.pop();
-                Modular.link.pushNamed(UserSettingsPage.routeName);
-              }),
-          ListTile(
-            leading: Icon(Icons.bookmarks_sharp),
-            title: Text('Tags'),
-            onTap: () {
-              Modular.to.pop();
-              Modular.link.pushNamed(MarkerPage.routeName);
-            },
-          ),
-          ListTile(
-            leading: Icon(Icons.exit_to_app),
-            title: Text('Sair'),
-            onTap: () {
-              Modular.to.pop();
-              homeController.Logout();
-            },
-          )
-        ],
+        bottomNavigationBar:  PopupMenuWidget(),
       ),
     );
   }

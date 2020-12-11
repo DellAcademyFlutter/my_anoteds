@@ -79,6 +79,7 @@ class User extends ChangeNotifier {
   updateMarker({int index, Marker newMarker}) {
     markers[index].id = newMarker.id;
     markers[index].title = newMarker.title;
+    markers[index].isSelected = newMarker.isSelected;
     notifyListeners();
   }
 
@@ -86,5 +87,14 @@ class User extends ChangeNotifier {
     markers.removeAt(index);
 
     notifyListeners();
+  }
+
+  Marker getMarkerById({int id}){
+    for (var i=0; i<markers.length; i++){
+      if (markers[i].id == id){
+        return markers[i];
+      }
+    }
+    return null;
   }
 }

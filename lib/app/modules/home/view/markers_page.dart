@@ -47,7 +47,8 @@ class _State extends State<MarkerPage> {
               trailing: IconButton(
                 icon: Icon(Icons.add),
                 onPressed: () {
-                  markerController.saveMarker(title: title, userId: loggedUser.id);
+                  markerController.saveMarker(
+                      title: title, userId: loggedUser.id);
                 },
               ),
             ),
@@ -58,13 +59,13 @@ class _State extends State<MarkerPage> {
                     AsyncSnapshot<List<Marker>> snapshot) {
                   return snapshot.hasData
                       ? Consumer<User>(builder: (context, value) {
-                    loggedUser.markers = snapshot.data;
+                          loggedUser.markers = snapshot.data;
                           return ListView.builder(
                             scrollDirection: Axis.vertical,
                             shrinkWrap: true,
                             itemCount: loggedUser.markers.length,
                             itemBuilder: (BuildContext context, int index) =>
-                            MarkerWidget(index: index),
+                                MarkerWidget(index: index),
                           );
                         })
                       : CircularProgressIndicator();
@@ -85,18 +86,18 @@ class MarkerWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Card(
-          child: Container(
-              child: Column(
-                children: [
-                  Container(
-                    child: Text(
-                      user.markers[index].title,
-                    ),
-                  ),
-                  SizedBox(height: 8),
-                ],
+      child: Container(
+        child: Column(
+          children: [
+            Container(
+              child: Text(
+                user.markers[index].title,
               ),
-          ),
-        );
+            ),
+            SizedBox(height: 8),
+          ],
+        ),
+      ),
+    );
   }
 }

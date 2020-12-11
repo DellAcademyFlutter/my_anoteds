@@ -13,8 +13,14 @@ class MarkerController {
     loggedUser.addMarker(marker: marker);
   }
 
+  /// Atualiza um [Postit], atualizando o mesmo em sua tabela no Banco de Dados.
+  updateMarker({int index, Marker newMarker}) {
+    loggedUser.updateMarker(index: index, newMarker: newMarker);
+    markerDao.updateMarker(newMarker);
+  }
+
   saveMarker({String title, int userId}) {
-    final newMarker = Marker(title: title, userId: userId);
+    final newMarker = Marker(title: title, userId: userId, isSelected: false);
 
     addMarker(marker: newMarker);
   }

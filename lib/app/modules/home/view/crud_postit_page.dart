@@ -161,7 +161,6 @@ class _State extends State<CrudPostitPage> {
                               base64Image =
                                   ImagePickerUtils.getBase64ImageFromFileImage(
                                       pickedFile: value);
-                              print(base64Image);
                             });
                           }),
                         ),
@@ -176,7 +175,6 @@ class _State extends State<CrudPostitPage> {
                               base64Image =
                                   ImagePickerUtils.getBase64ImageFromFileImage(
                                       pickedFile: value);
-                              print(base64Image);
                             });
                           }),
                         ),
@@ -189,56 +187,17 @@ class _State extends State<CrudPostitPage> {
           )),
       bottomNavigationBar: BottomAppBar(
         child: Row(
-          children: [
-            IconButton(
+          children:
+              PostitColor.colors.keys.map<IconButton>((String listItemValue) {
+            return IconButton(
                 icon: Icon(Icons.check_circle),
-                color: Color(PostitColor.colors["branco"]['hex']),
+                color: Color(PostitColor.colors[listItemValue]['hex']),
                 onPressed: () {
                   setState(() {
-                    color = "branco";
+                    color = listItemValue;
                   });
-                }),
-            IconButton(
-                icon: Icon(Icons.check_circle),
-                color: Color(PostitColor.colors["amarelo"]['hex']),
-                onPressed: () {
-                  setState(() {
-                    color = "amarelo";
-                  });
-                }),
-            IconButton(
-                icon: Icon(Icons.check_circle),
-                color: Color(PostitColor.colors["roso"]['hex']),
-                onPressed: () {
-                  setState(() {
-                    color = "roso";
-                  });
-                }),
-            IconButton(
-                icon: Icon(Icons.check_circle),
-                color: Color(PostitColor.colors["verde"]['hex']),
-                onPressed: () {
-                  setState(() {
-                    color = "verde";
-                  });
-                }),
-            IconButton(
-                icon: Icon(Icons.check_circle),
-                color: Color(PostitColor.colors["lavanda"]['hex']),
-                onPressed: () {
-                  setState(() {
-                    color = "lavanda";
-                  });
-                }),
-            IconButton(
-                icon: Icon(Icons.check_circle),
-                color: Color(PostitColor.colors["azul"]['hex']),
-                onPressed: () {
-                  setState(() {
-                    color = "azul";
-                  });
-                }),
-          ],
+                });
+          }).toList(),
         ),
       ),
     );
