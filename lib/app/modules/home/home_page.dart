@@ -3,7 +3,9 @@ import 'package:flutter_modular/flutter_modular.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 import 'package:my_anoteds/app/Utils/image_picker_utils.dart';
 import 'package:my_anoteds/app/controller/postit_controller.dart';
+import 'package:my_anoteds/app/data/marker.dao.dart';
 import 'package:my_anoteds/app/data/postit_dao.dart';
+import 'package:my_anoteds/app/model/marker.dart';
 import 'package:my_anoteds/app/model/postit.dart';
 import 'package:my_anoteds/app/model/postit_color.dart';
 import 'package:my_anoteds/app/model/user.dart';
@@ -11,7 +13,6 @@ import 'package:my_anoteds/app/modules/home/view/crud_postit_page.dart';
 import 'package:my_anoteds/app/modules/home/view/markers_page.dart';
 import 'package:my_anoteds/app/modules/home/view/user_settings_page.dart';
 import 'package:my_anoteds/app/modules/login/login_page.dart';
-
 
 class HomePage extends StatefulWidget {
   static const routeName = "/home";
@@ -22,7 +23,6 @@ class HomePage extends StatefulWidget {
 class _HomePageState extends State<HomePage> {
   final postitDao = Modular.get<PostitDao>();
   final User loggedUser = Modular.get();
-
 
   @override
   Widget build(BuildContext context) {
@@ -35,33 +35,46 @@ class _HomePageState extends State<HomePage> {
               style: TextStyle(color: Colors.black)),
           centerTitle: true,
         ),
-        body: FutureBuilder(
-          future: postitDao.getPostits(loggedUser.id),
-          builder:
-              (BuildContext context, AsyncSnapshot<List<Postit>> snapshot) {
-            return snapshot.hasData
-                ? Consumer<User>(builder: (context, value) {
-                    loggedUser.postits = snapshot.data;
-                    return StaggeredGridView.countBuilder(
-                      crossAxisCount: 4,
-                      itemCount: loggedUser.postits.length,
-                      itemBuilder: (BuildContext context, int index) =>
-                          PostitWidget(
-                        index: index,
-                      ),
-                      staggeredTileBuilder: (int index) =>
-                          (loggedUser.postits[index].description.length >
-                                      120) ||
-                                  loggedUser.postits[index].description
-                                      .contains('\n')
-                              ? StaggeredTile.fit(2)
-                              : StaggeredTile.count(2, 2),
-                      mainAxisSpacing: 4.0,
-                      crossAxisSpacing: 4.0,
-                    );
-                  })
-                : CircularProgressIndicator();
-          },
+        body: Column(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            SizedBox(height: 50, child: markers()),
+            Expanded(
+              child: SizedBox(
+                height: 200.0,
+                child: FutureBuilder(
+                  future: postitDao.getPostits(loggedUser.id),
+                  builder: (BuildContext context,
+                      AsyncSnapshot<List<Postit>> snapshot) {
+                    return snapshot.hasData
+                        ? Consumer<User>(builder: (context, value) {
+                            loggedUser.postits = snapshot.data;
+                            return StaggeredGridView.countBuilder(
+                              crossAxisCount: 4,
+                              itemCount: loggedUser.postits.length,
+                              itemBuilder: (BuildContext context, int index) =>
+                                  PostitWidget(
+                                index: index,
+                              ),
+                              staggeredTileBuilder: (int index) => (loggedUser
+                                              .postits[index]
+                                              .description
+                                              .length >
+                                          120) ||
+                                      loggedUser.postits[index].description
+                                          .contains('\n')
+                                  ? StaggeredTile.fit(2)
+                                  : StaggeredTile.count(2, 2),
+                              mainAxisSpacing: 4.0,
+                              crossAxisSpacing: 4.0,
+                            );
+                          })
+                        : CircularProgressIndicator();
+                  },
+                ),
+              ),
+            ),
+          ],
         ),
         floatingActionButton: FloatingActionButton(
           child: Icon(Icons.add, color: Colors.black),
@@ -98,7 +111,8 @@ class PostitWidget extends StatelessWidget {
         child: Card(
           color: Colors.grey,
           child: Container(
-              color: Color(PostitColor.colors[user.postits[index].color]['hex']),
+              color:
+                  Color(PostitColor.colors[user.postits[index].color]['hex']),
               child: Column(
                 children: [
                   SizedBox(height: 8),
@@ -120,11 +134,11 @@ class PostitWidget extends StatelessWidget {
                   Container(
                     child: user.postits[index].image != null
                         ? Image.memory(
-                      ImagePickerUtils.getBytesImage(
-                          base64Image: user.postits[index].image),
-                      width: 20,
-                      height: 20,
-                    )
+                            ImagePickerUtils.getBytesImage(
+                                base64Image: user.postits[index].image),
+                            width: 20,
+                            height: 20,
+                          )
                         : null,
                   ),
                   //Divider(),
@@ -204,3 +218,68 @@ Logout() {
   Modular.to.pushReplacementNamed(LoginPage.routeName);
 }
 
+Widget markers() {
+  final loggedUser = Modular.get<User>();
+  final markerDao = Modular.get<MarkerDao>();
+
+  return FutureBuilder(
+      future: markerDao.getMarkers(loggedUser.id),
+      builder: (BuildContext context, AsyncSnapshot<List<Marker>> snapshot) {
+        return snapshot.hasData
+            ? Consumer<User>(builder: (context, value) {
+                loggedUser.markers = snapshot.data;
+                return ListView.builder(
+                  scrollDirection: Axis.horizontal,
+                  shrinkWrap: true,
+                  itemCount: loggedUser.markers.length,
+                  itemBuilder: (BuildContext context, int index) =>
+                      markersListFilter(index),
+                );
+              })
+            : CircularProgressIndicator();
+      });
+}
+
+class markersListFilter extends StatefulWidget {
+  final int index;
+
+  markersListFilter(this.index);
+
+  @override
+  _markersListFilterState createState() => _markersListFilterState();
+}
+
+class _markersListFilterState extends State<markersListFilter> {
+  final loggedUser = Modular.get<User>();
+  Color cor = Colors.transparent;
+  bool isActive = false;
+
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: const EdgeInsets.all(8.0),
+      child: Row(
+        children: [
+          FlatButton(
+            textColor: Colors.black,
+            color: cor,
+            onPressed: () {
+              setState(() {
+                if (cor == Colors.transparent) {
+                  cor = Colors.greenAccent;
+                  //loggedUser.addFilter(widget.index);
+                   isActive = true;
+                } else {
+                  cor = Colors.transparent;
+                  isActive = false;
+                }
+              });
+            },
+            child: Text(loggedUser.markers[widget.index].title),
+          ),
+          SizedBox(width: 5),
+        ],
+      ),
+    );
+  }
+}

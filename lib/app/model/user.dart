@@ -43,6 +43,20 @@ class User extends ChangeNotifier {
   // Atributos da classe
   List<Postit> postits;
   List<Marker> markers;
+  List<int> filters;
+
+  // Adiciona um Filtro
+  addFilter(int filterNumber) {
+    filters.add(filterNumber);
+
+    notifyListeners();
+  }
+  // Remove um Filtro
+  removeFilter(int filterNumber) {
+    filters.remove(filterNumber);
+
+    notifyListeners();
+  }
 
   // Adiciona um Postit
   addPostit({Postit postit}) {

@@ -38,10 +38,14 @@ class _State extends State<CrudPostitPage> {
   void initState() {
     titleController.text = widget.postit != null ? widget.postit.title : "";
     descriptionController.text =
-        widget.postit != null ? widget.postit.description : "";
+    widget.postit != null ? widget.postit.description : "";
     color = widget.postit != null ? widget.postit.color : "branco";
     title = titleController.text;
     description = descriptionController.text;
+
+    if (widget.postit?.image != null) {
+      base64Image = widget.postit.image;
+    }
 
     super.initState();
   }
@@ -101,54 +105,6 @@ class _State extends State<CrudPostitPage> {
               ),
               Container(
                 color: Color(PostitColor.colors[color]['hex']),
-                padding: EdgeInsets.all(10),
-                alignment: Alignment.center,
-                child: Column(
-                  children: [
-                    image == null
-                        ? Text('Nenhuma imagem selecionada.')
-                        : Image.file(
-                            image,
-                          ),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        RaisedButton(
-                          child: Icon(Icons.camera_alt_outlined),
-                          onPressed: () => ImagePickerUtils.getImageFile(
-                                  imageSource: ImageSource.camera)
-                              .then((value) {
-                            setState(() {
-                              image = value;
-                              base64Image =
-                                  ImagePickerUtils.getBase64ImageFromFileImage(
-                                      pickedFile: value);
-                              print(base64Image);
-                            });
-                          }),
-                        ),
-                        SizedBox(width: 20),
-                        RaisedButton(
-                          child: Icon(Icons.filter_outlined),
-                          onPressed: () => ImagePickerUtils.getImageFile(
-                                  imageSource: ImageSource.gallery)
-                              .then((value) {
-                            setState(() {
-                              image = value;
-                              base64Image =
-                                  ImagePickerUtils.getBase64ImageFromFileImage(
-                                      pickedFile: value);
-                              print(base64Image);
-                            });
-                          }),
-                        ),
-                      ],
-                    ),
-                  ],
-                ),
-              ),
-              Container(
-                color: Color(PostitColor.colors[color]['hex']),
                 padding: EdgeInsets.fromLTRB(10, 10, 10, 0),
                 child: TextFormField(
                   controller: descriptionController,
@@ -177,60 +133,72 @@ class _State extends State<CrudPostitPage> {
                   ),
                 ),
               ),
+              Container(
+                color: Color(PostitColor.colors[color]['hex']),
+                padding: EdgeInsets.all(10),
+                alignment: Alignment.center,
+                child: Column(
+                  children: [
+                    widget.postit != null
+                        ? Image.memory(
+                      ImagePickerUtils.getBytesImage(
+                          base64Image: base64Image),
+                    )
+                        : image == null
+                        ? Text('Nenhuma imagem selecionada.')
+                        : Image.file(
+                      image,
+                    ),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        RaisedButton(
+                          child: Icon(Icons.camera_alt_outlined),
+                          onPressed: () => ImagePickerUtils.getImageFile(
+                              imageSource: ImageSource.camera)
+                              .then((value) {
+                            setState(() {
+                              image = value;
+                              base64Image =
+                                  ImagePickerUtils.getBase64ImageFromFileImage(
+                                      pickedFile: value);
+                            });
+                          }),
+                        ),
+                        SizedBox(width: 20),
+                        RaisedButton(
+                          child: Icon(Icons.filter_outlined),
+                          onPressed: () => ImagePickerUtils.getImageFile(
+                              imageSource: ImageSource.gallery)
+                              .then((value) {
+                            setState(() {
+                              image = value;
+                              base64Image =
+                                  ImagePickerUtils.getBase64ImageFromFileImage(
+                                      pickedFile: value);
+                            });
+                          }),
+                        ),
+                      ],
+                    ),
+                  ],
+                ),
+              ),
             ],
           )),
       bottomNavigationBar: BottomAppBar(
         child: Row(
-          children: [
-            IconButton(
+          children:
+          PostitColor.colors.keys.map<IconButton>((String listItemValue) {
+            return IconButton(
                 icon: Icon(Icons.check_circle),
-                color: Color(PostitColor.colors["branco"]['hex']),
+                color: Color(PostitColor.colors[listItemValue]['hex']),
                 onPressed: () {
                   setState(() {
-                    color = "branco";
+                    color = listItemValue;
                   });
-                }),
-            IconButton(
-                icon: Icon(Icons.check_circle),
-                color: Color(PostitColor.colors["amarelo"]['hex']),
-                onPressed: () {
-                  setState(() {
-                    color = "amarelo";
-                  });
-                }),
-            IconButton(
-                icon: Icon(Icons.check_circle),
-                color: Color(PostitColor.colors["roso"]['hex']),
-                onPressed: () {
-                  setState(() {
-                    color = "roso";
-                  });
-                }),
-            IconButton(
-                icon: Icon(Icons.check_circle),
-                color: Color(PostitColor.colors["verde"]['hex']),
-                onPressed: () {
-                  setState(() {
-                    color = "verde";
-                  });
-                }),
-            IconButton(
-                icon: Icon(Icons.check_circle),
-                color: Color(PostitColor.colors["lavanda"]['hex']),
-                onPressed: () {
-                  setState(() {
-                    color = "lavanda";
-                  });
-                }),
-            IconButton(
-                icon: Icon(Icons.check_circle),
-                color: Color(PostitColor.colors["azul"]['hex']),
-                onPressed: () {
-                  setState(() {
-                    color = "azul";
-                  });
-                }),
-          ],
+                });
+          }).toList(),
         ),
       ),
     );
