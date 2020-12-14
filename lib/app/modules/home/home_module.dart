@@ -1,5 +1,6 @@
 import 'package:flutter_modular/flutter_modular.dart';
-import 'package:my_anoteds/app/modules/home/view/markers_page.dart';
+import 'package:my_anoteds/app/modules/home/view/crud_marker_page.dart';
+import 'package:my_anoteds/app/modules/home/view/select_markers_page.dart';
 import 'package:my_anoteds/app/modules/home/view/user_settings_page.dart';
 import 'home_controller.dart';
 import 'view/crud_postit_page.dart';
@@ -10,7 +11,6 @@ class HomeModule extends ChildModule {
   // TODO: implement binds
   List<Bind> get binds => [
         Bind((i) => HomeController()),
-
       ];
 
   @override
@@ -26,18 +26,24 @@ class HomeModule extends ChildModule {
           child: (_, args) => CrudPostitPage(
             postit: args.data.postit,
           ),
-          transition: TransitionType.size,
-          duration: Duration(milliseconds: 1500),
+          transition: TransitionType.rightToLeftWithFade,
         ),
         ModularRouter(
           UserSettingsPage.routeName,
           child: (_, args) => UserSettingsPage(),
         ),
-    ModularRouter(
-      MarkerPage.routeName,
-      child: (_, args) => MarkerPage(),
-      transition: TransitionType.leftToRightWithFade,
-    ),
+        ModularRouter(
+          CrudMarkerPage.routeName,
+          child: (_, args) => CrudMarkerPage(),
+          transition: TransitionType.leftToRightWithFade,
+        ),
+        ModularRouter(
+          SelectMarkersPage.routeName,
+          child: (_, args) => SelectMarkersPage(
+              callbackAddMarker: args.data.callbackAddMarker,
+              callbackRemoveMarker: args.data.callbackRemoveMarker,
+              priorAddedMarkers: args.data.priorAddedMarkers),
+        ),
       ];
 
   static Inject get to => Inject<HomeModule>.of();

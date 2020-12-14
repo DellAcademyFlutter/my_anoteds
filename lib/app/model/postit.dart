@@ -25,7 +25,7 @@ class Postit {
     description = map['description'];
     color = map['color'];
     userId = map['userId'];
-    isPinned = map['isPinned'] == "true";
+    isPinned = map['isPinned'] == "1";
     image = map['image'];
   }
 
@@ -37,7 +37,7 @@ class Postit {
     data['description'] = description;
     data['color'] = color;
     data['userId'] = userId;
-    data['isPinned'] = isPinned.toString();
+    data['isPinned'] = (isPinned) ? 1 : 0;
     data['image'] = image;
     return data;
   }

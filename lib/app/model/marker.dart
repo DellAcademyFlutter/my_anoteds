@@ -1,10 +1,9 @@
 class Marker {
-  Marker({this.id, this.title, this.userId, this.isSelected});
+  Marker({this.id, this.title, this.userId});
 
   int id;
   int userId;
   String title;
-  bool isSelected;
 
 
   /// Atribui os valores dos parametros deste [Marker] dado um [Map] Jason.
@@ -12,7 +11,6 @@ class Marker {
     id = map['id'];
     title = map['title'];
     userId = map['userId'];
-    isSelected = map['isSelected'] == "true";
   }
 
   /// Este metodo codifica este [Marker] em um [Map] Json.
@@ -21,7 +19,6 @@ class Marker {
     data['id'] = id;
     data['title'] = title;
     data['userId'] = userId;
-    data['isSelected'] = isSelected;
     return data;
   }
 }

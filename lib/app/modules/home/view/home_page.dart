@@ -31,27 +31,38 @@ class _HomePageState extends State<HomePage> {
           title: Text("Anotadas de ${loggedUser.name ?? ""}"),
           centerTitle: true,
         ),
-        body: FutureBuilder(
-          future: postitDao.getPostits(userId: loggedUser.id),
-          builder:
-              (BuildContext context, AsyncSnapshot<List<Postit>> snapshot) {
-            return snapshot.hasData
-                ? Consumer<User>(builder: (context, value) {
-                    loggedUser.postits = snapshot.data;
-                    return StaggeredGridView.countBuilder(
-                      crossAxisCount: 4,
-                      itemCount: loggedUser.postits.length,
-                      itemBuilder: (BuildContext context, int index) =>
-                          PostitWidget(
-                        index: index,
-                      ),
-                      staggeredTileBuilder: (int index) => StaggeredTile.fit(2),
-                      mainAxisSpacing: 4.0,
-                      crossAxisSpacing: 4.0,
-                    );
-                  })
-                : CircularProgressIndicator();
-          },
+        body: Column(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            SizedBox(height: 50, child: MarkerFilterRowWidget()),
+            Expanded(
+              child: SizedBox(
+                height: 200,
+                child: FutureBuilder(
+                  future: postitDao.getPostits(userId: loggedUser.id),
+                  builder:
+                      (BuildContext context, AsyncSnapshot<List<Postit>> snapshot) {
+                    return snapshot.hasData
+                        ? Consumer<User>(builder: (context, value) {
+                            loggedUser.postits = snapshot.data;
+                            return StaggeredGridView.countBuilder(
+                              crossAxisCount: 4,
+                              itemCount: loggedUser.postits.length,
+                              itemBuilder: (BuildContext context, int index) =>
+                                  PostitWidget(
+                                index: index,
+                              ),
+                              staggeredTileBuilder: (int index) => StaggeredTile.fit(2),
+                              mainAxisSpacing: 4.0,
+                              crossAxisSpacing: 4.0,
+                            );
+                          })
+                        : CircularProgressIndicator();
+                  },
+                ),
+              ),
+            ),
+          ],
         ),
 
         floatingActionButton: FloatingActionButton(
@@ -62,7 +73,7 @@ class _HomePageState extends State<HomePage> {
           },
         ),
 
-        bottomNavigationBar:  PopupMenuWidget(),
+        //bottomNavigationBar:  PopupMenuWidget(),
       ),
     );
   }

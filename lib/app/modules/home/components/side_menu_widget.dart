@@ -1,7 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_modular/flutter_modular.dart';
-import 'package:my_anoteds/app/modules/home/view/markers_page.dart';
+import 'package:my_anoteds/app/modules/home/view/crud_marker_page.dart';
 import 'package:my_anoteds/app/modules/home/view/user_settings_page.dart';
 
 import '../home_controller.dart';
@@ -35,7 +35,7 @@ class SideMenuWidget extends StatelessWidget {
             title: Text('Tags'),
             onTap: () {
               Modular.to.pop();
-              Modular.link.pushNamed(MarkerPage.routeName);
+              Modular.link.pushNamed(CrudMarkerPage.routeName);
             },
           ),
           ListTile(

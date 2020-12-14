@@ -1,5 +1,5 @@
 import 'package:flutter_modular/flutter_modular.dart';
-import 'package:my_anoteds/app/data/marker.dao.dart';
+import 'package:my_anoteds/app/data/marker_dao.dart';
 import 'package:my_anoteds/app/model/marker.dart';
 import 'package:my_anoteds/app/model/user.dart';
 
@@ -9,8 +9,8 @@ class MarkerController {
 
   /// Adiciona um [user], armazenando em sua tabela no Banco de Dados.
   addMarker({Marker marker}) {
-    markerDao.insertMarker(marker);
     loggedUser.addMarker(marker: marker);
+    markerDao.insertMarker(marker);
   }
 
   /// Atualiza um [Postit], atualizando o mesmo em sua tabela no Banco de Dados.
@@ -19,8 +19,9 @@ class MarkerController {
     markerDao.updateMarker(newMarker);
   }
 
+  /// Salva um marker  dado um [title] e um [userId].
   saveMarker({String title, int userId}) {
-    final newMarker = Marker(title: title, userId: userId, isSelected: false);
+    final newMarker = Marker(title: title, userId: userId);
 
     addMarker(marker: newMarker);
   }

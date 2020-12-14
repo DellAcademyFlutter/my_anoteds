@@ -2,10 +2,11 @@ import 'package:my_anoteds/app/model/postit.dart';
 import 'package:flutter/cupertino.dart';
 
 import 'marker.dart';
+import 'marking.dart';
 
 class User extends ChangeNotifier {
   // Construtor da classe
-  User({this.id, this.name, this.password, this.email, this.birth, this.postits});
+  User({this.id, this.name, this.password, this.email, this.birth});
 
   int id;
   String name;
@@ -79,7 +80,6 @@ class User extends ChangeNotifier {
   updateMarker({int index, Marker newMarker}) {
     markers[index].id = newMarker.id;
     markers[index].title = newMarker.title;
-    markers[index].isSelected = newMarker.isSelected;
     notifyListeners();
   }
 
@@ -87,6 +87,15 @@ class User extends ChangeNotifier {
     markers.removeAt(index);
 
     notifyListeners();
+  }
+
+  String getMarkerTitleById({int markerId}){
+    for (var i=0; i<markers.length; i++){
+      if (markers[i].id == markerId){
+        return markers[i].title;
+      }
+    }
+    return "NothingFound";
   }
 
   Marker getMarkerById({int id}){

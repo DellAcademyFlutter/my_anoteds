@@ -18,7 +18,7 @@ class DbHelper {
 
   static const SCRIPT_CREATE_TABLE_MARKER_SQL =
       "CREATE TABLE IF NOT EXISTS marker (id INTEGER NOT NULL, "
-      "title	TEXT NOT NULL, userId INTEGER NOT NULL, isSelected BLOB NOT NULL, PRIMARY KEY(id AUTOINCREMENT), "
+      "title	TEXT NOT NULL, userId INTEGER NOT NULL, PRIMARY KEY(id AUTOINCREMENT), "
       "FOREIGN KEY(userId) REFERENCES users(id))";
 
   static const SCRIPT_CREATE_TABLE_MARKING_SQL =

@@ -2,18 +2,19 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_modular/flutter_modular.dart';
 import 'package:my_anoteds/app/controller/marker_controller.dart';
-import 'package:my_anoteds/app/data/marker.dao.dart';
+import 'package:my_anoteds/app/data/marker_dao.dart';
 import 'package:my_anoteds/app/model/marker.dart';
 import 'package:my_anoteds/app/model/user.dart';
 
-class MarkerPage extends StatefulWidget {
-  static const routeName = "/markerCreatePage";
+class CrudMarkerPage extends StatefulWidget {
+  static const routeName = "/CrudMarkerPage";
+  CrudMarkerPage();
 
   @override
   State<StatefulWidget> createState() => _State();
 }
 
-class _State extends State<MarkerPage> {
+class _State extends State<CrudMarkerPage> {
   TextEditingController markertitle = TextEditingController();
   final User loggedUser = Modular.get();
   final markerDao = Modular.get<MarkerDao>();
@@ -24,8 +25,7 @@ class _State extends State<MarkerPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: Colors.amber,
-        title: Text('Tags'),
+        title: Text('Criar marcador'),
         centerTitle: true,
       ),
       body: Container(
@@ -65,36 +65,18 @@ class _State extends State<MarkerPage> {
                             shrinkWrap: true,
                             itemCount: loggedUser.markers.length,
                             itemBuilder: (BuildContext context, int index) =>
-                                MarkerWidget(index: index),
+                                Card(
+                              child: ListTile(
+                                leading: Icon(Icons.label),
+                                title: Text(
+                                  loggedUser.markers[index].title,
+                                ),
+                              ),
+                            ),
                           );
                         })
                       : CircularProgressIndicator();
                 }),
-          ],
-        ),
-      ),
-    );
-  }
-}
-
-class MarkerWidget extends StatelessWidget {
-  MarkerWidget({this.index});
-
-  final int index;
-  final User user = Modular.get<User>();
-
-  @override
-  Widget build(BuildContext context) {
-    return Card(
-      child: Container(
-        child: Column(
-          children: [
-            Container(
-              child: Text(
-                user.markers[index].title,
-              ),
-            ),
-            SizedBox(height: 8),
           ],
         ),
       ),

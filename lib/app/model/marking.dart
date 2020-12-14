@@ -1,5 +1,5 @@
 class Marking {
-  Marking(this.userId, this.postitId, this.markerId);
+  Marking({this.userId, this.postitId, this.markerId});
 
   int userId;
   int postitId;

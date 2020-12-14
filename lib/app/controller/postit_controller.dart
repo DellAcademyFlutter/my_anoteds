@@ -8,15 +8,18 @@ class PostitController {
   final postitDao = Modular.get<PostitDao>();
 
   /// Adiciona um [Postit], armazenando em sua tabela no Banco de Dados.
-  addPostit({Postit postit}) {
+  Future<int> addPostit({Postit postit}) async {
+    int generatedId;
     user.addPostit(postit: postit);
-    postitDao.insertPostit(postit);
+    await postitDao.insertPostit(postit).then((value) => generatedId = value);
+    return generatedId;
   }
 
   /// Atualiza um [Postit], atualizando o mesmo em sua tabela no Banco de Dados.
-  updatePostit({int index, Postit newPostit}) {
+  Future<int> updatePostit({int index, Postit newPostit}) async {
     user.updatePostit(index: index, newPostit: newPostit);
-    postitDao.updatePostit(newPostit);
+    await postitDao.updatePostit(newPostit);
+    return newPostit.id;
   }
 
   /// Deleta um [Postit], deletando o mesmo em sua tabela no Banco de Dados.
