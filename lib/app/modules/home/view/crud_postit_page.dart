@@ -9,6 +9,7 @@ import 'package:my_anoteds/app/model/user.dart';
 import 'package:my_anoteds/app/modules/home/components/crud_postit_settings_menu_widget.dart';
 import 'package:my_anoteds/app/modules/home/components/crud_postit_select_image_menu_widget.dart';
 import 'package:my_anoteds/app/modules/home/home_controller.dart';
+import 'package:my_anoteds/app/modules/home/presenter/crud_postit_presenter.dart';
 import 'package:my_anoteds/app/repositories/shared/Utils/image_picker_utils.dart';
 
 class CrudPostitPageArguments {
@@ -26,7 +27,7 @@ class CrudPostitPage extends StatefulWidget {
   State<StatefulWidget> createState() => _State();
 }
 
-class _State extends State<CrudPostitPage> {
+class _State extends State<CrudPostitPage> implements ICrudPostitController{
   final loggedUser = Modular.get<User>();
   final homeController = Modular.get<HomeController>();
   final markingDao = Modular.get<MarkingDao>();
@@ -38,6 +39,7 @@ class _State extends State<CrudPostitPage> {
   File image;
   String base64Image;
   List<int> postitMarkers;
+  CrudPostitPresenter controller;
 
   /// Atualizacao de estado da imagem inserida
   void callbackSetImageValue({@required File imageFile}) {
@@ -79,7 +81,13 @@ class _State extends State<CrudPostitPage> {
   }
 
   @override
+  void update() {
+    setState(() {});
+  }
+
+  @override
   void initState() {
+    controller = CrudPostitPresenter(this);
     titleController.text = widget.postit != null ? widget.postit.title : "";
     descriptionController.text =
         widget.postit != null ? widget.postit.description : "";
@@ -89,6 +97,7 @@ class _State extends State<CrudPostitPage> {
     postitMarkers = new List<int>();
 
     if (widget.postit?.image != null) {
+
       base64Image = widget.postit.image;
     }
 
@@ -98,10 +107,14 @@ class _State extends State<CrudPostitPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      floatingActionButton: FloatingActionButton(
+        child: Icon(Icons.add),
+        onPressed: ()=> controller.increment(),
+      ),
       appBar: AppBar(
         title: Row(
           children: [
-            Text('CRUD postit'),
+            Text('CRUD postit ${controller.counter}'),
             Spacer(),
             IconButton(
               icon: Icon(Icons.save),
@@ -239,6 +252,7 @@ class _State extends State<CrudPostitPage> {
       ),
     );
   }
+
 }
 
 class postitMarkersWidget extends StatelessWidget {
