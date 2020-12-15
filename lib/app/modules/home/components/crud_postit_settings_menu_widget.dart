@@ -1,15 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_modular/flutter_modular.dart';
+import 'package:my_anoteds/app/modules/home/presenter/crud_postit_presenter.dart';
 import 'package:my_anoteds/app/modules/home/view/select_markers_page.dart';
 
 class CrudPostitSettingsMenuWidget extends StatefulWidget {
-  CrudPostitSettingsMenuWidget(
-      {this.callbackAddMarker,
-      this.callbackRemoveMarker,
-      this.priorAddedMarkers});
-  final Function callbackAddMarker;
-  final Function callbackRemoveMarker;
-  final List<int> priorAddedMarkers;
+  CrudPostitSettingsMenuWidget({this.presenter});
+  final CrudPostitPresenter presenter;
 
   @override
   _State createState() => _State();
@@ -31,10 +27,7 @@ class _State extends State<CrudPostitSettingsMenuWidget> {
     return PopupMenuButton<String>(onSelected: (String value) {
       if (value == 'Marcadores') {
         Modular.link.pushNamed(SelectMarkersPage.routeName,
-            arguments: SelectMarkersPageArguments(
-                callbackAddMarker: widget.callbackAddMarker,
-                callbackRemoveMarker: widget.callbackRemoveMarker,
-                priorAddedMarkers: widget.priorAddedMarkers));
+            arguments: SelectMarkersPageArguments(presenter: widget.presenter));
       }
     }, itemBuilder: (context) {
       return options.map<PopupMenuItem<String>>((String option) {

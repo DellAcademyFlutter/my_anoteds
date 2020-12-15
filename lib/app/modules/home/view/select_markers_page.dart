@@ -5,29 +5,20 @@ import 'package:my_anoteds/app/controller/marker_controller.dart';
 import 'package:my_anoteds/app/data/marker_dao.dart';
 import 'package:my_anoteds/app/model/marker.dart';
 import 'package:my_anoteds/app/model/user.dart';
+import 'package:my_anoteds/app/modules/home/presenter/crud_postit_presenter.dart';
 
 class SelectMarkersPageArguments {
-  SelectMarkersPageArguments(
-      {this.callbackAddMarker,
-      this.callbackRemoveMarker,
-      this.priorAddedMarkers});
+  SelectMarkersPageArguments({this.presenter});
 
-  Function callbackAddMarker;
-  Function callbackRemoveMarker;
-  List<int> priorAddedMarkers;
+  final CrudPostitPresenter presenter;
 }
 
 class SelectMarkersPage extends StatefulWidget {
   static const routeName = "/markerSelectPage";
 
-  SelectMarkersPage(
-      {this.callbackAddMarker,
-      this.callbackRemoveMarker,
-      this.priorAddedMarkers});
+  SelectMarkersPage({this.presenter});
 
-  final Function callbackAddMarker;
-  final Function callbackRemoveMarker;
-  final List<int> priorAddedMarkers;
+  final CrudPostitPresenter presenter;
 
   @override
   State<StatefulWidget> createState() => _State();
@@ -61,9 +52,9 @@ class _State extends State<SelectMarkersPage> {
                         itemBuilder: (BuildContext context, int index) =>
                             SelectMarkerWidget(
                           index: index,
-                          callbackAddMarker: widget.callbackAddMarker,
-                          callbackRemoveMarker: widget.callbackRemoveMarker,
-                          priorAddedMarkers: widget.priorAddedMarkers,
+                          callbackAddMarker: widget.presenter.addMarker,
+                          callbackRemoveMarker: widget.presenter.removeMarker,
+                          priorAddedMarkers: widget.presenter.postitMarkers,
                         ),
                       );
                     })
@@ -101,8 +92,10 @@ class _SelectMarkerWidgetState extends State<SelectMarkerWidget> {
     setState(() {
       isSelected = !isSelected;
       isSelected
-          ? widget.callbackAddMarker(markerID: loggedUser.markers[widget.index].id)
-          : widget.callbackRemoveMarker(markerID: loggedUser.markers[widget.index].id);
+          ? widget.callbackAddMarker(
+              markerId: loggedUser.markers[widget.index].id)
+          : widget.callbackRemoveMarker(
+              markerId: loggedUser.markers[widget.index].id);
     });
   }
 

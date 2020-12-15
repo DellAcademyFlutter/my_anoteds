@@ -1,5 +1,3 @@
-import 'dart:io';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_modular/flutter_modular.dart';
 import 'package:my_anoteds/app/data/marking_dao.dart';
@@ -27,7 +25,7 @@ class CrudPostitPage extends StatefulWidget {
   State<StatefulWidget> createState() => _State();
 }
 
-class _State extends State<CrudPostitPage> implements ICrudPostitController{
+class _State extends State<CrudPostitPage> implements ICrudPostitPresenter {
   final loggedUser = Modular.get<User>();
   final homeController = Modular.get<HomeController>();
   final markingDao = Modular.get<MarkingDao>();
@@ -36,69 +34,30 @@ class _State extends State<CrudPostitPage> implements ICrudPostitController{
   String color;
   String title;
   String description;
-  File image;
-  String base64Image;
-  List<int> postitMarkers;
-  CrudPostitPresenter controller;
-
-  /// Atualizacao de estado da imagem inserida
-  void callbackSetImageValue({@required File imageFile}) {
-    setState(() {
-      image = imageFile;
-      base64Image =
-          ImagePickerUtils.getBase64ImageFromFileImage(pickedFile: imageFile);
-    });
-  }
-
-  /// Adiciona um index para os marcadores deste postit
-  void callbackAddMarkerWithoutAtualize({@required int markerID}) {
-    if (postitMarkers == null) {
-      postitMarkers = List<int>();
-    }
-    if (!postitMarkers.contains(markerID)) {
-      postitMarkers.add(markerID);
-    }
-  }
-
-  List<int> callbackGetPostitMarkers() => postitMarkers;
-
-  /// Adiciona um index para os marcadores deste postit
-  void callbackAddMarker({@required int markerID}) {
-    setState(() {
-      if (!postitMarkers.contains(markerID)) {
-        postitMarkers.add(markerID);
-      }
-    });
-  }
-
-  /// Remove um index dos marcadores deste postit
-  void callbackRemoveMarker({@required int markerID}) {
-    setState(() {
-      if (postitMarkers.contains(markerID)) {
-        postitMarkers.remove(markerID);
-      }
-    });
-  }
+  CrudPostitPresenter presenter;
 
   @override
-  void update() {
+  void refresh() {
     setState(() {});
   }
 
   @override
   void initState() {
-    controller = CrudPostitPresenter(this);
+    presenter = CrudPostitPresenter(this);
     titleController.text = widget.postit != null ? widget.postit.title : "";
     descriptionController.text =
         widget.postit != null ? widget.postit.description : "";
     color = widget.postit != null ? widget.postit.color : "branco";
     title = titleController.text;
     description = descriptionController.text;
-    postitMarkers = new List<int>();
+
+    if (widget.postit != null) {
+      presenter.initializePostitMarkers(
+          loggedUserId: loggedUser.id, postitId: widget.postit.id);
+    }
 
     if (widget.postit?.image != null) {
-
-      base64Image = widget.postit.image;
+      presenter.base64Image = widget.postit.image;
     }
 
     super.initState();
@@ -107,14 +66,10 @@ class _State extends State<CrudPostitPage> implements ICrudPostitController{
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      floatingActionButton: FloatingActionButton(
-        child: Icon(Icons.add),
-        onPressed: ()=> controller.increment(),
-      ),
       appBar: AppBar(
         title: Row(
           children: [
-            Text('CRUD postit ${controller.counter}'),
+            Text('CRUD postit'),
             Spacer(),
             IconButton(
               icon: Icon(Icons.save),
@@ -125,8 +80,8 @@ class _State extends State<CrudPostitPage> implements ICrudPostitController{
                   description: description,
                   color: color,
                   postit: widget.postit,
-                  base64Image: base64Image,
-                  postitMarkers: postitMarkers,
+                  base64Image: presenter.base64Image,
+                  postitMarkers: presenter.postitMarkers,
                 );
                 Modular.to.pop();
               },
@@ -135,21 +90,27 @@ class _State extends State<CrudPostitPage> implements ICrudPostitController{
         ),
         actions: [
           CrudPostitSettingsMenuWidget(
-              callbackAddMarker: callbackAddMarker,
-              callbackRemoveMarker: callbackRemoveMarker,
-              priorAddedMarkers: postitMarkers),
+            presenter: presenter,
+          ),
         ],
       ),
       body: Padding(
           padding: EdgeInsets.all(10),
           child: ListView(
             children: <Widget>[
-              postitMarkersWidget(
-                loggedUser: loggedUser,
-                postit: widget.postit,
-                callbackAddMarkerWithoutAtualize:
-                    callbackAddMarkerWithoutAtualize,
-                callbackGetPostitMarkers: callbackGetPostitMarkers,
+              Container(
+                child: SingleChildScrollView(
+                  scrollDirection: Axis.horizontal,
+                  padding: EdgeInsets.fromLTRB(10, 0, 10, 10),
+                  child: Row(
+                    children: presenter.postitMarkers.map<Card>((int markerId) {
+                      return Card(
+                          margin: EdgeInsets.all(8),
+                          child: Text(loggedUser.getMarkerTitleById(
+                              markerId: markerId)));
+                    }).toList(),
+                  ),
+                ),
               ),
               Container(
                 color: Color(PostitColor.colors[color]['hex']),
@@ -213,12 +174,12 @@ class _State extends State<CrudPostitPage> implements ICrudPostitController{
                     widget.postit?.image != null
                         ? Image.memory(
                             ImagePickerUtils.getBytesImage(
-                                base64Image: base64Image),
+                                base64Image: presenter.base64Image),
                           )
-                        : image == null
+                        : presenter.image == null
                             ? Text('Nenhuma imagem selecionada.')
                             : Image.file(
-                                image,
+                                presenter.image,
                               ),
                   ],
                 ),
@@ -232,7 +193,7 @@ class _State extends State<CrudPostitPage> implements ICrudPostitController{
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             children: [
-              CrudPostitSelectImageMenuWidget(callbackSetImageValue),
+              CrudPostitSelectImageMenuWidget(presenter.setImageValue),
               Row(
                 children: PostitColor.colors.keys
                     .map<IconButton>((String listItemValue) {
@@ -251,55 +212,5 @@ class _State extends State<CrudPostitPage> implements ICrudPostitController{
         ),
       ),
     );
-  }
-
-}
-
-class postitMarkersWidget extends StatelessWidget {
-  postitMarkersWidget(
-      {this.loggedUser,
-      this.postit,
-      this.callbackAddMarkerWithoutAtualize,
-      this.callbackGetPostitMarkers});
-
-  final User loggedUser;
-  final Postit postit;
-  final Function callbackAddMarkerWithoutAtualize;
-  final Function callbackGetPostitMarkers;
-  final markingDao = Modular.get<MarkingDao>();
-
-  @override
-  Widget build(BuildContext context) {
-
-    return postit != null
-        ? FutureBuilder(
-            future: markingDao.getPostitMarkersIds(
-                userId: loggedUser.id, postitId: postit.id),
-            builder: (BuildContext context, AsyncSnapshot<List<int>> snapshot) {
-              if (snapshot.hasData) {
-                for (var i = 0; i < snapshot.data.length; i++) {
-                  callbackAddMarkerWithoutAtualize(markerID: snapshot.data[i]);
-                }
-              }
-              return snapshot.hasData
-                  ? Container(
-                      child: Row(
-                        children: callbackGetPostitMarkers()
-                            .map<Card>((int markerId) {
-                          return Card(
-                              margin: EdgeInsets.all(8),
-                              child: Text(loggedUser.getMarkerTitleById(
-                                  markerId: markerId)));
-                        }).toList(),
-                      ),
-                    )
-                  : Container(child: Row(
-                    children: [
-                      CircularProgressIndicator(),
-                      Text("Carregando..."),
-                    ],
-                  ));
-            })
-        : SizedBox.shrink();
   }
 }

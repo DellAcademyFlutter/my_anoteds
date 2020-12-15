@@ -53,6 +53,28 @@ class MarkingDao {
     );
   }
 
+  /// Deleta um [marking]
+  Future<void> deleteMarkerMarkings({int markerId}) async {
+    final db = await DbHelper.getDatabase();
+
+    await db.delete(
+      DbHelper.TABLE_USERS_MARKING,
+      where: "markerId = ?",
+      whereArgs: [markerId],
+    );
+  }
+
+  /// Deleta um [marking]
+  Future<void> deletePostitMarkings({int postitId}) async {
+    final db = await DbHelper.getDatabase();
+
+    await db.delete(
+      DbHelper.TABLE_USERS_MARKING,
+      where: "postitId = ?",
+      whereArgs: [postitId],
+    );
+  }
+
   /// Retorna uma [List] de objetos [marking].
   Future<List<Marking>> getPostitMarkings({int userId, int postitId}) async {
     try {

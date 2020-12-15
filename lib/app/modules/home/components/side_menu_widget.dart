@@ -9,6 +9,7 @@ import '../home_controller.dart';
 class SideMenuWidget extends StatelessWidget {
   final homeController = Modular.get<HomeController>();
 
+
   @override
   Widget build(BuildContext context) {
     return Drawer(

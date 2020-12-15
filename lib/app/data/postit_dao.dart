@@ -63,7 +63,7 @@ class PostitDao {
       }
       return userPostits;
     } catch (ex) {
-      print(ex);
+      //print(ex);
       return <Postit>[];
     }
   }
@@ -82,7 +82,7 @@ class PostitDao {
 
           // Filtra postit por marcadores
           final markingMaps = await db.rawQuery("SELECT * FROM ${DbHelper.TABLE_USERS_MARKING} WHERE postitId = ${postitMaps[i]['id']}");
-          int countTags = 0;
+          var countTags = 0;
           for (var j = 0; j < markingMaps.length; j++){
             if(markersId.contains(markingMaps[j]['markerId'])) countTags++;
           }
@@ -93,7 +93,7 @@ class PostitDao {
       }
       return userPostits;
     } catch (ex) {
-      print(ex);
+      //print(ex);
       return <Postit>[];
     }
   }

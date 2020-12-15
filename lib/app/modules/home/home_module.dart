@@ -40,9 +40,8 @@ class HomeModule extends ChildModule {
         ModularRouter(
           SelectMarkersPage.routeName,
           child: (_, args) => SelectMarkersPage(
-              callbackAddMarker: args.data.callbackAddMarker,
-              callbackRemoveMarker: args.data.callbackRemoveMarker,
-              priorAddedMarkers: args.data.priorAddedMarkers),
+            presenter: args.data.presenter,
+          ),
         ),
       ];
 

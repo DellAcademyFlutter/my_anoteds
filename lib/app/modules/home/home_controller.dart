@@ -2,12 +2,14 @@ import 'package:flutter_modular/flutter_modular.dart';
 import 'package:my_anoteds/app/controller/marking_controller.dart';
 import 'package:my_anoteds/app/controller/postit_controller.dart';
 import 'package:my_anoteds/app/data/marking_dao.dart';
+import 'package:my_anoteds/app/data/postit_dao.dart';
 import 'package:my_anoteds/app/model/marking.dart';
 import 'package:my_anoteds/app/model/postit.dart';
 import 'package:my_anoteds/app/model/user.dart';
 import 'package:my_anoteds/app/modules/login/view/login_page.dart';
 
 class HomeController {
+  /// Salva um [Postit], seja adicao ou edicao.
   savePostit(
       {String title,
       String description,
@@ -60,7 +62,7 @@ class HomeController {
     // Adicionar todos os markers do postit
     if (postitMarkers.isNotEmpty) {
       for (var i = 0; i < postitMarkers.length; i++) {
-        Marking newMarking = Marking(
+        final newMarking = Marking(
           userId: userId,
           postitId: postitId,
           markerId: postitMarkers[i],
@@ -70,10 +72,10 @@ class HomeController {
     }
   }
 
+  /// Remove um [Marking] de um [Postit].
   removeMarking({int userId, int postitId, int markerId}) {
     final markingController = Modular.get<MarkingController>();
-    Marking markerToRemove =
-        Marking(userId: userId, postitId: postitId, markerId: markerId);
+    final markerToRemove = Marking(userId: userId, postitId: postitId, markerId: markerId);
 
     markingController.removeMarking(marking: markerToRemove);
   }
@@ -92,12 +94,35 @@ class HomeController {
     Modular.to.pushReplacementNamed(LoginPage.routeName);
   }
 
-  Future<List<int>> initializePostitMarkers({User loggedUser, Postit postit}) async {
+  /// Inicializa os [Marker]s de um [Postit]
+  Future<List<int>> initializePostitMarkers(
+      {User loggedUser, Postit postit}) async {
     final markingDao = Modular.get<MarkingDao>();
     List<int> postitMarkers;
 
-    await markingDao.getPostitMarkersIds(
-        userId: loggedUser.id, postitId: postit.id).then((value) => postitMarkers = value);
+    await markingDao
+        .getPostitMarkersIds(userId: loggedUser.id, postitId: postit.id)
+        .then((value) => postitMarkers = value);
     return postitMarkers;
+  }
+
+  /// Inicializa os [Postit]s do [User] logado no sistema.
+  initializeLoggedUserPostits({User loggedUser}) async {
+    final loggedUser = Modular.get<User>();
+    final postitDao = Modular.get<PostitDao>();
+
+    await postitDao
+        .getPostits(userId: loggedUser.id)
+        .then((value) => loggedUser.setPostits(postits: value));
+  }
+
+  /// Inicializa os [Postit]s do [User] logado no sistema.
+  filterUserPostitsWithMarkers({User loggedUser, List<int> markersId}) async {
+    final loggedUser = Modular.get<User>();
+    final postitDao = Modular.get<PostitDao>();
+
+    await postitDao
+        .getMarkedPostits(userId: loggedUser.id, markersId: markersId)
+        .then((value) => loggedUser.setPostits(postits: value));
   }
 }
