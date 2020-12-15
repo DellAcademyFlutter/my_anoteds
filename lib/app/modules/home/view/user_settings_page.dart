@@ -1,9 +1,9 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_modular/flutter_modular.dart';
-import 'package:my_anoteds/app/Utils/math_utils.dart';
-import 'package:my_anoteds/app/repositories/shared/themes/AppThemes.dart';
+import 'package:my_anoteds/app/repositories/shared/Utils/math_utils.dart';
 import 'package:my_anoteds/app/repositories/shared/user_settings.dart';
+import 'package:my_anoteds/app/repositories/shared/themes/AppThemes.dart';
 
 class UserSettingsPage extends StatelessWidget {
   static const routeName = '/settings';
@@ -12,7 +12,6 @@ class UserSettingsPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: Colors.amber,
         title: Text('Configurações'),
         centerTitle: true,
       ),
@@ -38,14 +37,25 @@ class LightDarkTheme extends StatefulWidget {
 /// Esta classe retorna um widget referente ao estado da configuracao de tema escuro ou claro.
 class LightDarkThemeState extends State<LightDarkTheme> {
   final settings = Modular.get<UserSettings>();
+  Map<AppThemesEnum, String> themeDescriptionMap = {
+    AppThemesEnum.system: "Tema do sistema.",
+    AppThemesEnum.lightTheme: "Tema claro",
+    AppThemesEnum.darkTheme: "Tema escuro.",
+    AppThemesEnum.highContrast: "Melhora a distinção.",
+  };
 
   @override
   Widget build(BuildContext context) {
-    return Card(
-      child: ListTile(
-        title: Text('Tema'),
-        trailing: LightDarkThemeDropDownButton(),
-      ),
+    return Consumer<UserSettings>(
+      builder: (context, value) {
+        return Card(
+          child: ListTile(
+            title: Text('Tema'),
+            subtitle: Text(themeDescriptionMap[settings.userTheme]),
+            trailing: LightDarkThemeDropDownButton(),
+          ),
+        );
+      },
     );
   }
 }
@@ -73,45 +83,41 @@ class LightDarkThemeDropDownButtonState
 
   @override
   Widget build(BuildContext context) {
-    return Consumer<UserSettings>(
-      builder: (context, value) {
-        return DropdownButton<String>(
-          value: dropdownValue, //"settings.themeDescription,
-          icon: Icon(Icons.more_vert),
-          iconSize: 24,
-          elevation: 16,
-          underline: Container(
-            height: 2,
-          ),
-          onChanged: (String newValue) {
-            setState(() {
-              dropdownValue = newValue;
-              AppThemesEnum theme;
-              switch (newValue) {
-                case 'Sistema':
-                  theme = AppThemesEnum.system;
-                  break;
-                case 'Tema Escuro':
-                  theme = AppThemesEnum.darkTheme;
-                  break;
-                case 'Alto contraste':
-                  theme = AppThemesEnum.highContrast;
-                  break;
-                default:
-                  theme = AppThemesEnum.lightTheme;
-                  break;
-              }
-              settings.changeTheme(theme: theme, context: context);
-            });
-          },
-          items: values.map<DropdownMenuItem<String>>((String value) {
-            return DropdownMenuItem<String>(
-              value: value,
-              child: Text(value),
-            );
-          }).toList(),
-        );
+    return DropdownButton<String>(
+      value: dropdownValue, //"settings.themeDescription,
+      icon: Icon(Icons.more_vert),
+      iconSize: 24,
+      elevation: 16,
+      underline: Container(
+        height: 2,
+      ),
+      onChanged: (String newValue) {
+        setState(() {
+          dropdownValue = newValue;
+          AppThemesEnum theme;
+          switch (newValue) {
+            case 'Sistema':
+              theme = AppThemesEnum.system;
+              break;
+            case 'Tema Escuro':
+              theme = AppThemesEnum.darkTheme;
+              break;
+            case 'Alto contraste':
+              theme = AppThemesEnum.highContrast;
+              break;
+            default:
+              theme = AppThemesEnum.lightTheme;
+              break;
+          }
+          settings.changeTheme(theme: theme, context: context);
+        });
       },
+      items: values.map<DropdownMenuItem<String>>((String value) {
+        return DropdownMenuItem<String>(
+          value: value,
+          child: Text(value),
+        );
+      }).toList(),
     );
   }
 }
@@ -169,8 +175,7 @@ class TextSizeSlider extends StatelessWidget {
                 min: 14,
                 max: 25,
                 divisions: 6,
-                label:
-                    "${MathUtils.round(number: settings.fontSize, decimalPlaces: 0)}",
+                label: "${MathUtils.round(number: settings.fontSize, decimalPlaces: 0)}",
                 onChanged: (newSliderValue) {
                   settings.fontSize = newSliderValue;
                 },

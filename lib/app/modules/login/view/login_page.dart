@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_modular/flutter_modular.dart';
 import 'package:my_anoteds/app/modules/login/view/signup_page.dart';
 
-import 'login_controller.dart';
+import '../login_controller.dart';
 
 class LoginPage extends StatefulWidget {
   static const routeName = "/";
@@ -25,7 +25,6 @@ class _State extends State<LoginPage> {
     return Scaffold(
       appBar: AppBar(
         title: Center(child: Text('My Annoteds')),
-        backgroundColor: Colors.amber,
       ),
       body: Padding(
         padding: EdgeInsets.all(10),
@@ -40,7 +39,6 @@ class _State extends State<LoginPage> {
                     child: Text(
                       'Fazer Login',
                       style: TextStyle(
-                          color: Colors.amber,
                           fontWeight: FontWeight.w500,
                           fontSize: 30),
                     ),
@@ -90,11 +88,10 @@ class _State extends State<LoginPage> {
                 padding: EdgeInsets.fromLTRB(10, 0, 10, 0),
                 child: RaisedButton(
                   textColor: Colors.black,
-                  color: Colors.amber,
                   child: Text('Entrar'),
                   onPressed: () {
                     if (_formKey.currentState.validate()) {
-                      loginController.signin(context: context,userName: userName, password: password);
+                      loginController.signIn(context: context, name: userName, password: password);
                     }
                   },
                 ),

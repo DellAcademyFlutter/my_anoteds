@@ -5,7 +5,6 @@ import 'package:sqflite/sqflite.dart';
 import 'package:flutter/widgets.dart';
 
 class UserDao {
-
   /// Insere um [user] em sua tabela.
   Future insertUser(User user) async {
     try {
@@ -44,6 +43,19 @@ class UserDao {
     );
   }
 
+  /// Retorna uma [User], se ele estiver na tabela.
+  Future<User> getUser({String username, String password}) async {
+    final db = await DbHelper.getDatabase();
+    final tableName = DbHelper.TABLE_USERS_NAME;
+    final result = await db.rawQuery(
+        "SELECT * FROM '$tableName' WHERE name = '$username' and password = '$password'");
+    if (result.isNotEmpty) {
+      return User.fromMap(map: result.first);
+    }
+
+    return null;
+  }
+
   /// Retorna uma [List] de objetos [loggedUser].
   Future<List<User>> getUsers() async {
     try {
@@ -52,26 +64,12 @@ class UserDao {
 
       return List.generate(
         maps.length,
-            (i) {
+        (i) {
           return User.fromMap(map: maps[i]);
         },
       );
     } catch (ex) {
       return <User>[];
     }
-  }
-
-  /// Retorna uma [User], se ele estiver na tabela.
-  Future<User> getUser({String username, String password}) async {
-    final db = await DbHelper.getDatabase();
-    final tableName = DbHelper.TABLE_USERS_NAME;
-    final result = await db.rawQuery(
-        "SELECT * FROM '$tableName' WHERE name = '$username' and password = '$password'");
-
-    if (result.isNotEmpty) {
-      return User.fromMap(map: result.first);
-    }
-
-    return null;
   }
 }

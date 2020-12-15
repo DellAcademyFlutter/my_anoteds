@@ -2,7 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_modular/flutter_modular.dart';
 import 'package:mask_text_input_formatter/mask_text_input_formatter.dart';
-import 'package:my_anoteds/app/Utils/validator_fields.dart';
+import 'package:my_anoteds/app/repositories/shared/Utils/validator_fields.dart';
 import 'package:my_anoteds/app/controller/user_controller.dart';
 
 class SignUpPage extends StatefulWidget {
@@ -12,6 +12,7 @@ class SignUpPage extends StatefulWidget {
 }
 
 class _State extends State<SignUpPage> {
+  final userController = Modular.get<UserController>();
   final _formKey = GlobalKey<FormState>();
   String name, pass, email, birth;
   var maskFormatter = MaskTextInputFormatter(
@@ -27,7 +28,6 @@ class _State extends State<SignUpPage> {
     return Scaffold(
       appBar: AppBar(
         title: Center(child: Text('My Annoteds')),
-        backgroundColor: Colors.amber,
       ),
       body: Padding(
         padding: EdgeInsets.all(10),
@@ -43,7 +43,6 @@ class _State extends State<SignUpPage> {
                     child: Text(
                       'Cadastrar usuário',
                       style: TextStyle(
-                          color: Colors.amber,
                           fontWeight: FontWeight.w500,
                           fontSize: 30),
                     ),
@@ -100,7 +99,7 @@ class _State extends State<SignUpPage> {
                   ),
                   validator: (String submittedValue) {
                     final dateValidator =
-                        Validator.validateDate(submittedValue);
+                    Validator.validateDate(submittedValue);
                     if (!dateValidator) {
                       return 'Data inválida!';
                     }
@@ -120,7 +119,7 @@ class _State extends State<SignUpPage> {
                   ),
                   validator: (String submittedValue) {
                     final emailValidator =
-                        Validator.validateEmail(submittedValue);
+                    Validator.validateEmail(submittedValue);
                     if (!emailValidator) {
                       return 'Email inválido!';
                     }
@@ -134,13 +133,12 @@ class _State extends State<SignUpPage> {
                 padding: EdgeInsets.fromLTRB(10, 0, 10, 0),
                 child: RaisedButton(
                   textColor: Colors.black,
-                  color: Colors.amber,
                   child: Text('Cadastrar'),
                   onPressed: () {
+                    isValidating = AutovalidateMode.always;
                     if (_formKey.currentState.validate()) {
-                      isValidating = AutovalidateMode.always;
-                      UserController.saveUser(
-                          name: name, pass: pass, email: email, birth: birth);
+                      userController.saveUser(
+                          name: name, password: pass, email: email, birth: birth);
                       Modular.to.pop();
                     }
                   },

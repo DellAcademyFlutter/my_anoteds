@@ -1,9 +1,10 @@
 import 'package:flutter/cupertino.dart';
 import 'package:my_anoteds/app/repositories/shared/themes/AppThemes.dart';
 
+
 class UserSettings extends ChangeNotifier{
   // Atributos da classe
-  AppThemesEnum _userTheme = AppThemesEnum.lightTheme;
+  AppThemesEnum _userTheme = AppThemesEnum.system;
   double _fontSize = 19.5;
   final double defaultFontSize = 19.5;
 
@@ -23,7 +24,6 @@ class UserSettings extends ChangeNotifier{
           ? userTheme = AppThemesEnum.lightTheme
           : userTheme = AppThemesEnum.darkTheme;
       return;
-
     }
 
     userTheme = theme;

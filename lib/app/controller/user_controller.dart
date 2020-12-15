@@ -10,12 +10,15 @@ class UserController {
     userDao.insertUser(user);
   }
 
-  static saveUser({String name, String birth, String pass, String email}) {
-    final controller = Modular.get<UserController>();
-
+  /// Salva um [User] em sua tabela no Banco de Dados.
+  saveUser({String name, String birth, String password, String email}) {
     final newUser =
-        User(id: null, name: name, password: pass, birth: birth, email: email);
+    User(id: null,
+        name: name,
+        password: password,
+        birth: birth,
+        email: email);
 
-    controller.addUser(user: newUser);
+    addUser(user: newUser);
   }
 }

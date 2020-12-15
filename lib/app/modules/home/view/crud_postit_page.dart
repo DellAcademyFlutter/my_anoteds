@@ -1,13 +1,14 @@
-import 'dart:io';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_modular/flutter_modular.dart';
-import 'package:image_picker/image_picker.dart';
-import 'package:my_anoteds/app/Utils/image_picker_utils.dart';
-
+import 'package:my_anoteds/app/data/marking_dao.dart';
 import 'package:my_anoteds/app/model/postit.dart';
 import 'package:my_anoteds/app/model/postit_color.dart';
+import 'package:my_anoteds/app/model/user.dart';
+import 'package:my_anoteds/app/modules/home/components/crud_postit_select_image_menu_widget.dart';
 import 'package:my_anoteds/app/modules/home/home_controller.dart';
+import 'package:my_anoteds/app/modules/home/presenter/crud_postit_presenter.dart';
+import 'package:my_anoteds/app/modules/home/view/select_markers_page.dart';
+import 'package:my_anoteds/app/repositories/shared/Utils/image_picker_utils.dart';
 
 class CrudPostitPageArguments {
   CrudPostitPageArguments({this.postit});
@@ -24,27 +25,39 @@ class CrudPostitPage extends StatefulWidget {
   State<StatefulWidget> createState() => _State();
 }
 
-class _State extends State<CrudPostitPage> {
+class _State extends State<CrudPostitPage> implements ICrudPostitPresenter {
+  final loggedUser = Modular.get<User>();
   final homeController = Modular.get<HomeController>();
+  final markingDao = Modular.get<MarkingDao>();
   TextEditingController titleController = TextEditingController();
   TextEditingController descriptionController = TextEditingController();
   String color;
   String title;
   String description;
-  File image;
-  String base64Image;
+  CrudPostitPresenter presenter;
+
+  @override
+  void refresh() {
+    setState(() {});
+  }
 
   @override
   void initState() {
+    presenter = CrudPostitPresenter(this);
     titleController.text = widget.postit != null ? widget.postit.title : "";
     descriptionController.text =
-    widget.postit != null ? widget.postit.description : "";
+        widget.postit != null ? widget.postit.description : "";
     color = widget.postit != null ? widget.postit.color : "branco";
     title = titleController.text;
     description = descriptionController.text;
 
+    if (widget.postit != null) {
+      presenter.initializePostitMarkers(
+          loggedUserId: loggedUser.id, postitId: widget.postit.id);
+    }
+
     if (widget.postit?.image != null) {
-      base64Image = widget.postit.image;
+      presenter.base64Image = widget.postit.image;
     }
 
     super.initState();
@@ -54,7 +67,6 @@ class _State extends State<CrudPostitPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: Colors.amber,
         title: Row(
           children: [
             Text('CRUD postit'),
@@ -68,7 +80,8 @@ class _State extends State<CrudPostitPage> {
                   description: description,
                   color: color,
                   postit: widget.postit,
-                  base64Image: base64Image,
+                  base64Image: presenter.base64Image,
+                  postitMarkers: presenter.postitMarkers,
                 );
                 Modular.to.pop();
               },
@@ -80,6 +93,20 @@ class _State extends State<CrudPostitPage> {
           padding: EdgeInsets.all(10),
           child: ListView(
             children: <Widget>[
+              Container(
+                child: SingleChildScrollView(
+                  scrollDirection: Axis.horizontal,
+                  padding: EdgeInsets.fromLTRB(10, 0, 10, 10),
+                  child: Row(
+                    children: presenter.postitMarkers.map<Card>((int markerId) {
+                      return Card(
+                          margin: EdgeInsets.all(8),
+                          child: Text(loggedUser.getMarkerTitleById(
+                              markerId: markerId)));
+                    }).toList(),
+                  ),
+                ),
+              ),
               Container(
                 color: Color(PostitColor.colors[color]['hex']),
                 padding: EdgeInsets.all(10),
@@ -108,7 +135,7 @@ class _State extends State<CrudPostitPage> {
                 padding: EdgeInsets.fromLTRB(10, 10, 10, 0),
                 child: TextFormField(
                   controller: descriptionController,
-                  maxLines: 20,
+                  maxLines: 16,
                   cursorColor: Colors.black,
                   style: TextStyle(
                       color: PostitColor.colors[color]['darkColor']
@@ -139,66 +166,51 @@ class _State extends State<CrudPostitPage> {
                 alignment: Alignment.center,
                 child: Column(
                   children: [
-                    widget.postit != null
+                    widget.postit?.image != null
                         ? Image.memory(
-                      ImagePickerUtils.getBytesImage(
-                          base64Image: base64Image),
-                    )
-                        : image == null
-                        ? Text('Nenhuma imagem selecionada.')
-                        : Image.file(
-                      image,
-                    ),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        RaisedButton(
-                          child: Icon(Icons.camera_alt_outlined),
-                          onPressed: () => ImagePickerUtils.getImageFile(
-                              imageSource: ImageSource.camera)
-                              .then((value) {
-                            setState(() {
-                              image = value;
-                              base64Image =
-                                  ImagePickerUtils.getBase64ImageFromFileImage(
-                                      pickedFile: value);
-                            });
-                          }),
-                        ),
-                        SizedBox(width: 20),
-                        RaisedButton(
-                          child: Icon(Icons.filter_outlined),
-                          onPressed: () => ImagePickerUtils.getImageFile(
-                              imageSource: ImageSource.gallery)
-                              .then((value) {
-                            setState(() {
-                              image = value;
-                              base64Image =
-                                  ImagePickerUtils.getBase64ImageFromFileImage(
-                                      pickedFile: value);
-                            });
-                          }),
-                        ),
-                      ],
-                    ),
+                            ImagePickerUtils.getBytesImage(
+                                base64Image: presenter.base64Image),
+                          )
+                        : presenter.image == null
+                            ? SizedBox.shrink()
+                            : Image.file(
+                                presenter.image,
+                              ),
                   ],
                 ),
               ),
             ],
           )),
       bottomNavigationBar: BottomAppBar(
-        child: Row(
-          children:
-          PostitColor.colors.keys.map<IconButton>((String listItemValue) {
-            return IconButton(
-                icon: Icon(Icons.check_circle),
-                color: Color(PostitColor.colors[listItemValue]['hex']),
-                onPressed: () {
-                  setState(() {
-                    color = listItemValue;
-                  });
-                });
-          }).toList(),
+        child: SingleChildScrollView(
+          scrollDirection: Axis.horizontal,
+          padding: EdgeInsets.fromLTRB(10, 0, 10, 10),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            children: [
+              CrudPostitSelectImageMenuWidget(presenter.setImageValue),
+              FlatButton(
+                  onPressed: () => {
+                        Modular.link.pushNamed(SelectMarkersPage.routeName,
+                            arguments: SelectMarkersPageArguments(
+                                presenter: presenter)),
+                      },
+                  child: Icon(Icons.label_important_outline_rounded)),
+              Row(
+                children: PostitColor.colors.keys
+                    .map<IconButton>((String listItemValue) {
+                  return IconButton(
+                      icon: Icon(Icons.circle),
+                      color: Color(PostitColor.colors[listItemValue]['hex']),
+                      onPressed: () {
+                        setState(() {
+                          color = listItemValue;
+                        });
+                      });
+                }).toList(),
+              ),
+            ],
+          ),
         ),
       ),
     );

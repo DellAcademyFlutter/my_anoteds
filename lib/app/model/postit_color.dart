@@ -7,5 +7,6 @@ class PostitColor {
     'verde': {'hex': 0xff008000, 'darkColor': true},
     'lavanda': {'hex':0xffe6e6fa, 'darkColor': false},
     'azul': {'hex': 0xff0000ff, 'darkColor': true},
+    'marrom': {'hex': 0xff654321, 'darkColor': false},
   };
 }

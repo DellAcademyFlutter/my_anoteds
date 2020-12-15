@@ -1,11 +1,11 @@
-import 'package:flutter/cupertino.dart';
 import 'package:my_anoteds/app/model/postit.dart';
+import 'package:flutter/cupertino.dart';
 
 import 'marker.dart';
 
 class User extends ChangeNotifier {
   // Construtor da classe
-  User({this.id, this.name, this.password, this.email, this.birth, this.postits});
+  User({this.id, this.name, this.password, this.email, this.birth});
 
   int id;
   String name;
@@ -13,7 +13,7 @@ class User extends ChangeNotifier {
   String email;
   String birth;
 
-  /// Serialização - Atribui os valores dos parametros de [User] dado um [Map] Jason.
+  /// Atribui os valores dos parametros de [User] dado um [Map] Jason.
   User.fromMap({Map<String, dynamic> map}) {
     id = map['id'];
     name = map['name'];
@@ -36,24 +36,19 @@ class User extends ChangeNotifier {
   setValues({@required User otherUser}){
     id = otherUser.id;
     name = otherUser.name;
-    password = otherUser.password;
     email = otherUser.email;
+    password = otherUser.password;
     birth = otherUser.birth;
   }
+
+
   // Atributos da classe
   List<Postit> postits;
   List<Marker> markers;
-  List<int> filters;
 
-  // Adiciona um Filtro
-  addFilter(int filterNumber) {
-    filters.add(filterNumber);
-
-    notifyListeners();
-  }
-  // Remove um Filtro
-  removeFilter(int filterNumber) {
-    filters.remove(filterNumber);
+  // Adiciona um Postit
+  setPostits({List<Postit> postits}) {
+    this.postits = postits;
 
     notifyListeners();
   }
@@ -98,5 +93,33 @@ class User extends ChangeNotifier {
     markers.removeAt(index);
 
     notifyListeners();
+  }
+
+  removeMarkerById({int id}){
+    for (var i=0; i<markers.length; i++){
+      if (markers[i].id == id){
+        markers.removeAt(i);
+      }
+    }
+
+    notifyListeners();
+  }
+
+  String getMarkerTitleById({int markerId}){
+    for (var i=0; i<markers.length; i++){
+      if (markers[i].id == markerId){
+        return markers[i].title;
+      }
+    }
+    return "NothingFound";
+  }
+
+  Marker getMarkerById({int id}){
+    for (var i=0; i<markers.length; i++){
+      if (markers[i].id == id){
+        return markers[i];
+      }
+    }
+    return null;
   }
 }

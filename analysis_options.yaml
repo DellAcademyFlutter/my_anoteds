@@ -25,7 +25,7 @@ linter:
     unnecessary_await_in_return: true
     unnecessary_string_interpolations: true
     prefer_final_locals: true
-    
+
     lines_longer_than_80_chars: false
     avoid_types_as_parameter_names: false
     use_function_type_syntax_for_parameters: false

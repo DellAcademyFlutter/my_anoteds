@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_modular/flutter_modular.dart';
-import 'package:my_anoteds/app/repositories/shared/themes/AppThemes.dart';
 import 'package:my_anoteds/app/repositories/shared/user_settings.dart';
+import 'package:my_anoteds/app/repositories/shared/themes/AppThemes.dart';
 
 class AppWidget extends StatelessWidget {
   @override

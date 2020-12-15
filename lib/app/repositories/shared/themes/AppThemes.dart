@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_modular/flutter_modular.dart';
-
-import '../user_settings.dart';
+import 'package:my_anoteds/app/repositories/shared/user_settings.dart';
 
 enum AppThemesEnum { lightTheme, darkTheme, highContrast, system }
 
@@ -28,18 +27,21 @@ class ThemeCollection {
 
     return ThemeData(
       appBarTheme: AppBarTheme(
+        iconTheme: IconThemeData(
+            color: Colors.black
+        ),
         textTheme: TextTheme(
           headline6: TextStyle(
               fontSize: (settings.fontSize),
               color: Colors.black87,
               fontWeight: FontWeight.bold),
         ),
-        color: Colors.blue,
+        color: Colors.amber,
       ),
       brightness: Brightness.light,
       cardColor: Colors.grey[300],
       buttonTheme: ButtonThemeData(
-        buttonColor: Colors.blueAccent,
+        buttonColor: Colors.amber,
         shape: RoundedRectangleBorder(),
         textTheme: ButtonTextTheme.primary,
       ),
@@ -50,9 +52,9 @@ class ThemeCollection {
               color: Colors.black87,
               fontWeight: FontWeight.bold),
           bodyText2: TextStyle(
-              fontSize: (settings.fontSize),
-              color: Colors.black87,
-              fontWeight: FontWeight.bold),
+            fontSize: (settings.fontSize),
+            color: Colors.black87,
+          ),
           subtitle1: TextStyle(
               fontSize: (settings.fontSize),
               color: Colors.black87,
@@ -73,13 +75,16 @@ class ThemeCollection {
 
     return ThemeData(
       appBarTheme: AppBarTheme(
+        iconTheme: IconThemeData(
+            color: Colors.black
+        ),
         textTheme: TextTheme(
           headline6: TextStyle(
               fontSize: (settings.fontSize),
-              color: Colors.white24,
+              color: Colors.black,
               fontWeight: FontWeight.bold),
         ),
-        color: Colors.blue,
+        color: Colors.amber,
       ),
       brightness: Brightness.dark,
       cardColor: Colors.white60,
@@ -118,16 +123,22 @@ class ThemeCollection {
 
     return ThemeData(
         appBarTheme: AppBarTheme(
+          iconTheme: IconThemeData(
+              color: Colors.black
+          ),
           textTheme: TextTheme(
             headline6: TextStyle(
                 fontSize: (10 + settings.fontSize),
-                color: Colors.white,
+                color: Colors.black,
                 fontWeight: FontWeight.bold),
           ),
           color: Colors.amber,
         ),
         brightness: Brightness.dark,
         cardColor: Colors.black54,
+        floatingActionButtonTheme: FloatingActionButtonThemeData(
+          backgroundColor: Colors.amber,
+        ),
         buttonTheme: ButtonThemeData(
           buttonColor: Colors.yellow,
           shape: RoundedRectangleBorder(),
@@ -141,11 +152,11 @@ class ThemeCollection {
                 fontWeight: FontWeight.bold),
             bodyText2: TextStyle(
                 fontSize: (settings.fontSize),
-                color: Colors.white,
+                color: Colors.grey,
                 fontWeight: FontWeight.bold),
             subtitle1: TextStyle(
                 fontSize: (settings.fontSize),
-                color: Colors.white,
+                color: Colors.white70,
                 fontWeight: FontWeight.bold),
             subtitle2: TextStyle(
               fontSize: (settings.fontSize - 5),
@@ -153,7 +164,7 @@ class ThemeCollection {
             ),
             caption: TextStyle(
               fontSize: (settings.fontSize - 5),
-              color: Colors.white60,
+              color: Colors.white70,
             )));
   }
 }
