@@ -17,7 +17,7 @@ class LocalNotification {
     //final notificationAppLaunchDetails =  await flutterLocalNotificationsPlugin.getNotificationAppLaunchDetails();
 
     const initializationSettingsAndroid =
-        AndroidInitializationSettings('@mipmap/ic_launcher');
+        AndroidInitializationSettings('@mipmap/ic_my_anoteds');
 
     // Configuracoes em iOS
     final initializationSettingsIOS = IOSInitializationSettings(

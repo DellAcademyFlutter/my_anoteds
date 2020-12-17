@@ -36,7 +36,11 @@ class _SplashPageState extends State<SplashPage> {
       body: Container(
         alignment: Alignment.center,
         child: Center(
-          child: Text('Initial Splash'),
+          child: Column(
+            children: [
+              Text('Initial Splash'),
+            ],
+          ),
         ),
       ),
     );
