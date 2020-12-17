@@ -66,12 +66,20 @@ class User extends ChangeNotifier {
     postits[index].description = newPostit.description;
     postits[index].color = newPostit.color;
     postits[index].isPinned = newPostit.isPinned;
+    postits[index].image = newPostit.image;
 
     notifyListeners();
   }
 
   removePostit({int index}){
     postits.removeAt(index);
+
+    notifyListeners();
+  }
+
+  // Adiciona um Postit
+  setMarkers({List<Marker> markers}) {
+    this.markers = markers;
 
     notifyListeners();
   }
@@ -99,10 +107,9 @@ class User extends ChangeNotifier {
     for (var i=0; i<markers.length; i++){
       if (markers[i].id == id){
         markers.removeAt(i);
+        notifyListeners();
       }
     }
-
-    notifyListeners();
   }
 
   String getMarkerTitleById({int markerId}){

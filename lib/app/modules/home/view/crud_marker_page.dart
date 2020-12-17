@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_modular/flutter_modular.dart';
 import 'package:my_anoteds/app/controller/marker_controller.dart';
 import 'package:my_anoteds/app/data/marker_dao.dart';
-import 'package:my_anoteds/app/model/marker.dart';
 import 'package:my_anoteds/app/model/user.dart';
 
 class CrudMarkerPage extends StatefulWidget {
@@ -21,8 +20,11 @@ class _State extends State<CrudMarkerPage> {
   final markerController = Modular.get<MarkerController>();
   String title;
 
-  callbackRefresh() {
-    setState(() {});
+  @override
+  void initState() {
+    super.initState();
+
+    markerController.initializeUserMarkers(loggedUser: loggedUser);
   }
 
   @override
@@ -34,7 +36,8 @@ class _State extends State<CrudMarkerPage> {
       ),
       body: Container(
         alignment: Alignment.topCenter,
-        child: Column(
+        child: ListView(
+          scrollDirection: Axis.vertical,
           children: [
             ListTile(
               leading: Icon(Icons.bookmarks_sharp),
@@ -57,33 +60,17 @@ class _State extends State<CrudMarkerPage> {
               ),
             ),
             SizedBox(height: 10),
-            Expanded(
-              child: SizedBox(
-                height: 200,
-                child: FutureBuilder(
-                    future: markerDao.getMarkers(loggedUser.id),
-                    builder: (BuildContext context,
-                        AsyncSnapshot<List<Marker>> snapshot) {
-                      return snapshot.hasData
-                          ? Consumer<User>(builder: (context, value) {
-                              loggedUser.markers = snapshot.data;
-                              return ListView.builder(
-                                scrollDirection: Axis.vertical,
-                                shrinkWrap: true,
-                                itemCount: loggedUser.markers.length,
-                                itemBuilder:
-                                    (BuildContext context, int index) =>
-                                        CrudMarkerWidget(
-                                  index: index,
-                                  markerTitle: title,
-                                  callbackRefresh: callbackRefresh,
-                                ),
-                              );
-                            })
-                          : CircularProgressIndicator();
-                    }),
-              ),
-            ),
+            Consumer<User>(builder: (context, value) {
+              return ListView.builder(
+                scrollDirection: Axis.vertical,
+                shrinkWrap: true,
+                itemCount: loggedUser.markers.length,
+                itemBuilder: (BuildContext context, int index) =>
+                    CrudMarkerWidget(
+                      index: index,
+                    ),
+              );
+            }),
           ],
         ),
       ),
@@ -92,10 +79,8 @@ class _State extends State<CrudMarkerPage> {
 }
 
 class CrudMarkerWidget extends StatefulWidget {
-  CrudMarkerWidget({this.index, this.markerTitle, this.callbackRefresh});
+  CrudMarkerWidget({this.index});
   final int index;
-  final String markerTitle;
-  final Function callbackRefresh;
 
   @override
   _CrudMarkerWidgetState createState() => _CrudMarkerWidgetState();
@@ -105,8 +90,8 @@ class _CrudMarkerWidgetState extends State<CrudMarkerWidget> {
   final loggedUser = Modular.get<User>();
   final markerController = Modular.get<MarkerController>();
   TextEditingController titleController = TextEditingController();
-  bool isEditing;
   String title;
+  bool isEditing;
 
   @override
   void initState() {
@@ -123,34 +108,33 @@ class _CrudMarkerWidgetState extends State<CrudMarkerWidget> {
         leading: Icon(Icons.label),
         title: isEditing
             ? TextFormField(
-                controller: titleController,
-                onChanged: (valor) => setState(() {
-                  title = valor;
-                }),
-              )
+          controller: titleController,
+          onChanged: (valor) => setState(() {
+            loggedUser.markers[widget.index].title = valor;
+            title = valor;
+          }),
+        )
             : Text(
-                title,
-              ),
+          loggedUser.markers[widget.index].title,
+        ),
         trailing: Row(
           mainAxisSize: MainAxisSize.min,
           children: [
             IconButton(
                 icon: Icon(Icons.edit),
                 onPressed: () => setState(() {
-                      isEditing = !isEditing;
-                      if (isEditing == false) {
-                        final newMarker = loggedUser.markers[widget.index];
-                        newMarker.title = title;
-                        markerController.updateMarker(
-                            index: widget.index, newMarker: newMarker);
-                      }
-                    })),
+                  isEditing = !isEditing;
+                  if (isEditing == false) {
+                    final newMarker = loggedUser.markers[widget.index];
+                    newMarker.title = title;
+                    markerController.updateMarker(
+                        index: widget.index, newMarker: newMarker);
+                  }
+                })),
             IconButton(
                 icon: Icon(Icons.delete),
                 onPressed: () {
-                  markerController.removeMarker(
-                      id: loggedUser.markers[widget.index].id);
-                  widget.callbackRefresh();
+                  markerController.removeMarker(index: widget.index);
                 }),
           ],
         ),

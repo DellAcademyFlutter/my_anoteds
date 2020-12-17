@@ -7,6 +7,7 @@ class DbHelper {
   static const TABLE_USERS_NAME = "users";
   static const TABLE_USERS_MARKER = "marker";
   static const TABLE_USERS_MARKING = "marking";
+  static const TABLE_USERS_CONFIGS = "configs";
 
   static const SCRIPT_CREATE_TABLE_POSTITS_SQL =
       "CREATE TABLE IF NOT EXISTS postits (id INTEGER NOT NULL, title TEXT NOT NULL, "
@@ -26,6 +27,9 @@ class DbHelper {
       "postitId INTEGER NOT NULL, markerId INTEGER NOT NULL, FOREIGN KEY(userId) REFERENCES users(id), "
       " FOREIGN KEY(markerId) REFERENCES marker(id),  FOREIGN KEY(postitId) REFERENCES postits(id))";
 
+  static const SCRIPT_CREATE_TABLE_CONFIGS =
+      "CREATE TABLE IF NOT EXISTS configs (loggedUserId TEXT)";
+
   static Future<Database> getDatabase() async {
     return openDatabase(
       join(await getDatabasesPath(), DATABASE_NAME),
@@ -34,6 +38,7 @@ class DbHelper {
         await db.execute(SCRIPT_CREATE_TABLE_USERS_SQL);
         await db.execute(SCRIPT_CREATE_TABLE_MARKER_SQL);
         await db.execute(SCRIPT_CREATE_TABLE_MARKING_SQL);
+        await db.execute(SCRIPT_CREATE_TABLE_CONFIGS);
       },
       version: 1,
     );

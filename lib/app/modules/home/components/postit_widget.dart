@@ -5,7 +5,9 @@ import 'package:my_anoteds/app/controller/postit_controller.dart';
 import 'package:my_anoteds/app/model/postit_color.dart';
 import 'package:my_anoteds/app/model/user.dart';
 import 'package:my_anoteds/app/modules/home/view/crud_postit_page.dart';
+import 'package:my_anoteds/app/repositories/local/LocalNotification/local_notification.dart';
 import 'package:my_anoteds/app/repositories/shared/Utils/image_picker_utils.dart';
+import 'package:my_anoteds/app/repositories/shared/Utils/utils.dart';
 
 class PostitWidget extends StatelessWidget {
   PostitWidget({this.index});
@@ -20,6 +22,15 @@ class PostitWidget extends StatelessWidget {
       onTap: () {
         Modular.link.pushNamed(CrudPostitPage.routeName,
             arguments: CrudPostitPageArguments(postit: user.postits[index]));
+      },
+      onLongPress: () async {
+        Utils.showAlertDialog(context, "Lembrete!",
+            "Este Postit será lembrado em 10 segundos", "Ok!");
+        await LocalNotification.zonedScheduleNotification(
+            title: 'Lembrete MyAnoteds!',
+            duration: const Duration(seconds: 10),
+            body:
+            '${Utils.captalize(user.name)}, lembre-se de seu postit: ${user.postits[index].title}');
       },
       child: Dismissible(
         key: UniqueKey(),

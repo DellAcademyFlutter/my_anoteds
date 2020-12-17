@@ -184,7 +184,6 @@ class _State extends State<CrudPostitPage> implements ICrudPostitPresenter {
       bottomNavigationBar: BottomAppBar(
         child: SingleChildScrollView(
           scrollDirection: Axis.horizontal,
-          padding: EdgeInsets.fromLTRB(10, 0, 10, 10),
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             children: [

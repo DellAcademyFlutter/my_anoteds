@@ -6,7 +6,7 @@ import 'package:my_anoteds/app/data/postit_dao.dart';
 import 'package:my_anoteds/app/model/marking.dart';
 import 'package:my_anoteds/app/model/postit.dart';
 import 'package:my_anoteds/app/model/user.dart';
-import 'package:my_anoteds/app/modules/login/view/login_page.dart';
+import 'file:///E:/GitHub/my_anoteds/lib/app/modules/login/login_page.dart';
 
 class HomeController {
   /// Salva um [Postit], seja adicao ou edicao.
