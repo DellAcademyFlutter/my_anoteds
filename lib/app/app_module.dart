@@ -5,15 +5,20 @@ import 'package:my_anoteds/app/app_widget.dart';
 import 'package:my_anoteds/app/controller/marking_controller.dart';
 import 'package:my_anoteds/app/data/marking_dao.dart';
 import 'package:my_anoteds/app/repositories/shared/user_settings.dart';
-import 'controller/marker_controller.dart';
-import 'controller/postit_controller.dart';
-import 'controller/user_controller.dart';
-import 'data/marker_dao.dart';
-import 'data/postit_dao.dart';
-import 'data/users_dao.dart';
-import 'model/user.dart';
-import 'modules/home/home_module.dart';
-import 'modules/login/login_module.dart';
+import 'package:my_anoteds/app/controller/marker_controller.dart';
+import 'package:my_anoteds/app/controller/postit_controller.dart';
+import 'package:my_anoteds/app/controller/user_controller.dart';
+import 'package:my_anoteds/app/data/marker_dao.dart';
+import 'package:my_anoteds/app/data/postit_dao.dart';
+import 'package:my_anoteds/app/data/users_dao.dart';
+import 'package:my_anoteds/app/model/user.dart';
+import 'package:my_anoteds/app/modules/home/home_module.dart';
+import 'package:my_anoteds/app/modules/home/view/home_page.dart';
+import 'package:my_anoteds/app/modules/login/login_controller.dart';
+import 'package:my_anoteds/app/modules/login/login_module.dart';
+import 'package:my_anoteds/app/modules/login/view/login_page.dart';
+import 'package:my_anoteds/app/modules/splash_screen/splash_screen_module.dart';
+import 'package:my_anoteds/app/modules/splash_screen/splash_screen_page.dart';
 
 class AppModule extends MainModule {
   @override
@@ -30,6 +35,7 @@ class AppModule extends MainModule {
     Bind((i) => MarkingDao()),
     Bind((i) => User()),
     Bind((i) => UserSettings()),
+    Bind((i) => LoginController()),
   ];
 
   @override
@@ -39,8 +45,8 @@ class AppModule extends MainModule {
   @override
   // Modulos associados a este aplicativo
   List<ModularRouter> get routers => [
-    ModularRouter('/', module: LoginModule()),
-    ModularRouter('/home', module: HomeModule()),
+    ModularRouter(SplashPage.routeName, module: SplashModule()),
+    ModularRouter(LoginPage.routeName, module: LoginModule()),
+    ModularRouter(HomePage.routeName, module: HomeModule()),
   ];
-
 }

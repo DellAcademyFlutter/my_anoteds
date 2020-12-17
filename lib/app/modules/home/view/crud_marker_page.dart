@@ -36,7 +36,8 @@ class _State extends State<CrudMarkerPage> {
       ),
       body: Container(
         alignment: Alignment.topCenter,
-        child: Column(
+        child: ListView(
+          scrollDirection: Axis.vertical,
           children: [
             ListTile(
               leading: Icon(Icons.bookmarks_sharp),
@@ -59,21 +60,17 @@ class _State extends State<CrudMarkerPage> {
               ),
             ),
             SizedBox(height: 10),
-            Expanded(
-              child: SizedBox(
-                  height: 200,
-                  child: Consumer<User>(builder: (context, value) {
-                    return ListView.builder(
-                      scrollDirection: Axis.vertical,
-                      shrinkWrap: true,
-                      itemCount: loggedUser.markers.length,
-                      itemBuilder: (BuildContext context, int index) =>
-                          CrudMarkerWidget(
-                        index: index,
-                      ),
-                    );
-                  })),
-            ),
+            Consumer<User>(builder: (context, value) {
+              return ListView.builder(
+                scrollDirection: Axis.vertical,
+                shrinkWrap: true,
+                itemCount: loggedUser.markers.length,
+                itemBuilder: (BuildContext context, int index) =>
+                    CrudMarkerWidget(
+                  index: index,
+                ),
+              );
+            }),
           ],
         ),
       ),

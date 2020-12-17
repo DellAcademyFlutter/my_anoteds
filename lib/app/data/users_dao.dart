@@ -72,4 +72,51 @@ class UserDao {
       return <User>[];
     }
   }
+
+  /// Insere um [user] em sua tabela.
+  Future insertLoggedUser(String name) async {
+    try {
+      final db = await DbHelper.getDatabase();
+      final data = <String, dynamic>{};
+      data['loggedUserId'] = name;
+
+      await db.insert(
+        DbHelper.TABLE_USERS_CONFIGS,
+        data,
+        conflictAlgorithm: ConflictAlgorithm.replace,
+      );
+    } catch (ex) {
+      debugPrint("DBEXCEPTION: ${ex}");
+    }
+  }
+
+  /// Deleta um [loggedUser]
+  Future<void> deleteLoggedUser(String name) async {
+    final db = await DbHelper.getDatabase();
+
+    await db.delete(
+      DbHelper.TABLE_USERS_CONFIGS,
+      where: "loggedUserId = ?",
+      whereArgs: [name],
+    );
+  }
+
+  /// Retorna uma [User], se ele estiver na tabela de usuario logado.
+  Future<User> getLoggedUser() async {
+    final db = await DbHelper.getDatabase();
+    final tableName = DbHelper.TABLE_USERS_CONFIGS;
+    final tableName2 = DbHelper.TABLE_USERS_NAME;
+    final result = await db.rawQuery("SELECT * FROM '$tableName'");
+
+    if (result.isNotEmpty) {
+      final map = (result.first);
+      final String username = map['loggedUserId'];
+
+      final result2 = await db
+          .rawQuery("SELECT * FROM '$tableName2' WHERE name = '$username'");
+      return User.fromMap(map: result2.first);
+    }
+
+    return null;
+  }
 }

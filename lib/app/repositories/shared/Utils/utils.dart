@@ -30,14 +30,19 @@ class Utils {
       },
     );
   }
-}
 
-/// Este metodo remove o focus de um widget.
-removeFocus({BuildContext context}) {
-  final currentFocus = FocusScope.of(context);
+  /// Este metodo remove o focus de um widget.
+  static removeFocus({BuildContext context}) {
+    final currentFocus = FocusScope.of(context);
 
-  // Remove o focus do widget atual
-  if (!currentFocus.hasPrimaryFocus) {
-    currentFocus.unfocus();
+    // Remove o focus do widget atual
+    if (!currentFocus.hasPrimaryFocus) {
+      currentFocus.unfocus();
+    }
+  }
+
+  /// Este metodo retorna uma string capitalizada.
+  static String captalize(String str) {
+    return "${str[0].toUpperCase()}${str.substring(1)}";
   }
 }

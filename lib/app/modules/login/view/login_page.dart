@@ -1,12 +1,13 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_modular/flutter_modular.dart';
+import 'package:my_anoteds/app/controller/user_controller.dart';
 import 'package:my_anoteds/app/modules/login/view/signup_page.dart';
 
 import '../login_controller.dart';
 
 class LoginPage extends StatefulWidget {
-  static const routeName = "/";
+  static const routeName = "/login";
 
   @override
   State<StatefulWidget> createState() => _State();
@@ -15,6 +16,7 @@ class LoginPage extends StatefulWidget {
 class _State extends State<LoginPage> {
   final _formKey = GlobalKey<FormState>();
   final loginController = Modular.get<LoginController>();
+  final userController = Modular.get<UserController>();
   TextEditingController nameController = TextEditingController();
   TextEditingController passControleer = TextEditingController();
   String userName;
@@ -92,6 +94,7 @@ class _State extends State<LoginPage> {
                   onPressed: () {
                     if (_formKey.currentState.validate()) {
                       loginController.signIn(context: context, name: userName, password: password);
+                      userController.saveLoggedUser(name: userName);
                     }
                   },
                 ),

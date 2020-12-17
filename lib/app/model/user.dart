@@ -66,6 +66,7 @@ class User extends ChangeNotifier {
     postits[index].description = newPostit.description;
     postits[index].color = newPostit.color;
     postits[index].isPinned = newPostit.isPinned;
+    postits[index].image = newPostit.image;
 
     notifyListeners();
   }

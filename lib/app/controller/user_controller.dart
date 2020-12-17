@@ -21,4 +21,28 @@ class UserController {
 
     addUser(user: newUser);
   }
+
+  /// Salva um [User] em sua tabela no Banco de Dados.
+  saveLoggedUser({String name}) {
+    userDao.insertLoggedUser(name);
+  }
+
+  /// Salva um [User] em sua tabela no Banco de Dados.
+  deleteLoggedUser({String name}) {
+    userDao.deleteLoggedUser(name);
+  }
+
+  Future<User> getLoggedUser() async {
+    final userDao = Modular.get<UserDao>();
+    User loggedUser;
+
+    await userDao.getLoggedUser().then((value) {
+      loggedUser = value;
+      if (loggedUser != null) {
+        return loggedUser;
+      } else {
+        return null;
+      }
+    });
+  }
 }
