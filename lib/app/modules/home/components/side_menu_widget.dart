@@ -20,13 +20,19 @@ class SideMenuWidget extends StatelessWidget {
         padding: EdgeInsets.zero,
         children: <Widget>[
           DrawerHeader(
-            child: null,
-            decoration: BoxDecoration(
+              child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Icon(Icons.bookmark),
+              Text("My anoteds app"),
+            ],
+          )
+              /*decoration: BoxDecoration(
                 image: DecorationImage(
                     fit: BoxFit.fill,
                     image: NetworkImage(
-                        "https://vdmedia.elpais.com/elpaistop/20202/29/2019121992148149_1582990136_asset_still.png"))),
-          ),
+                        "https://vdmedia.elpais.com/elpaistop/20202/29/2019121992148149_1582990136_asset_still.png"))),*/
+              ),
           ListTile(
               leading: Icon(Icons.settings),
               title: Text('configurações'),

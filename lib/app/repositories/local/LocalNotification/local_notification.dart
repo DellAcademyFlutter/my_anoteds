@@ -2,7 +2,6 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:my_anoteds/app/repositories/local/LocalNotification/timeZoneHelper.dart';
 import 'package:rxdart/subjects.dart';
-import 'package:timezone/timezone.dart' as tz;
 
 final flutterLocalNotificationsPlugin = FlutterLocalNotificationsPlugin();
 final didReceiveLocalNotificationSubject =
@@ -52,20 +51,64 @@ class LocalNotification {
     });
   }
 
-  /// Agenda uma notificacao.
-  static Future<void> zonedScheduleNotification(
-      {String title, String body, Duration duration}) async {
+  /// Agenda uma notificacao com um timer dado
+  static Future<void> scheduleTimedNotification(
+      {int id, String title, String body, Duration duration}) async {
     await flutterLocalNotificationsPlugin.zonedSchedule(
-        0,
+        id,
         title,
         body,
-        tz.TZDateTime.now(tz.local).add(duration),
+        TimeZoneHelper.nowPlusDuration(duration: duration),
         const NotificationDetails(
             android: AndroidNotificationDetails('your channel id',
                 'your channel name', 'your channel description')),
         androidAllowWhileIdle: true,
         uiLocalNotificationDateInterpretation:
             UILocalNotificationDateInterpretation.absoluteTime);
+  }
+
+  /// Agenda uma notificacao para a proxima vez que uma hora ocorrer
+  static Future<void> scheduleDailyNotificationForNextTime(
+      {int id, String title, String body, int hour, int minute}) async {
+    await flutterLocalNotificationsPlugin.zonedSchedule(
+        id,
+        title,
+        body,
+        TimeZoneHelper.nextInstanceOf(hour: hour, minute: minute),
+        const NotificationDetails(
+          android: AndroidNotificationDetails(
+              'daily notification channel id',
+              'daily notification channel name',
+              'daily notification description'),
+        ),
+        androidAllowWhileIdle: true,
+        uiLocalNotificationDateInterpretation:
+            UILocalNotificationDateInterpretation.absoluteTime,
+        matchDateTimeComponents: DateTimeComponents.time);
+  }
+
+  static Future<void> scheduleNotificationForDay(
+      {int id,
+      String title,
+      String body,
+      int day,
+      int hour,
+      int minute}) async {
+    await flutterLocalNotificationsPlugin.zonedSchedule(
+        id,
+        title,
+        body,
+        TimeZoneHelper.nextInstanceOfDay(day: day, hour: hour, minute: minute),
+        const NotificationDetails(
+          android: AndroidNotificationDetails(
+              'weekly notification channel id',
+              'weekly notification channel name',
+              'weekly notificationdescription'),
+        ),
+        androidAllowWhileIdle: true,
+        uiLocalNotificationDateInterpretation:
+            UILocalNotificationDateInterpretation.absoluteTime,
+        matchDateTimeComponents: DateTimeComponents.dayOfWeekAndTime);
   }
 
   /// Mostra diretamente uma notificacao
@@ -77,6 +120,11 @@ class LocalNotification {
         NotificationDetails(android: androidPlatformChannelSpecifics);
     await flutterLocalNotificationsPlugin
         .show(0, title, body, platformChannelSpecifics, payload: 'item x');
+  }
+
+  /// Remove a notificacao de via [id].
+  Future<void> cancelNotification({int id}) async {
+    await flutterLocalNotificationsPlugin.cancel(id);
   }
 }
 

@@ -1,5 +1,6 @@
 import 'package:flutter_modular/flutter_modular.dart';
 import 'package:my_anoteds/app/modules/home/view/crud_marker_page.dart';
+import 'package:my_anoteds/app/modules/home/view/reminder_page.dart';
 import 'package:my_anoteds/app/modules/home/view/select_markers_page.dart';
 import 'package:my_anoteds/app/modules/home/view/user_settings_page.dart';
 import 'home_controller.dart';
@@ -41,6 +42,12 @@ class HomeModule extends ChildModule {
           SelectMarkersPage.routeName,
           child: (_, args) => SelectMarkersPage(
             presenter: args.data.presenter,
+          ),
+        ),
+        ModularRouter(
+          ReminderPage.routeName,
+          child: (_, args) => ReminderPage(
+            postit: args.data.postit,
           ),
         ),
       ];
