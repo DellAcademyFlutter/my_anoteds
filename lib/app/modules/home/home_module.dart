@@ -1,5 +1,6 @@
 import 'package:flutter_modular/flutter_modular.dart';
 import 'package:my_anoteds/app/modules/home/view/crud_marker_page.dart';
+import 'package:my_anoteds/app/modules/home/view/reminder_page.dart';
 import 'package:my_anoteds/app/modules/home/view/select_markers_page.dart';
 import 'package:my_anoteds/app/modules/home/view/user_settings_page.dart';
 import 'home_controller.dart';
@@ -8,13 +9,11 @@ import 'home_page.dart';
 
 class HomeModule extends ChildModule {
   @override
-  // TODO: implement binds
   List<Bind> get binds => [
         Bind((i) => HomeController()),
       ];
 
   @override
-  // TODO: implement routers
   List<ModularRouter> get routers => [
         ModularRouter<String>(
           HomePage.routeName,
@@ -41,6 +40,12 @@ class HomeModule extends ChildModule {
           SelectMarkersPage.routeName,
           child: (_, args) => SelectMarkersPage(
             presenter: args.data.presenter,
+          ),
+        ),
+        ModularRouter(
+          ReminderPage.routeName,
+          child: (_, args) => ReminderPage(
+            postit: args.data.postit,
           ),
         ),
       ];

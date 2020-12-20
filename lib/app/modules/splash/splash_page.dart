@@ -33,10 +33,16 @@ class _SplashPageState extends State<SplashPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Colors.amber,
       body: Container(
         alignment: Alignment.center,
-        child: Center(
-          child: Text('Initial Splash'),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
+            Icon(Icons.filter, size: 80),
+            Text('MyAnnoteds'),
+          ],
         ),
       ),
     );

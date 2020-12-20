@@ -36,7 +36,7 @@ class _HomePageState extends State<HomePage> {
       child: Scaffold(
         drawer: SideMenuWidget(),
         appBar: AppBar(
-          title: Text("Anotadas de ${loggedUser.name ?? ""}"),
+          title: Text("Anotadas de: ${loggedUser.name ?? ""}"),
           centerTitle: true,
         ),
         body: Column(

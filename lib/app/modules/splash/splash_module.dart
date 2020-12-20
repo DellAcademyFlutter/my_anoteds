@@ -1,5 +1,9 @@
 import 'package:flutter_modular/flutter_modular.dart';
+import 'package:my_anoteds/app/modules/home/view/crud_marker_page.dart';
 import 'package:my_anoteds/app/modules/home/view/crud_postit_page.dart';
+import 'package:my_anoteds/app/modules/home/view/reminder_page.dart';
+import 'package:my_anoteds/app/modules/home/view/select_markers_page.dart';
+import 'package:my_anoteds/app/modules/home/view/user_settings_page.dart';
 import 'package:my_anoteds/app/modules/login/view/signup_page.dart';
 import 'package:my_anoteds/app/modules/splash/splash_controller.dart';
 import 'package:my_anoteds/app/modules/splash/splash_page.dart';
@@ -28,6 +32,27 @@ class SplashModule extends ChildModule {
       SignUpPage.routeName,
       child: (_, args) => SignUpPage(),
       transition: TransitionType.fadeIn,
+    ),
+    ModularRouter(
+      ReminderPage.routeName,
+      child: (_, args) => ReminderPage(
+        postit: args.data.postit,
+      ),
+    ),
+    ModularRouter(
+      UserSettingsPage.routeName,
+      child: (_, args) => UserSettingsPage(),
+    ),
+    ModularRouter(
+      CrudMarkerPage.routeName,
+      child: (_, args) => CrudMarkerPage(),
+      transition: TransitionType.leftToRightWithFade,
+    ),
+    ModularRouter(
+      SelectMarkersPage.routeName,
+      child: (_, args) => SelectMarkersPage(
+        presenter: args.data.presenter,
+      ),
     ),
   ];
 

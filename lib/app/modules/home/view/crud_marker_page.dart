@@ -60,17 +60,22 @@ class _State extends State<CrudMarkerPage> {
               ),
             ),
             SizedBox(height: 10),
-            Consumer<User>(builder: (context, value) {
-              return ListView.builder(
-                scrollDirection: Axis.vertical,
-                shrinkWrap: true,
-                itemCount: loggedUser.markers.length,
-                itemBuilder: (BuildContext context, int index) =>
-                    CrudMarkerWidget(
-                      index: index,
-                    ),
-              );
-            }),
+            Expanded(
+              child: SizedBox(
+                height: 200,
+                child: Consumer<User>(builder: (context, value) {
+                  return ListView.builder(
+                    scrollDirection: Axis.vertical,
+                    shrinkWrap: true,
+                    itemCount: loggedUser.markers.length,
+                    itemBuilder: (BuildContext context, int index) =>
+                        CrudMarkerWidget(
+                          index: index,
+                        ),
+                  );
+                }),
+              ),
+            ),
           ],
         ),
       ),

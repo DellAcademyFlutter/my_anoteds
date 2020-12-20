@@ -13,7 +13,6 @@ class SideMenuWidget extends StatelessWidget {
   final userController = Modular.get<UserController>();
   final loggedUser = Modular.get<User>();
 
-
   @override
   Widget build(BuildContext context) {
     return Drawer(
@@ -21,16 +20,21 @@ class SideMenuWidget extends StatelessWidget {
         padding: EdgeInsets.zero,
         children: <Widget>[
           DrawerHeader(
-            child: null,
-            decoration: BoxDecoration(
-                image: DecorationImage(
-                    fit: BoxFit.fill,
-                    image: NetworkImage(
-                        "https://vdmedia.elpais.com/elpaistop/20202/29/2019121992148149_1582990136_asset_still.png"))),
+            child: Container(
+              alignment: Alignment.center,
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  Icon(Icons.filter, size: 80),
+                  Text('MyAnnoteds'),
+                ],
+              ),
+            ),
           ),
           ListTile(
               leading: Icon(Icons.settings),
-              title: Text('configurações'),
+              title: Text('Configurações'),
               onTap: () {
                 Modular.to.pop();
                 Modular.link.pushNamed(UserSettingsPage.routeName);
