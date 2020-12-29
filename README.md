@@ -32,5 +32,10 @@ Caso não esteja, configure seu smartphone:
 ![picture alt](screenshots_readme/MyAnoteds_4_filtro_postit.jpg "Postits filtrados")
 ![picture alt](screenshots_readme/MyAnoteds_5_lembrete.jpg "Tela de configuracao de lembrete")
 
+## Modelo Relacional
+Modelo relacional utilizado para o Banco de Dados (SQLite).
+
+![picture alt](screenshots_readme/MyAnoteds_modeloRelacional.jpg "Modelo Relacional")
+
  
  
