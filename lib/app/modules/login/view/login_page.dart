@@ -1,10 +1,10 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_modular/flutter_modular.dart';
-import 'package:my_anoteds/app/controller/user_controller.dart';
 import 'package:my_anoteds/app/modules/login/view/signup_page.dart';
 
-import 'login_controller.dart';
+import '../../../app_controller.dart';
+import '../login_controller.dart';
 
 class LoginPage extends StatefulWidget {
   static const routeName = "/login";
@@ -15,8 +15,8 @@ class LoginPage extends StatefulWidget {
 
 class _State extends State<LoginPage> {
   final _formKey = GlobalKey<FormState>();
-  final userController = Modular.get<UserController>();
   final loginController = Modular.get<LoginController>();
+  final appController = Modular.get<AppController>();
   TextEditingController nameController = TextEditingController();
   TextEditingController passControleer = TextEditingController();
   String userName;
@@ -40,9 +40,8 @@ class _State extends State<LoginPage> {
                   child: Center(
                     child: Text(
                       'Fazer Login',
-                      style: TextStyle(
-                          fontWeight: FontWeight.w500,
-                          fontSize: 30),
+                      style:
+                          TextStyle(fontWeight: FontWeight.w500, fontSize: 30),
                     ),
                   )),
               Container(
@@ -93,8 +92,9 @@ class _State extends State<LoginPage> {
                   child: Text('Entrar'),
                   onPressed: () {
                     if (_formKey.currentState.validate()) {
-                      loginController.signIn(context: context, name: userName, password: password);
-                      userController.saveLoggedUser(name: userName);
+                      loginController.signIn(
+                          context: context, name: userName, password: password);
+                      appController.saveLoggedUser(name: userName);
                     }
                   },
                 ),

@@ -80,8 +80,11 @@ class UserDao {
       final data = <String, dynamic>{};
       data['loggedUserId'] = name;
 
-      await db.insert(DbHelper.TABLE_USERS_CONFIGS, data,
-          conflictAlgorithm: ConflictAlgorithm.replace);
+      await db.insert(
+        DbHelper.TABLE_USERS_CONFIGS,
+        data,
+        conflictAlgorithm: ConflictAlgorithm.replace,
+      );
     } catch (ex) {
       debugPrint("DBEXCEPTION: ${ex}");
     }

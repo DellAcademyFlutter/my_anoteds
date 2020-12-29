@@ -63,7 +63,7 @@ class PostitDao {
       }
       return userPostits;
     } catch (ex) {
-      print(ex);
+      //print(ex);
       return <Postit>[];
     }
   }
@@ -93,7 +93,7 @@ class PostitDao {
       }
       return userPostits;
     } catch (ex) {
-      print(ex);
+      //print(ex);
       return <Postit>[];
     }
   }

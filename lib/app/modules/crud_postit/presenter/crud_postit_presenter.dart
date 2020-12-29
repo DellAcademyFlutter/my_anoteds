@@ -16,10 +16,10 @@ class CrudPostitPresenter {
   List<int> postitMarkers = [];
 
   /// Inicializa a lista de markers do postit
-  void initializePostitMarkers({int loggedUserId, int postitId})  {
+  initializePostitMarkers({int loggedUserId, int postitId}) async {
     final markingDao = Modular.get<MarkingDao>();
 
-    markingDao
+    await markingDao
         .getPostitMarkersIds(userId: loggedUserId, postitId: postitId)
         .then((value) {
       for (var i = 0; i < value.length; i++) {

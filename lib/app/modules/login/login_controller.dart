@@ -1,10 +1,10 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_modular/flutter_modular.dart';
+import 'package:my_anoteds/app/modules/home/home_page.dart';
 
 import 'package:my_anoteds/app/repositories/shared/Utils/utils.dart';
 import 'package:my_anoteds/app/data/users_dao.dart';
 import 'package:my_anoteds/app/model/user.dart';
-import 'file:///E:/GitHub/my_anoteds/lib/app/modules/home/home_page.dart';
 
 class LoginController {
   signIn({String name, String password, BuildContext context}) async {
@@ -22,4 +22,6 @@ class LoginController {
       }
     });
   }
+
+
 }

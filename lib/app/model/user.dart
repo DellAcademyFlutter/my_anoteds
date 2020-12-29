@@ -1,8 +1,6 @@
 import 'package:my_anoteds/app/model/postit.dart';
 import 'package:flutter/cupertino.dart';
 
-import 'marker.dart';
-
 class User extends ChangeNotifier {
   // Construtor da classe
   User({this.id, this.name, this.password, this.email, this.birth});
@@ -33,100 +31,12 @@ class User extends ChangeNotifier {
     return data;
   }
 
-  setValues({@required User otherUser}){
+  /// Atribui os valores dos atributos de um [User] a este [User].
+  setValues({@required User otherUser}) {
     id = otherUser.id;
     name = otherUser.name;
     email = otherUser.email;
     password = otherUser.password;
     birth = otherUser.birth;
-  }
-
-
-  // Atributos da classe
-  List<Postit> postits;
-  List<Marker> markers;
-
-  // Adiciona um Postit
-  setPostits({List<Postit> postits}) {
-    this.postits = postits;
-
-    notifyListeners();
-  }
-
-  // Adiciona um Postit
-  addPostit({Postit postit}) {
-    postits.add(postit);
-
-    notifyListeners();
-  }
-
-  updatePostit({int index, Postit newPostit}) {
-    postits[index].id = newPostit.id;
-    postits[index].title = newPostit.title;
-    postits[index].description = newPostit.description;
-    postits[index].color = newPostit.color;
-    postits[index].isPinned = newPostit.isPinned;
-    postits[index].image = newPostit.image;
-
-    notifyListeners();
-  }
-
-  removePostit({int index}){
-    postits.removeAt(index);
-
-    notifyListeners();
-  }
-
-  // Adiciona um Postit
-  setMarkers({List<Marker> markers}) {
-    this.markers = markers;
-
-    notifyListeners();
-  }
-
-  // Adiciona um marker
-  addMarker({Marker marker}) {
-    markers.add(marker);
-
-    notifyListeners();
-  }
-
-  updateMarker({int index, Marker newMarker}) {
-    markers[index].id = newMarker.id;
-    markers[index].title = newMarker.title;
-    notifyListeners();
-  }
-
-  removeMarker({int index}){
-    markers.removeAt(index);
-
-    notifyListeners();
-  }
-
-  removeMarkerById({int id}){
-    for (var i=0; i<markers.length; i++){
-      if (markers[i].id == id){
-        markers.removeAt(i);
-        notifyListeners();
-      }
-    }
-  }
-
-  String getMarkerTitleById({int markerId}){
-    for (var i=0; i<markers.length; i++){
-      if (markers[i].id == markerId){
-        return markers[i].title;
-      }
-    }
-    return "NothingFound";
-  }
-
-  Marker getMarkerById({int id}){
-    for (var i=0; i<markers.length; i++){
-      if (markers[i].id == id){
-        return markers[i];
-      }
-    }
-    return null;
   }
 }

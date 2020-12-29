@@ -1,54 +1,53 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_modular/flutter_modular.dart';
-import 'package:my_anoteds/app/controller/postit_controller.dart';
 import 'package:my_anoteds/app/model/postit_color.dart';
-import 'package:my_anoteds/app/model/user.dart';
-import 'package:my_anoteds/app/modules/home/view/crud_postit_page.dart';
-import 'package:my_anoteds/app/modules/home/view/reminder_page.dart';
-import 'package:my_anoteds/app/repositories/local/LocalNotification/local_notification.dart';
+import 'package:my_anoteds/app/modules/crud_postit/crud_postit_page.dart';
 import 'package:my_anoteds/app/repositories/shared/Utils/image_picker_utils.dart';
-import 'package:my_anoteds/app/repositories/shared/Utils/utils.dart';
+
+import '../../../app_controller.dart';
+import '../reminder_page.dart';
 
 class PostitWidget extends StatelessWidget {
   PostitWidget({this.index});
 
   final int index;
-  final user = Modular.get<User>();
-  final controller = Modular.get<PostitController>();
+  final appController = Modular.get<AppController>();
 
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: () {
-        Modular.link.pushNamed(CrudPostitPage.routeName,
-            arguments: CrudPostitPageArguments(postit: user.postits[index]));
+        Modular.to.pushNamed(CrudPostitPage.routeName,
+            arguments:
+                CrudPostitPageArguments(postit: appController.postits[index]));
       },
       onLongPress: () {
         Modular.link.pushNamed(ReminderPage.routeName,
-            arguments: ReminderPageArguments(postit: user.postits[index]));
+            arguments:
+                ReminderPageArguments(postit: appController.postits[index]));
       },
       child: Dismissible(
         key: UniqueKey(),
         onDismissed: (direction) {
-          controller.removePostit(index: index);
+          appController.removePostit(index: index);
         },
         child: Container(
             margin: const EdgeInsets.all(15.0),
             padding: const EdgeInsets.all(3.0),
             decoration: BoxDecoration(
                 border: Border.all(color: Colors.black),
-                color: Color(
-                    PostitColor.colors[user.postits[index].color]['hex'])),
+                color: Color(PostitColor
+                    .colors[appController.postits[index].color]['hex'])),
             child: Column(
               children: [
                 Container(
                   child: Text(
-                    user.postits[index].title,
+                    appController.postits[index].title,
                     style: TextStyle(
                         fontWeight: FontWeight.bold,
-                        color: (user.postits[index].color == "verde" ||
-                                user.postits[index].color == "azul")
+                        color: (appController.postits[index].color == "verde" ||
+                                appController.postits[index].color == "azul")
                             ? Colors.white
                             : Colors.black),
                   ),
@@ -58,26 +57,26 @@ class PostitWidget extends StatelessWidget {
                   color: Colors.black,
                 ),
                 Container(
-                  child: user.postits[index].image != null
+                  child: appController.postits[index].image != null
                       ? Row(
-                          children: [
-                            Icon(Icons.attach_file),
-                            Image.memory(
-                              ImagePickerUtils.getBytesImage(
-                                  base64Image: user.postits[index].image),
-                              height: 20,
-                              width: 20,
-                            ),
-                          ],
-                        )
+                    children: [
+                      Icon(Icons.attach_file),
+                      Image.memory(
+                        ImagePickerUtils.getBytesImage(
+                            base64Image: appController.postits[index].image),
+                        height: 20,
+                        width: 20,
+                      ),
+                    ],
+                  )
                       : null,
                 ),
                 Container(
                   child: Text(
-                    user.postits[index].description,
+                    appController.postits[index].description,
                     style: TextStyle(
-                        color: (user.postits[index].color == "verde" ||
-                                user.postits[index].color == "azul")
+                        color: (appController.postits[index].color == "verde" ||
+                                appController.postits[index].color == "azul")
                             ? Colors.white
                             : Colors.black),
                   ),

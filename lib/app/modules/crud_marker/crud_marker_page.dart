@@ -1,9 +1,10 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_modular/flutter_modular.dart';
-import 'package:my_anoteds/app/controller/marker_controller.dart';
+import 'package:my_anoteds/app/app_controller.dart';
 import 'package:my_anoteds/app/data/marker_dao.dart';
-import 'package:my_anoteds/app/model/user.dart';
+
+import 'crud_marker_controller.dart';
 
 class CrudMarkerPage extends StatefulWidget {
   static const routeName = "/CrudMarkerPage";
@@ -15,16 +16,17 @@ class CrudMarkerPage extends StatefulWidget {
 
 class _State extends State<CrudMarkerPage> {
   TextEditingController markertitle = TextEditingController();
-  final User loggedUser = Modular.get();
+  final appController = Modular.get<AppController>();
+  final crudMarkerController = Modular.get<CrudMarkerController>();
   final markerDao = Modular.get<MarkerDao>();
-  final markerController = Modular.get<MarkerController>();
   String title;
 
   @override
   void initState() {
     super.initState();
 
-    markerController.initializeUserMarkers(loggedUser: loggedUser);
+    crudMarkerController.initializeUserMarkers(
+        loggedUser: appController.loggedUser);
   }
 
   @override
@@ -36,8 +38,8 @@ class _State extends State<CrudMarkerPage> {
       ),
       body: Container(
         alignment: Alignment.topCenter,
-        child: ListView(
-          scrollDirection: Axis.vertical,
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
             ListTile(
               leading: Icon(Icons.bookmarks_sharp),
@@ -54,8 +56,8 @@ class _State extends State<CrudMarkerPage> {
               trailing: IconButton(
                 icon: Icon(Icons.add),
                 onPressed: () {
-                  markerController.saveMarker(
-                      title: title, userId: loggedUser.id);
+                  crudMarkerController.saveMarker(
+                      title: title, userId: appController.loggedUser.id);
                 },
               ),
             ),
@@ -63,15 +65,15 @@ class _State extends State<CrudMarkerPage> {
             Expanded(
               child: SizedBox(
                 height: 200,
-                child: Consumer<User>(builder: (context, value) {
+                child: Consumer<AppController>(builder: (context, value) {
                   return ListView.builder(
                     scrollDirection: Axis.vertical,
                     shrinkWrap: true,
-                    itemCount: loggedUser.markers.length,
+                    itemCount: appController.markers.length,
                     itemBuilder: (BuildContext context, int index) =>
                         CrudMarkerWidget(
-                          index: index,
-                        ),
+                      index: index,
+                    ),
                   );
                 }),
               ),
@@ -92,8 +94,7 @@ class CrudMarkerWidget extends StatefulWidget {
 }
 
 class _CrudMarkerWidgetState extends State<CrudMarkerWidget> {
-  final loggedUser = Modular.get<User>();
-  final markerController = Modular.get<MarkerController>();
+  final appController = Modular.get<AppController>();
   TextEditingController titleController = TextEditingController();
   String title;
   bool isEditing;
@@ -101,7 +102,7 @@ class _CrudMarkerWidgetState extends State<CrudMarkerWidget> {
   @override
   void initState() {
     super.initState();
-    titleController.text = loggedUser.markers[widget.index].title;
+    titleController.text = appController.markers[widget.index].title;
     title = titleController.text;
     isEditing = false;
   }
@@ -113,33 +114,33 @@ class _CrudMarkerWidgetState extends State<CrudMarkerWidget> {
         leading: Icon(Icons.label),
         title: isEditing
             ? TextFormField(
-          controller: titleController,
-          onChanged: (valor) => setState(() {
-            loggedUser.markers[widget.index].title = valor;
-            title = valor;
-          }),
-        )
+                controller: titleController,
+                onChanged: (valor) => setState(() {
+                  appController.markers[widget.index].title = valor;
+                  title = valor;
+                }),
+              )
             : Text(
-          loggedUser.markers[widget.index].title,
-        ),
+                appController.markers[widget.index].title,
+              ),
         trailing: Row(
           mainAxisSize: MainAxisSize.min,
           children: [
             IconButton(
                 icon: Icon(Icons.edit),
                 onPressed: () => setState(() {
-                  isEditing = !isEditing;
-                  if (isEditing == false) {
-                    final newMarker = loggedUser.markers[widget.index];
-                    newMarker.title = title;
-                    markerController.updateMarker(
-                        index: widget.index, newMarker: newMarker);
-                  }
-                })),
+                      isEditing = !isEditing;
+                      if (isEditing == false) {
+                        final newMarker = appController.markers[widget.index];
+                        newMarker.title = title;
+                        appController.updateMarker(
+                            index: widget.index, newMarker: newMarker);
+                      }
+                    })),
             IconButton(
                 icon: Icon(Icons.delete),
                 onPressed: () {
-                  markerController.removeMarker(index: widget.index);
+                  appController.removeMarker(index: widget.index);
                 }),
           ],
         ),

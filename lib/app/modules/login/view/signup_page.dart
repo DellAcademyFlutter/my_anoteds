@@ -3,7 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_modular/flutter_modular.dart';
 import 'package:mask_text_input_formatter/mask_text_input_formatter.dart';
 import 'package:my_anoteds/app/repositories/shared/Utils/validator_fields.dart';
-import 'package:my_anoteds/app/controller/user_controller.dart';
+
+import '../../../app_controller.dart';
 
 class SignUpPage extends StatefulWidget {
   static const routeName = "/signin";
@@ -12,7 +13,7 @@ class SignUpPage extends StatefulWidget {
 }
 
 class _State extends State<SignUpPage> {
-  final userController = Modular.get<UserController>();
+  final appController = Modular.get<AppController>();
   final _formKey = GlobalKey<FormState>();
   String name, pass, email, birth;
   var maskFormatter = MaskTextInputFormatter(
@@ -42,9 +43,8 @@ class _State extends State<SignUpPage> {
                   child: Center(
                     child: Text(
                       'Cadastrar usuário',
-                      style: TextStyle(
-                          fontWeight: FontWeight.w500,
-                          fontSize: 30),
+                      style:
+                          TextStyle(fontWeight: FontWeight.w500, fontSize: 30),
                     ),
                   )),
               Container(
@@ -99,7 +99,7 @@ class _State extends State<SignUpPage> {
                   ),
                   validator: (String submittedValue) {
                     final dateValidator =
-                    Validator.validateDate(submittedValue);
+                        Validator.validateDate(submittedValue);
                     if (!dateValidator) {
                       return 'Data inválida!';
                     }
@@ -119,7 +119,7 @@ class _State extends State<SignUpPage> {
                   ),
                   validator: (String submittedValue) {
                     final emailValidator =
-                    Validator.validateEmail(submittedValue);
+                        Validator.validateEmail(submittedValue);
                     if (!emailValidator) {
                       return 'Email inválido!';
                     }
@@ -137,8 +137,11 @@ class _State extends State<SignUpPage> {
                   onPressed: () {
                     isValidating = AutovalidateMode.always;
                     if (_formKey.currentState.validate()) {
-                      userController.saveUser(
-                          name: name, password: pass, email: email, birth: birth);
+                      appController.saveUser(
+                          name: name,
+                          password: pass,
+                          email: email,
+                          birth: birth);
                       Modular.to.pop();
                     }
                   },

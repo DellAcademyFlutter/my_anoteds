@@ -1,23 +1,39 @@
-# my_anoteds
+# My_Annoteds
+Projeto de lembretes de anotações (Postits) semelhante ao Google Keep.
 
- Projeto de cards de anotações rápidas (postits) semelhante ao Google Keep.
+## Features
+  - Cadastrar vários perfis de usuário
+  - Criar/Editar os seus postits (tocando em um postit), bem como adicionar uma imagem
+  - Remover um postit (arrastanto o mesmo para o lado esquerdo ou direito)
+  - Marcar um lembrete de um postit (segurando 2 segundos o toque no postit)
+  - Gerenciar os seus marcadores (Tags)
+  - Filtrar seus postits por um ou mais marcadores
+  - Personalizar configurações de preferência de temas (Sistema, Light, Dark, Alto-Contraste) e tamanho da fonte
 
- Na tela de login, o usuário pode realizar seu cadastro ou logar no sistema.
+## Observação
+Para que as notificações funcionem, seu celular deve estar configurado no horário de Brasília/São Paulo.
 
- Após realizar o login no sistema, o usuário acessa sua Home page, onde poderá:
-  - No botão inferior: cadastrar seus postits,
-  - No menu lateral: gerenciar os seus marcadores(Tags), personalizar configurações e realizar o Logout,
-  - Na parte superior: filtrar suas notas por marcador
+## Screenshots
+![picture alt](screenshots_readme/Login.png "Tela de Login")
+![picture alt](screenshots_readme/Home_Page.png "Tela principal")
+![picture alt](screenshots_readme/Home_Page_Dark.png "Tela principal - Modo Escuro")
+![picture alt](screenshots_readme/Filter.png "Aplicando filtros nos Postits")
+![picture alt](screenshots_readme/Edit_Postit.png "Edição de Postits")
+![picture alt](screenshots_readme/Lembretes.jpg "Tela de configuracao de lembretes")
 
- Além disso, na Home page o usuário poderá:
-  - Ler/Editar um postit: tocando em um postit,
-  - Marcar um lembrete de um postit: segurando 2 segundos o toque no postit,
-  - Remover um postit: arrastanto o mesmo para o lado esquerdo ou direito,
-  Obs: Os lembretes estão configurados para seguir o horário de Brasília.
+## Modelo Relacional
+Modelo relacional utilizado para o Banco de Dados (SQLite).
 
- Na tela de cadastro de postits, o usuário poderá:
-  - Inserir título, corpo, cor e também anexar uma imagem
-  - Associar seu postit com os seus marcadores cadastrados.
+![picture alt](screenshots_readme/MyAnnoteds_modeloRelacional.png "Modelo Relacional do banco de Dados")
 
+## Desenvolvimento
+Projeto desenvolvido para aprendizado no projeto Dell Academy: Mentoria Flutter
+
+1. Autores
+  - Antônio Honorato Moreira Guedes
+  - Elias Cícero Moreira Guedes
+
+2. Mentor
+  - Israel Barbosa
 
 
