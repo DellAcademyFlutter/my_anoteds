@@ -14,7 +14,8 @@ Projeto de lembretes de anotações (Postits) semelhante ao Google Keep.
 Para que as notificações funcionem, seu celular deve estar configurado no horário de Brasília/São Paulo.
 
 ## Screenshots
-![picture alt](screenshots_readme/MyAnnoteds_Login.png | height=300 "Tela de Login")
+| <img src="screenshots_readme/MyAnnoteds_Login.png" width="350"> |
+![picture alt](screenshots_readme/MyAnnoteds_Login.png "height=300" "Tela de Login")
 ![picture alt](screenshots_readme/MyAnnoteds_Home_Page.png | height=300  "Tela principal")
 ![picture alt](screenshots_readme/MyAnnoteds_Home_Page_Dark.png | height=300  "Tela principal - Modo Escuro")
 ![picture alt](screenshots_readme/MyAnnoteds_Filter.png | height=300  "Aplicando filtros nos Postits")
