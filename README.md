@@ -14,12 +14,12 @@ Projeto de lembretes de anotações (Postits) semelhante ao Google Keep.
 Para que as notificações funcionem, seu celular deve estar configurado no horário de Brasília/São Paulo.
 
 ## Screenshots
-![picture alt](screenshots_readme/Login.png "Tela de Login")
-![picture alt](screenshots_readme/Home_Page.png "Tela principal")
-![picture alt](screenshots_readme/Home_Page_Dark.png "Tela principal - Modo Escuro")
-![picture alt](screenshots_readme/Filter.png "Aplicando filtros nos Postits")
-![picture alt](screenshots_readme/Edit_Postit.png "Edição de Postits")
-![picture alt](screenshots_readme/Lembretes.jpg "Tela de configuracao de lembretes")
+![picture alt](screenshots_readme/MyAnnoteds_Login.png "Tela de Login")
+![picture alt](screenshots_readme/MyAnnoteds_Home_Page.png "Tela principal")
+![picture alt](screenshots_readme/MyAnnoteds_Home_Page_Dark.png "Tela principal - Modo Escuro")
+![picture alt](screenshots_readme/MyAnnoteds_Filter.png "Aplicando filtros nos Postits")
+![picture alt](screenshots_readme/MyAnnoteds_Edit_Postit.png "Edição de Postits")
+![picture alt](screenshots_readme/MyAnnoteds_Lembretes.jpg "Tela de configuracao de lembretes")
 
 ## Modelo Relacional
 Modelo relacional utilizado para o Banco de Dados (SQLite).
