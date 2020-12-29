@@ -3,24 +3,25 @@ import 'package:flutter/material.dart';
 import 'package:flutter_modular/flutter_modular.dart';
 import 'package:my_anoteds/app/data/marker_dao.dart';
 import 'package:my_anoteds/app/model/marker.dart';
-import 'package:my_anoteds/app/model/user.dart';
 import 'package:my_anoteds/app/modules/home/home_controller.dart';
 
+import '../../../app_controller.dart';
+
 Widget MarkerFilterRowWidget() {
-  final loggedUser = Modular.get<User>();
+  final appController = Modular.get<AppController>();
   final markerDao = Modular.get<MarkerDao>();
   final selectedMarkers = <int>[];
 
   return FutureBuilder(
-      future: markerDao.getMarkers(loggedUser.id),
+      future: markerDao.getMarkers(appController.loggedUser.id),
       builder: (BuildContext context, AsyncSnapshot<List<Marker>> snapshot) {
         return snapshot.hasData
-            ? Consumer<User>(builder: (context, value) {
-                loggedUser.markers = snapshot.data;
+            ? Consumer<AppController>(builder: (context, value) {
+                appController.markers = snapshot.data;
                 return ListView.builder(
                   scrollDirection: Axis.horizontal,
                   shrinkWrap: true,
-                  itemCount: loggedUser.markers.length,
+                  itemCount: appController.markers.length,
                   itemBuilder: (BuildContext context, int index) =>
                       MarkerFilterElementWidget(
                     index: index,
@@ -44,7 +45,7 @@ class MarkerFilterElementWidget extends StatefulWidget {
 }
 
 class _State extends State<MarkerFilterElementWidget> {
-  final loggedUser = Modular.get<User>();
+  final appController = Modular.get<AppController>();
   final homeController = Modular.get<HomeController>();
   Color color = Colors.transparent;
   bool isActive = false;
@@ -61,21 +62,25 @@ class _State extends State<MarkerFilterElementWidget> {
             onPressed: () {
               setState(() {
                 // Modificar os botoes
-                if (!isActive){
+                if (!isActive) {
                   color = Theme.of(context).buttonColor;
                   isActive = true;
-                  widget.selectedMarkers.add(loggedUser.markers[widget.index].id);
+                  widget.selectedMarkers
+                      .add(appController.markers[widget.index].id);
                 } else {
                   color = Colors.transparent;
                   isActive = false;
-                  widget.selectedMarkers.remove(loggedUser.markers[widget.index].id);
+                  widget.selectedMarkers
+                      .remove(appController.markers[widget.index].id);
                 }
 
                 // Modificar a lista  ser exibida
-                homeController.filterUserPostitsWithMarkers(loggedUser: loggedUser, markersId: widget.selectedMarkers);
+                homeController.filterUserPostitsWithMarkers(
+                    loggedUser: appController.loggedUser,
+                    markersId: widget.selectedMarkers);
               });
             },
-            child: Text(loggedUser.markers[widget.index].title),
+            child: Text(appController.markers[widget.index].title),
           ),
           SizedBox(width: 5),
         ],

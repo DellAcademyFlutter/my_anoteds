@@ -3,12 +3,13 @@ import 'package:flutter_modular/flutter_modular.dart';
 import 'package:my_anoteds/app/data/marking_dao.dart';
 import 'package:my_anoteds/app/model/postit.dart';
 import 'package:my_anoteds/app/model/postit_color.dart';
-import 'package:my_anoteds/app/model/user.dart';
-import 'package:my_anoteds/app/modules/home/components/crud_postit_settings_menu_widget.dart';
-import 'package:my_anoteds/app/modules/home/components/crud_postit_select_image_menu_widget.dart';
-import 'package:my_anoteds/app/modules/home/home_controller.dart';
-import 'package:my_anoteds/app/modules/home/presenter/crud_postit_presenter.dart';
+import 'package:my_anoteds/app/modules/crud_postit/presenter/crud_postit_presenter.dart';
+import 'package:my_anoteds/app/modules/crud_postit/components/crud_postit_settings_menu_widget.dart';
+import 'package:my_anoteds/app/modules/crud_postit/components/crud_postit_select_image_menu_widget.dart';
 import 'package:my_anoteds/app/repositories/shared/Utils/image_picker_utils.dart';
+
+import '../../app_controller.dart';
+import 'crud_postit_controller.dart';
 
 class CrudPostitPageArguments {
   CrudPostitPageArguments({this.postit});
@@ -26,8 +27,8 @@ class CrudPostitPage extends StatefulWidget {
 }
 
 class _State extends State<CrudPostitPage> implements ICrudPostitPresenter {
-  final loggedUser = Modular.get<User>();
-  final homeController = Modular.get<HomeController>();
+  final appController = Modular.get<AppController>();
+  final crudPostitController = Modular.get<CrudPostitController>();
   final markingDao = Modular.get<MarkingDao>();
   TextEditingController titleController = TextEditingController();
   TextEditingController descriptionController = TextEditingController();
@@ -53,7 +54,8 @@ class _State extends State<CrudPostitPage> implements ICrudPostitPresenter {
 
     if (widget.postit != null) {
       presenter.initializePostitMarkers(
-          loggedUserId: loggedUser.id, postitId: widget.postit.id);
+          loggedUserId: appController.loggedUser.id,
+          postitId: widget.postit.id);
     }
 
     if (widget.postit?.image != null) {
@@ -75,7 +77,7 @@ class _State extends State<CrudPostitPage> implements ICrudPostitPresenter {
               icon: Icon(Icons.save),
               tooltip: 'Salvar postit',
               onPressed: () {
-                homeController.savePostit(
+                crudPostitController.savePostit(
                   title: title,
                   description: description,
                   color: color,
@@ -106,7 +108,7 @@ class _State extends State<CrudPostitPage> implements ICrudPostitPresenter {
                     children: presenter.postitMarkers.map<Card>((int markerId) {
                       return Card(
                           margin: EdgeInsets.all(8),
-                          child: Text(loggedUser.getMarkerTitleById(
+                          child: Text(appController.getMarkerTitleById(
                               markerId: markerId)));
                     }).toList(),
                   ),

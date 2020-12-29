@@ -69,7 +69,8 @@ class PostitDao {
   }
 
   /// Retorna uma [List] de [Postit]s do usuario de id [userId] filtrado por uma lita de marcadores.
-  Future<List<Postit>> getMarkedPostits({int userId, List<int> markersId}) async {
+  Future<List<Postit>> getMarkedPostits(
+      {int userId, List<int> markersId}) async {
     try {
       final db = await DbHelper.getDatabase();
       final postitMaps = await db.query(DbHelper.TABLE_POSTITS_NAME);
@@ -79,14 +80,14 @@ class PostitDao {
       // Filtra postit por usuario
       for (var i = 0; i < postitMaps.length; i++) {
         if (postitMaps[i]['userId'] == userId) {
-
           // Filtra postit por marcadores
-          final markingMaps = await db.rawQuery("SELECT * FROM ${DbHelper.TABLE_USERS_MARKING} WHERE postitId = ${postitMaps[i]['id']}");
+          final markingMaps = await db.rawQuery(
+              "SELECT * FROM ${DbHelper.TABLE_USERS_MARKING} WHERE postitId = ${postitMaps[i]['id']}");
           var countTags = 0;
-          for (var j = 0; j < markingMaps.length; j++){
-            if(markersId.contains(markingMaps[j]['markerId'])) countTags++;
+          for (var j = 0; j < markingMaps.length; j++) {
+            if (markersId.contains(markingMaps[j]['markerId'])) countTags++;
           }
-          if (countTags == markersId.length){
+          if (countTags == markersId.length) {
             userPostits.add(Postit.fromMap(map: postitMaps[i]));
           }
         }

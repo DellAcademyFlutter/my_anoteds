@@ -5,15 +5,20 @@ import 'package:sqflite/sqflite.dart';
 
 class MarkerDao {
   /// Insere um [marker] em sua tabela.
-  Future insertMarker(Marker marker) async {
+  Future<int> insertMarker(Marker marker) async {
     try {
       final db = await DbHelper.getDatabase();
+      int generatedId;
 
-      await db.insert(
-        DbHelper.TABLE_USERS_MARKER,
-        marker.toMap(),
-        conflictAlgorithm: ConflictAlgorithm.replace,
-      );
+      await db
+          .insert(
+            DbHelper.TABLE_USERS_MARKER,
+            marker.toMap(),
+            conflictAlgorithm: ConflictAlgorithm.replace,
+          )
+          .then((value) => generatedId = value);
+
+      return generatedId;
     } catch (ex) {
       debugPrint("DBEXCEPTION: ${ex}");
     }
@@ -48,14 +53,14 @@ class MarkerDao {
       final db = await DbHelper.getDatabase();
       final maps = await db.query(DbHelper.TABLE_USERS_MARKER);
 
-      final userMarker = <Marker>[];
+      final userMarkers = <Marker>[];
 
       for (var i = 0; i < maps.length; i++) {
         if (maps[i]['userId'] == userId) {
-          userMarker.add(Marker.fromMap(map: maps[i]));
+          userMarkers.add(Marker.fromMap(map: maps[i]));
         }
       }
-      return userMarker;
+      return userMarkers;
     } catch (ex) {
       return <Marker>[];
     }

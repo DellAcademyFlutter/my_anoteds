@@ -3,7 +3,6 @@ import 'package:flutter_modular/flutter_modular.dart';
 import 'package:my_anoteds/app/repositories/shared/user_settings.dart';
 import 'package:my_anoteds/app/repositories/shared/themes/AppThemes.dart';
 
-import 'package:my_anoteds/app/controller/user_controller.dart';
 import 'package:my_anoteds/app/model/user.dart';
 import 'package:my_anoteds/app/modules/splash_screen/splash_screen_page.dart';
 
@@ -13,14 +12,13 @@ class AppWidget extends StatefulWidget {
 }
 
 class _AppWidgetState extends State<AppWidget> {
-  final userController = Modular.get<UserController>();
   final loggedUser = Modular.get<User>();
   bool islogged = false;
 
   @override
   Widget build(BuildContext context) {
     return Consumer<UserSettings>(
-      builder:  (context, value) {
+      builder: (context, value) {
         return MaterialApp(
           title: "My Anoteds",
           theme: ThemeCollection.getAppTheme(),

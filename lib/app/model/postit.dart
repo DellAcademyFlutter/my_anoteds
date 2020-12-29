@@ -1,3 +1,5 @@
+import 'package:flutter/cupertino.dart';
+
 class Postit {
   // Construtor da classe
   Postit(
@@ -40,5 +42,16 @@ class Postit {
     data['isPinned'] = (isPinned) ? 1 : 0;
     data['image'] = image;
     return data;
+  }
+
+  /// Atribui os valores dos atributos de um [Postit] a este [Postit].
+  setValues({@required Postit otherPostit}) {
+    id = otherPostit.id;
+    title = otherPostit.title;
+    description = otherPostit.description;
+    color = otherPostit.color;
+    userId = otherPostit.userId;
+    isPinned = otherPostit.isPinned;
+    image = otherPostit.image;
   }
 }

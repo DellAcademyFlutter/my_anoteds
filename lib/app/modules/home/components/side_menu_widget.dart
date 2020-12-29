@@ -1,16 +1,16 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_modular/flutter_modular.dart';
-import 'package:my_anoteds/app/controller/user_controller.dart';
 import 'package:my_anoteds/app/model/user.dart';
-import 'package:my_anoteds/app/modules/home/view/crud_marker_page.dart';
-import 'package:my_anoteds/app/modules/home/view/user_settings_page.dart';
+import 'package:my_anoteds/app/modules/crud_marker/crud_marker_page.dart';
+import 'package:my_anoteds/app/modules/user_settings/user_settings_page.dart';
 
+import '../../../app_controller.dart';
 import '../home_controller.dart';
 
 class SideMenuWidget extends StatelessWidget {
   final homeController = Modular.get<HomeController>();
-  final userController = Modular.get<UserController>();
+  final appController = Modular.get<AppController>();
   final loggedUser = Modular.get<User>();
 
   @override
@@ -38,14 +38,14 @@ class SideMenuWidget extends StatelessWidget {
               title: Text('configurações'),
               onTap: () {
                 Modular.to.pop();
-                Modular.link.pushNamed(UserSettingsPage.routeName);
+                Modular.to.pushNamed(UserSettingsPage.routeName);
               }),
           ListTile(
             leading: Icon(Icons.bookmarks_sharp),
             title: Text('Tags'),
             onTap: () {
               Modular.to.pop();
-              Modular.link.pushNamed(CrudMarkerPage.routeName);
+              Modular.to.pushNamed(CrudMarkerPage.routeName);
             },
           ),
           ListTile(
@@ -53,7 +53,7 @@ class SideMenuWidget extends StatelessWidget {
             title: Text('Sair'),
             onTap: () {
               Modular.to.pop();
-              userController.deleteLoggedUser(name: loggedUser.name);
+              appController.deleteLoggedUser(name: loggedUser.name);
               homeController.Logout();
             },
           )

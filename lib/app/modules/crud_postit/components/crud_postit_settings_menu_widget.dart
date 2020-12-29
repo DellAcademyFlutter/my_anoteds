@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_modular/flutter_modular.dart';
-import 'package:my_anoteds/app/modules/home/presenter/crud_postit_presenter.dart';
-import 'package:my_anoteds/app/modules/home/view/select_markers_page.dart';
+import 'package:my_anoteds/app/modules/crud_postit/select_markers_page.dart';
+import 'package:my_anoteds/app/modules/crud_postit/presenter/crud_postit_presenter.dart';
 
 class CrudPostitSettingsMenuWidget extends StatefulWidget {
   CrudPostitSettingsMenuWidget({this.presenter});
