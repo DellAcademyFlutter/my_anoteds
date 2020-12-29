@@ -15,9 +15,9 @@ Para que as notificações funcionem, seu celular deve estar configurado no hor�
 
 ## Screenshots
 
-  <img src="screenshots_readme/MyAnnoteds_Login.png" width="300">              <img src="screenshots_readme/MyAnnoteds_Lembretes.png" width="350">
-  <img src="screenshots_readme/MyAnnoteds_Home_Page.png" width="300">              <img src="screenshots_readme/MyAnnoteds_Home_Page_Dark.png" width="350">
-  <img src="screenshots_readme/MyAnnoteds_Filter.png" width="300">              <img src="screenshots_readme/MyAnnoteds_Edit_Postit.png" width="350">
+  <img src="screenshots_readme/MyAnnoteds_Login.png" width="300" "Tela de Login">  |  <img src="screenshots_readme/MyAnnoteds_Lembretes.png" width="300" "Marcar um lembretes">
+  <img src="screenshots_readme/MyAnnoteds_Home_Page.png" width="300" "Tela principal">  |  <img src="screenshots_readme/MyAnnoteds_Home_Page_Dark.png" width="300" "Tema escuro">
+  <img src="screenshots_readme/MyAnnoteds_Filter.png" width="300" "Filtros">  |  <img src="screenshots_readme/MyAnnoteds_Edit_Postit.png" width="300" "Tela de criação/edição de Postit">
 
 ## Modelo Relacional
 Modelo relacional utilizado para o Banco de Dados (SQLite).
