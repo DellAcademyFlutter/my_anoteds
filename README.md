@@ -26,22 +26,18 @@ Caso não esteja, configure seu smartphone Android:
 2. Selecione em "Region": Brazil; "Time Zone": Sao Paulo.
 
 ## Screenshots
-<img src="screenshots_readme/MyAnoteds_1_cadastro.png" width="300"> 
-<img src="screenshots_readme/MyAnoteds_2_cadastro_postit.png" width="300">
+<img src="screenshots_readme/MyAnoteds_1_cadastro.png" width="300"> <img src="screenshots_readme/MyAnoteds_2_cadastro_postit.png" width="300">
 
-<img src="screenshots_readme/MyAnoteds_3_cadastro_marker.png" width="300">
-<img src="screenshots_readme/MyAnoteds_4_marcar.png" width="300">
+<img src="screenshots_readme/MyAnoteds_3_cadastro_marker.png" width="300"> <img src="screenshots_readme/MyAnoteds_4_marcar.png" width="300">
 
-<img src="screenshots_readme/MyAnoteds_5_homePage.png" width="300">
-<img src="screenshots_readme/MyAnoteds_6_filtroPostit.png" width="300">
+<img src="screenshots_readme/MyAnoteds_5_homePage.png" width="300"> <img src="screenshots_readme/MyAnoteds_6_filtroPostit.png" width="300">
 
-<img src="screenshots_readme/MyAnoteds_7_configurarLembrete.png" width="300">
-<img src="screenshots_readme/MyAnoteds_8_temaEscuro.png" width="300">
+<img src="screenshots_readme/MyAnoteds_7_configurarLembrete.png" width="300"> <img src="screenshots_readme/MyAnoteds_8_TemaEscuro.png" width="300">
 
 ## Modelo Relacional
 Modelo relacional utilizado para o Banco de Dados (SQLite).
 
-<img src="screenshots_readme/MyAnoteds_modeloRelacional.jpg" width="300">
+<img src="screenshots_readme/MyAnoteds_modeloRelacional.png" width="300">
 
  
  
