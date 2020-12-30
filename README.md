@@ -18,24 +18,30 @@ Projeto de cards de anotações rápidas (postits) semelhante ao Google Keep.
   1. Inserir título, corpo, cor e também anexar uma imagem
   2. Associar seu postit com os seus marcadores cadastrados.
   
-## Observação
+## Observação (Android)
 Para que as notificações funcionem, seu celular deve estar com o local configurado para Brasília/São Paulo.
-Caso não esteja, configure seu smartphone:
+Caso não esteja, configure seu smartphone Android:
 
 1. Vá em Settings -> System -> Date & Time -> Time Zone
 2. Selecione em "Region": Brazil; "Time Zone": Sao Paulo.
 
 ## Screenshots
-![picture alt](screenshots_readme/MyAnoteds_1_cadastro.jpg "Tela de cadastro")
-![picture alt](screenshots_readme/MyAnoteds_2_configuracoes.jpg "Tela de configuracoes")
-![picture alt](screenshots_readme/MyAnoteds_3_homePage.jpg "Tela principal")
-![picture alt](screenshots_readme/MyAnoteds_4_filtro_postit.jpg "Postits filtrados")
-![picture alt](screenshots_readme/MyAnoteds_5_lembrete.jpg "Tela de configuracao de lembrete")
+<img src="screenshots_readme/MyAnoteds_1_cadastro.png" width="300"> 
+<img src="screenshots_readme/MyAnoteds_2_cadastro_postit.png" width="300">
+
+<img src="screenshots_readme/MyAnoteds_3_cadastro_marker.png" width="300">
+<img src="screenshots_readme/MyAnoteds_4_marcar.png" width="300">
+
+<img src="screenshots_readme/MyAnoteds_5_homePage.png" width="300">
+<img src="screenshots_readme/MyAnoteds_6_filtroPostit.png" width="300">
+
+<img src="screenshots_readme/MyAnoteds_7_configurarLembrete.png" width="300">
+<img src="screenshots_readme/MyAnoteds_8_temaEscuro.png" width="300">
 
 ## Modelo Relacional
 Modelo relacional utilizado para o Banco de Dados (SQLite).
 
-![picture alt](screenshots_readme/MyAnoteds_modeloRelacional.png "Modelo Relacional")
+<img src="screenshots_readme/MyAnoteds_modeloRelacional.jpg" width="300">
 
  
  

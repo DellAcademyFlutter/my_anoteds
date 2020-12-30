@@ -47,7 +47,8 @@ class MarkerFilterElementWidget extends StatefulWidget {
 class _State extends State<MarkerFilterElementWidget> {
   final appController = Modular.get<AppController>();
   final homeController = Modular.get<HomeController>();
-  Color color = Colors.transparent;
+  Color color = Colors.white;
+  Color activeColor = Colors.greenAccent;
   bool isActive = false;
 
   @override
@@ -57,18 +58,17 @@ class _State extends State<MarkerFilterElementWidget> {
       child: Row(
         children: [
           FlatButton(
-            textColor: Colors.black,
             color: color,
             onPressed: () {
               setState(() {
                 // Modificar os botoes
                 if (!isActive) {
-                  color = Theme.of(context).buttonColor;
+                  color = activeColor;
                   isActive = true;
                   widget.selectedMarkers
                       .add(appController.markers[widget.index].id);
                 } else {
-                  color = Colors.transparent;
+                  color = Colors.white;
                   isActive = false;
                   widget.selectedMarkers
                       .remove(appController.markers[widget.index].id);
@@ -80,7 +80,10 @@ class _State extends State<MarkerFilterElementWidget> {
                     markersId: widget.selectedMarkers);
               });
             },
-            child: Text(appController.markers[widget.index].title),
+            child: Text(
+              appController.markers[widget.index].title,
+              style: TextStyle(color: Colors.black),
+            ),
           ),
           SizedBox(width: 5),
         ],
