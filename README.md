@@ -37,7 +37,7 @@ Caso não esteja, configure seu smartphone Android:
 ## Modelo Relacional
 Modelo relacional utilizado para o Banco de Dados (SQLite).
 
-<img src="screenshots_readme/MyAnoteds_modeloRelacional.png" width="300">
+<img src="screenshots_readme/MyAnoteds_modeloRelacional.png">
 
  
  
